@@ -1,0 +1,19 @@
+baseURL = "https://quill.codes/"
+languageCode = "en-us"
+title = "Quill.Codes"
+theme = "quill-codes"
+
+[sitemap]
+    changefreq = "monthly"
+    priority = 0.5
+    filename = "sitemap.xml"
+
+[params]
+    owner = "Casey"
+    email = "Casey@quilltechnologies.com"
+    logo_svg = "/images/blog_icon.svg"
+    profile_photo = "/images/profile.jpg"
+    github = "cmcquillan"
+    twitter = "QuillCodes"
+    linkedin = "caseymcquillan"
+    recent_posts_number = 6

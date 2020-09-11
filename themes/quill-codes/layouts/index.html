@@ -1,0 +1,21 @@
+{{ define "main" }}
+
+    {{/* Define a new section for recent items */}}
+    {{ $mainSections := .Site.Params.mainSections | default (slice "post") }}
+
+    {{ $section := where .Site.RegularPages "Section" "in" $mainSections }}
+    {{ $section_count := len $section }}
+    {{ if ge $section_count 1 }}
+
+        {{ $section_name := index (.Site.Params.mainSections) 0 }}
+
+        {{ $topCount := $.Param "recent_posts_number" | default 3 }}
+
+        Count: {{ $topCount }}
+
+        {{ range (first $topCount $section) }}
+            {{ partial "excerpt.html" . }}
+        {{ end }}
+
+    {{ end }}
+{{ end }}

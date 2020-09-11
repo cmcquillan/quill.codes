@@ -1,0 +1,22 @@
+<article class="postExcerpt">
+    <h2 class="postExcerpt--title">
+        <a class="postExcerpt--title-link" href="{{.Permalink}}">
+            {{ .Title }}
+        </a>
+    </h2>
+    <div class="postExcerpt--text">
+        {{ .Description }}
+    </div>
+    <div class="postDetails">
+        <div class="postDetails--postDate">
+            <span class="postDetails--postDate-formattedDate">
+                Published on {{ .Date.Format "January 2, 2006" }}
+            </span>
+        </div>
+        <div class="postDetails--postAuthor">
+            <span class="postDetails--postAuthor-formattedAuthor">
+                Authored by {{ .Author }}
+            </span>
+        </div>
+    </div>
+</article>
