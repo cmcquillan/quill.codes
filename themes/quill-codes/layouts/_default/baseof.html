@@ -2,11 +2,13 @@
 <html lang="{{ $.Site.LanguageCode | default "en" }}">
 
 <head>
-    {{- partial "head.html" . -}}
+    {{ template "_internal/google_analytics_async.html" . }}
+    {{- partial "head.html" . }}
 </head>
 
 <body>
     <div class="pageContainer">
+        <h1>{{ .Site.Config.Privacy.GoogleAnalytics }}</h1>
         {{- partial "header.html" . -}}
         <main id="content" class="content">
             {{- block "main" . }}{{- end }}
