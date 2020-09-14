@@ -11,8 +11,6 @@
 
         {{ $topCount := $.Param "recent_posts_number" | default 3 }}
 
-        Count: {{ $topCount }}
-
         {{ range (first $topCount $section) }}
             {{ partial "excerpt.html" . }}
         {{ end }}

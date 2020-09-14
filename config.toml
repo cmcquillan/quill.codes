@@ -8,6 +8,20 @@ theme = "quill-codes"
     priority = 0.5
     filename = "sitemap.xml"
 
+[markup]
+  [markup.highlight]
+    anchorLineNos = true
+    codeFences = true
+    guessSyntax = false
+    hl_Lines = ""
+    lineAnchors = ""
+    lineNoStart = 1
+    lineNos = true
+    lineNumbersInTable = true
+    noClasses = true
+    style = "vs"
+    tabWidth = 4
+
 [params]
     owner = "Casey"
     email = "Casey@quilltechnologies.com"

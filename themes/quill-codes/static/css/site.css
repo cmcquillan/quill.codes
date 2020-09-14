@@ -11,6 +11,7 @@
     --content-size: 96%;
     
     --standard-border-radius: 4px;
+    --code-border-radius: 8px;
 
     --primary-font: 'Montserrat', sans-serif;
     --secondary-font: 'Inconsolata', monospace;
@@ -22,20 +23,10 @@ html, body {
     font-family: var(--primary-font);
 }
 
-a, .btn-link {
-    color: #0366d6;
-}
-
 .btn-primary {
     color: #fff;
     background-color: #1b6ec2;
     border-color: #1861ac;
-}
-
-app {
-    position: relative;
-    display: flex;
-    flex-direction: column;
 }
 
 .top-row {
@@ -183,6 +174,15 @@ h6 {
     font-weight: normal;
 }
 
+a, .btn-link {
+    color: #0366d6;
+}
+
+p, ol, ul {
+    font-size: 1.2rem;
+    line-height: 2.2rem;
+}
+
 a {
     color: rgb(var(--link-color));
     text-decoration: none;
@@ -212,16 +212,16 @@ a {
     Block Elements
 */
 
-.pageContainer,
-.content,
-.header {
-    width: 100%;
+.header,
+.pageContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-app {
+.content {
+    width: 360px;
+    display: flex;
     flex-direction: column;
     align-items: center;
 }
@@ -232,7 +232,6 @@ app {
 
 .content {
     padding: 8px;
-
 }
 
 .header {
@@ -375,7 +374,6 @@ app {
 .postExcerpt--text {
     width: 100%;
     grid-area: content;
-    text-align: justify;
     
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
@@ -416,10 +414,6 @@ app {
 .blogPostContainer {
     width: var(--content-size);
     box-sizing: border-box;
-
-    border: 1px solid var(--card-border-rgba);
-    border-radius: var(--standard-border-radius);
-    box-shadow: 1px 1px 5px var(--card-border-rgba);
 }
 
 .blogPost--title {
@@ -435,7 +429,7 @@ app {
 }
 
 .blogPost--content {
-    text-align: justify;
+    /* text-align: justify; */
 }
 
 .blogPostDetails--postAuthor {
@@ -451,17 +445,26 @@ pre code,
     border-radius: var(--standard-border-radius);
 }
 
+.blogPost--content .highlight {
+    border-radius: var(--code-border-radius);
+    box-shadow: 0 4px 8px 0 var(--highlight-rgba), 0 4px 12px 0 var(--highlight-rgba);
+}
+
+.blogPost--content .highlight div {
+    border-radius: var(--code-border-radius);
+}
+
+
 @media (min-width: 768px) {
 
     .pageContainer {
-        width: 78%;
         display: flex;
         flex-direction: column;
         align-items: center;
     }
 
     .content {
-        width: 100%;
+        width: 768px;
         display: flex;
         flex-direction: column;
         align-items: center;
