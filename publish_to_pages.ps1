@@ -8,7 +8,7 @@ echo "Deleting old publication"
 rm -Recurse -Force public
 mkdir public
 git worktree prune
-rm -Recurse Force .git/worktrees/public/
+rm -Recurse -Force .git/worktrees/public/
 
 echo "Checking out gh-pages branch into public"
 git worktree add -B gh-pages public origin/gh-pages
