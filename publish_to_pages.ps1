@@ -1,28 +1,28 @@
-#!/bin/sh
-
-if [ "`git status -s`" ];
-then
+if ($(git status -s) -ne $null)
+{
     echo "The working directory is dirty. Please commit any pending changes."
     exit 1;
-fi
+}
 
 echo "Deleting old publication"
-rm -rf public
+rm -Confirm -Force public
 mkdir public
 git worktree prune
-rm -rf .git/worktrees/public/
+rm -Confirm -Force .git/worktrees/public/
 
 echo "Checking out gh-pages branch into public"
 git worktree add -B gh-pages public origin/gh-pages
 
 echo "Removing existing files"
-rm -rf public/*
+rm -Confirm -Force public/*
 
 echo "Generating site"
 hugo
 
 echo "Changing to public directory"
-cd public && git add --all && git commit -m "Publishing to gh-pages (publish.sh)"
+cd public
+git add --all
+git commit -m "Publishing to gh-pages (publish.sh)"
 
 echo "Pushing to github"
 git push --all
