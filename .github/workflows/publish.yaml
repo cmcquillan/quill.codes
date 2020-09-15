@@ -9,4 +9,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Build script
-      run: publish_to_pages.sh
+      run: ./publish_to_pages.sh
