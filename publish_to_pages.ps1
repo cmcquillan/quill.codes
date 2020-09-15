@@ -5,16 +5,16 @@ if ($(git status -s) -ne $null)
 }
 
 echo "Deleting old publication"
-rm -Force public
+rm -Recurse -Force public
 mkdir public
 git worktree prune
-rm -Force .git/worktrees/public/
+rm -Recurse Force .git/worktrees/public/
 
 echo "Checking out gh-pages branch into public"
 git worktree add -B gh-pages public origin/gh-pages
 
 echo "Removing existing files"
-rm -Force public/*
+rm -Recurse -Force public/*
 
 echo "Generating site"
 hugo
