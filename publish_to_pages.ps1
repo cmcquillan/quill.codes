@@ -25,4 +25,4 @@ git add --all -f .
 git commit -m "Publishing to gh-pages (publish_to_pages.ps1)"
 
 echo "Pushing to github"
-git push --all
+git push origin gh-pages
