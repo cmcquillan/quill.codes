@@ -21,8 +21,11 @@ hugo
 
 echo "Changing to public directory"
 cd public
-git add --all -f .
+git add .
 git commit -m "Publishing to gh-pages (publish_to_pages.ps1)"
 
 echo "Pushing to github"
-git push origin gh-pages
+git push
+
+echo "Completed"
+cd ..
