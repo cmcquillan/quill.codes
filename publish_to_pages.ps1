@@ -22,7 +22,7 @@ hugo
 echo "Changing to public directory"
 cd public
 git add --all
-git commit -m "Publishing to gh-pages (publish.sh)"
+git commit -m "Publishing to gh-pages (publish_to_pages.ps1)"
 
 echo "Pushing to github"
 git push --all
