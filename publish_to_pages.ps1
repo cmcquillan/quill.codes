@@ -6,7 +6,7 @@ if ($(git status -s) -ne $null)
 
 echo "Deleting old publication"
 rm -Recurse -Force public
-mkdir public
+# mkdir public
 git worktree prune
 # rm -Recurse -Force .git/worktrees/public/
 
