@@ -426,7 +426,7 @@ namespace QuillGames.Sudoku
 }
 ```
 
-## What's Next
+## Next Steps
 Right now, my goal is that this series continues and helps outline my strategies for making practical trade-offs with object oriented programming. Some other topics I'll approach in the future are:
 
 * Refactoring for maintainability
@@ -434,4 +434,4 @@ Right now, my goal is that this series continues and helps outline my strategies
 * Extending your objects with more features
 * Extending the configurability of your objects
 
-If you enjoyed this, or if there is something you wanted to see in the future, feel free to reach out on [Twitter](https://twitter.com/QuillCodes).
+If you enjoyed this, or if there is something you wanted to see in the future, feel free to reach out on [Twitter](https://twitter.com/QuillCodes). 
