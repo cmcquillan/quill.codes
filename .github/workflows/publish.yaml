@@ -1,3 +1,5 @@
+name: Publish Github Pages
+
 # On Push
 on:
   push:
@@ -6,7 +8,10 @@ on:
 
 jobs:
   build:
+    name: Build Github Pages
     runs-on: ubuntu-latest
     steps:
+    - name: Debug PWD
+      run: ls -Al
     - name: Build script
       run: ./publish_to_pages.sh
