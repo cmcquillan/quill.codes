@@ -11,6 +11,7 @@ jobs:
     name: Build Github Pages
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2
     - name: Debug PWD
       run: ls -Al
     - name: Build script
