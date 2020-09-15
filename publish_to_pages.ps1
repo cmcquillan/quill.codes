@@ -14,7 +14,7 @@ echo "Checking out gh-pages branch into public"
 git worktree add -B gh-pages public origin/gh-pages
 
 echo "Removing existing files"
-rm -Recurse -Force public/*
+rm -Recurse -Force public/* -Exclude .*
 
 echo "Generating site"
 hugo
