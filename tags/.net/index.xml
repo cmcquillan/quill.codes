@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>quill.codes.blog on Quill.Codes</title>
-    <link>https://quill.codes/posts/</link>
-    <description>Recent content in quill.codes.blog on Quill.Codes</description>
+    <title>.NET on Quill.Codes</title>
+    <link>https://quill.codes/tags/.net/</link>
+    <description>Recent content in .NET on Quill.Codes</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 09 Aug 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://quill.codes/posts/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://quill.codes/tags/.net/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
