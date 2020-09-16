@@ -1,7 +1,7 @@
 ---
 title: "Dont Fear the // Todo"
 date: 2020-09-16T13:58:39-07:00
-draft: true
+draft: false
 tags: ["Visual Studio", "Productivity"]
 ---
 
