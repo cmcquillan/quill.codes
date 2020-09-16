@@ -1,0 +1,13 @@
+{{ define "main" }}
+  <article class="postList">
+    <section class="postList--title">
+      {{- .Content -}}
+    </section>
+    <section class="postList--summaries">
+      {{ range .Paginator.Pages }}
+        {{- partial "excerpt.html" . -}}
+      {{ end }}
+    </section>
+    {{- template "_internal/pagination.html" . -}}
+  </article>
+{{ end }}

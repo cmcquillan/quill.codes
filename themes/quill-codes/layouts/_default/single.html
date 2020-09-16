@@ -1,28 +1,28 @@
 {{ define "main" }}
-    {{ $section := .Site.GetPage "section" .Section }}
+{{ $section := .Site.GetPage "section" .Section }}
 
-    <div class="blogPostContainer">
-        <h1 class="postTitle">
-            <a href="/">&lt;&lt;</a>
-            &nbsp; {{ .Title }}
-        </h1>
-        <article class="blogPost">
-            <div class="blogPost--details">
-                <div class="blogPostDetails--postAuthor">
-                    <span class="blogPostDetails--postAuthor-formattedAuthor">
-                        {{ .Params.author }}
-                    </span>
-                </div>
-                <div class="blogPostDetails--postDate">
-                    <span class="blogPostDetails--postDate-formattedDate">
-                        {{- .Date.Format "January 2, 2006" -}}
-                    </span>
-                </div>
-            </div>
-
-            <div class="blogPost--content">
-                {{- .Content -}}
-            </div>
-        </article>
+<div class="blogPostContainer">
+  <h1 class="postTitle">
+    <a href="/">&lt;&lt;</a>
+    &nbsp; {{ .Title }}
+  </h1>
+  <article class="blogPost">
+    <div class="blogPost--details">
+      <div class="blogPostDetails--postAuthor">
+        <span class="blogPostDetails--postAuthor-formattedAuthor">
+          {{ .Params.author }}
+        </span>
+      </div>
+      <div class="blogPostDetails--postDate">
+        <span class="blogPostDetails--postDate-formattedDate">
+          {{- .Date.Format "January 2, 2006" -}}
+        </span>
+      </div>
     </div>
+
+    <div class="blogPost--content">
+      {{- .Content -}}
+    </div>
+  </article>
+</div>
 {{ end }}

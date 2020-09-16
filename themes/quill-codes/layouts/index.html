@@ -1,19 +1,42 @@
 {{ define "main" }}
+  {{/* Define a new section for recent items */}}
+  {{ $mainSections := .Site.Params.main_sections }}
+  {{ $subSections := .Site.Params.sub_sections }}
 
-    {{/* Define a new section for recent items */}}
-    {{ $mainSections := .Site.Params.mainSections | default (slice "post") }}
+  {{ $topCount := $.Param "recent_posts_number" | default 3 }}
 
-    {{ $section := where .Site.RegularPages "Section" "in" $mainSections }}
-    {{ $section_count := len $section }}
-    {{ if ge $section_count 1 }}
+  {{ $section := where .Site.Sections "Type" "in" $mainSections }}
+  {{ $section_count := len $section }}
+  {{ if ge $section_count 1 }}
+  <section class="recentGroup">
+    {{ $itemList := index $section 0 }}
+    <header class="recentGroup--header">
+      <h2>Recent {{ $itemList.Params.descriptor }} from {{ $itemList.Params.title }}</h2>
+    </header>
+    <div class="recentGroup--blogPosts">
+      {{ range (first $topCount $itemList.Pages) }}
+        {{ partial "excerpt.html" . }}
+      {{ end }}
+    </div>
 
-        {{ $section_name := index (.Site.Params.mainSections) 0 }}
+  </section>
+  {{ end }}
 
-        {{ $topCount := $.Param "recent_posts_number" | default 3 }}
+  {{ $section := where .Site.Sections "Type" "in" $subSections }}
+  {{ $section_count := len $section }}
+  {{ if ge $section_count 1 }}
+  <section class="recentGroup">
+    {{ $itemList := index $section 0 }}
+    <header class="recentGroup--header">
+      <h2>Recent {{ $itemList.Params.descriptor }} from {{ $itemList.Params.title }}</h2>
+    </header>
+    <div class="recentGroup--tipPosts">
+      {{ range (first $topCount $itemList.Pages) }}
+        {{ partial "excerpt.html" . }}
+      {{ end }}
+    </div>
 
-        {{ range (first $topCount $section) }}
-            {{ partial "excerpt.html" . }}
-        {{ end }}
+  </section>
+  {{ end }}
 
-    {{ end }}
 {{ end }}

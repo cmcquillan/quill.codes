@@ -4,6 +4,9 @@ title = "Quill.Codes"
 googleAnalytics = "UA-117840360-6"
 theme = "quill-codes"
 
+[taxonomies]
+  tag = "tags"
+
 [sitemap]
   changefreq = "monthly"
   priority = 0.5
@@ -25,6 +28,7 @@ theme = "quill-codes"
 
 [params]
   owner = "Casey"
+  description = "Worthwhile articles, tips, and freelance advice from Casey McQuillan, a freelance cloud software engineer."
   email = "Casey@quilltechnologies.com"
   logo_svg = "/images/blog_icon.svg"
   profile_photo = "/images/profile.jpg"
@@ -33,3 +37,5 @@ theme = "quill-codes"
   twitter = "QuillCodes"
   linkedin = "caseymcquillan"
   recent_posts_number = 6
+  main_sections = [ "posts" ]
+  sub_sections = [ "tips" ]
