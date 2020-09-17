@@ -4,7 +4,7 @@ date: 2020-09-17T12:47:44-07:00
 draft: false
 description: "Learn a creative way that you can leverage 'out' parameters on your class methods."
 author: "Casey McQuillan"
-tags: ["CSharp", "Dotnet" "Syntax Tips"]
+tags: ["CSharp", "Dotnet", "Syntax Tips"]
 cover_image: https://quill-static.sfo2.digitaloceanspaces.com/images/tips/set_class_fields_with_out_parameters.png
 ---
 
