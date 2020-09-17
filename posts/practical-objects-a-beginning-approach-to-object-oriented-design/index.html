@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-117840360-6', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+<meta name="description" content="The first entry in a series where share strategies for Object Oriented Design in a practical way that considers time, resources, and maintainability." />
+<title>Practical Objects: A Beginning Approach to Object Oriented Design | Quill.Codes</title>
+<link href="/css/site.css" rel="stylesheet" />
+<link href="/css/syntax.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+</head>
+
+<body>
+    <div class="pageContainer"><header class="header">
+    <div class="header--siteTitle">
+        <a class="title header-titleLogo" href="/">
+            <object viewBox="0 0 100 100" height="60" data="/images/blog_icon.svg" alt="Quill.Codes Home"
+                type="image/svg+xml"></object>
+        </a>
+        <a class="title header--titleLink" href="/">
+            Quill.Codes
+        </a>
+    </div>
+
+    <div class="header--img">
+        <img class="header--img-logo" src="/images/profile.jpg" />
+    </div>
+
+    <div class="header--menu">
+        <div class="socialIcons">
+            <a target="_blank" href="https://twitter.com/QuillCodes" class="fa fa-twitter socialIcons--icon"></a>
+            <a target="_blank" href="https://github.com/cmcquillan" class="fa fa-github socialIcons--icon"></a>
+            <a target="_blank" href="https://www.linkedin.com/in/caseymcquillan/"
+                class="fa fa-linkedin socialIcons--icon"></a>
+        </div>
+    </div>
+
+</header><main id="content" class="content">
+
+
+<div class="blogPostContainer">
+  
+  <h1 class="postTitle">
+    <a href="/">&lt;&lt;</a>
+    &nbsp; Practical Objects: A Beginning Approach to Object Oriented Design
+  </h1>
+  <article class="blogPost">
+    <div class="blogPost--details">
+      <div class="blogPostDetails--postAuthor">
+        <span class="blogPostDetails--postAuthor-formattedAuthor">
+          Casey McQuillan
+        </span>
+      </div>
+      <div class="blogPostDetails--postDate">
+        <span class="blogPostDetails--postDate-formattedDate">August 9, 2020</span>
+      </div>
+    </div>
+
+    <div class="blogPost--content"><h2 id="the-goal-of-practical-objects">The Goal of Practical Objects</h2>
+<p><strong>I <em>love</em> programming, but programming is hard and existing paradigms that inflexibly insist upon perfection do not make it easier.</strong> This is not to say that paradigms and patterns produce bad code, but certain statements from peers, thought leaders, and friends permeate the space in my head when attempting to solve problems.</p>
+<ul>
+<li>&ldquo;This approach is better because it runs faster&rdquo;</li>
+<li>&ldquo;This code violates SOLID&rdquo;</li>
+<li>&ldquo;We should roll our own library instead of using this framework&rdquo;</li>
+</ul>
+<p>I took these statements to heart. I over-analyzed, I created problems to solve where none had previously existed, I anticipated issues rather than solving the ones at hand. I think the goal I had was controlling complexity, but many times the complexity created just by by adhering to &ldquo;best practices&rdquo; grew out of control. We have a tendency to think of our classes as little gardens. We sprinkle design patterns throughout our code as if words like <em>Decorator</em>, <em>Factory</em>, and <em>Flyweight</em> because we want the satisfaction of seeing those words the next time we open the editor and not because they actually solved a problem.</p>
+<p>I love design patterns. They can solve many problems, but they do add complexity and keeping away from that complexity is the focus of this series. I want to express my thoughts on preventing complexity and introducing it <em>slowly</em>. Don&rsquo;t worry, we will write plenty of code along the way. This is a journey into the practical usage of objects and how to use them to solve problems productively.</p>
+<h2 id="what-you-need-for-this-article">What You Need for This Article</h2>
+<p>Unfortunately, this is not a &ldquo;beginning C#&rdquo; article. Fundamentally, I am hoping you already understand the C# programming language (or at least a language with classes, so that you follow the general outline of the code being written). So to understand this material you should probably have at least some familiarity with:</p>
+<ul>
+<li>The C# Programming Language</li>
+<li>A code editor or IDE</li>
+<li>The <code>dotnet</code> command line tools</li>
+</ul>
+<h2 id="lets-talk-about-sudoku">Let&rsquo;s Talk about Sudoku</h2>
+<!-- raw HTML omitted -->
+<p>To introduce the concepts in this series of articles, we are going to focus on the Sudoku puzzle game. If you haven&rsquo;t seen Sudoku before, the basic premise is that you are given a 9x9 grid. This grid can be viewed as 9 independent rows, 9 independent columns, and 9 independent 3x3 squares. The goal of Sudoku is to fill out each of these independent items with the numbers 1 through 9. If you use the same number twice in one of these places (rows, columns, squares), then the puzzle is invalid.</p>
+<p>We use Sudoku for a few reasons:</p>
+<ol>
+<li>It&rsquo;s a well-explored problem. There is a ton of theory as well as a lot of concrete detail on how Sudoku works. This means that you can take any lesson I give you here and go deeper into the subject without me.</li>
+<li>Sudoku as a game has a surprising amount of use cases. This means that we can explore validating puzzles, solving puzzles, creating new puzzles, creative presentations, and much more.</li>
+<li>Fundamentally, the representation is simple (it&rsquo;s just 81 numbers in a box), so we can start off with something trivial and introduce new abstractions as the problem becomes more complex.</li>
+</ol>
+<h2 id="todays-problem-validating-a-puzzle">Today&rsquo;s Problem: Validating a Puzzle</h2>
+<p>Imagine you work a small publisher, potentially a newspaper that has daily circulation. Your job title is <strong>Web Developer</strong> but since you know how computers work, you often get these one-off projects from other departments. Usually they involve rebooting computers or writing excel formulas, but one morning you receive this email from your manager.</p>
+<p><em>Hey Quill, the editor for our daily puzzle section has a project for you. I think you might find this one interesting! He gets Sudoku puzzles from a contractor every day and they frequently have mistakes. Can you write him a quick utility so that he can double-check that it&rsquo;s a valid puzzle? The puzzles are really important to our readers, so can you cook something up by the end of the day?</em></p>
+<p>We do not find this interesting. But we&rsquo;re scrappy! We will take opportunity to uncover a challenge.</p>
+<p>However, we also have to figure out why the website keeps crashing so this problem needs to be <em>off our plate</em>. Also, part of the problem being solved is that the editor is already fed up with mistakes in his puzzles. This means we need to put as much effort as possible into getting the answer right. This gives us two priorities:</p>
+<ul>
+<li>Development Speed</li>
+<li>Correctness</li>
+</ul>
+<p>We may briefly think that these two are at odds, but with a little thought to our process and by leveraging objects appropriately, we can achieve both.</p>
+<h2 id="the-decision-to-use-objects">The Decision to Use Objects</h2>
+<p>If our primary concerns are speed and correctness, then we have basically decided that the overall quality of the code is either less important. However, we also want it to be <em>correct</em>, so a great way to achieve that is to write preliminary tests relatively early on in the process. This may sound like more work overall, but it will save us time with a well-understood problem like Sudoku. Remember, this is about achieving two challenging goals at once and providing the requested business value (you know, the reason you&rsquo;re paid to write code) on time. Let&rsquo;s go over the benefits of using an object as an abstraction.</p>
+<h3 id="objects-shield-our-problems-from-our-users-problems">Objects shield <em>our</em> problems from <em>our user&rsquo;s</em> problems</h3>
+<p>Our current task is to solve a business problem for our editor. To do this we need to give them a solution that removes as much mental overhead as possible. Fundamentally, this is the purpose of an interface. Keep in mind I am not talking about the concept of a C# interface, but simply the idea of creating a set of commands that allow our user (the editor in this case) to focus on the problem they want to solve and not on the details of how we are assisting them. We then take the data this interface provides us and use that to more narrowly define our own business problem. In doing this, we shrink the problem for our user down to a manageable piece and give ourselves a well-defined space to work in.</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#00f">public</span> <span style="color:#00f">class</span> <span style="color:#2b91af">Sudoku</span>
+{
+    <span style="color:#00f">public</span> Sudoku(<span style="color:#2b91af">int</span>[] puzzleInitializer)
+    {
+    }
+
+    <span style="color:#00f">public</span> <span style="color:#2b91af">bool</span> Check()
+    {
+        <span style="color:#00f">throw</span> <span style="color:#00f">new</span> NotImplementedException();
+    }
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>When we examine the problem given to us above, it really doesn&rsquo;t have to be anymore complicated than this. We create a <strong>Sudoku</strong> class, tell our consumer that they need to provide us a list of integers that represent the puzzle, and then provide a simple method (Check) to evaluate whether our puzzle is valid. Whoever consumes this object has to know two things:</p>
+<ol>
+<li>How to instantiate a Sudoku class</li>
+<li>What is means for a call to Check() to return true or false.</li>
+</ol>
+<blockquote>
+<p><em>Note: Now, realistically, <em>we</em> are still the consumers of this object, because we&rsquo;re obviously not going to hand our user a C# class and a pat on the back, but User Interface will be a subject of a future blog post</em> 😁</p>
+</blockquote>
+<h3 id="objects-hide-the-details-until-we-need-them">Objects hide the details until we need them</h3>
+<p>Now that we have a way to tell our user what we need and what we will give back to them, we need to actually solve our own problem, which is validating a Sudoku puzzle. At this point, our primary concern is speed, so we will take a naive approach and simply copy the list of numbers to an internal representation. We might also validate the numbers <em>just a little</em> to ensure that nothing unexpected is entering our puzzle&rsquo;s problem space.</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#00f">public</span> <span style="color:#00f">class</span> <span style="color:#2b91af">Sudoku</span>
+{
+    <span style="color:#008000">/*
+</span><span style="color:#008000">        *      Cols
+</span><span style="color:#008000">        *        1  2  3  4  5  6  7  8  9
+</span><span style="color:#008000">        * Rows +--------------------------+
+</span><span style="color:#008000">        *   1  | 0| 1| 2| 3| 4| 5| 6| 7| 8|
+</span><span style="color:#008000">        *   2  | 9|10|11|12|13|14|15|16|17|
+</span><span style="color:#008000">        *   3  |18|19|20|21|22|23|24|25|26|
+</span><span style="color:#008000">        *   4  |27|28|29|30|31|32|33|34|35|
+</span><span style="color:#008000">        *   5  |36|37|38|39|40|41|42|43|44|
+</span><span style="color:#008000">        *   6  |45|46|47|48|49|50|51|52|52|
+</span><span style="color:#008000">        *   7  |54|55|56|57|58|59|60|61|62|
+</span><span style="color:#008000">        *   8  |63|64|65|66|67|68|69|70|71|
+</span><span style="color:#008000">        *   9  |72|73|74|75|76|77|78|79|80|
+</span><span style="color:#008000">        *      +--------------------------+
+</span><span style="color:#008000">        * 
+</span><span style="color:#008000">        * Represents the numbers in the puzzle.
+</span><span style="color:#008000">        * We will use 0 to denote an unfilled spot.
+</span><span style="color:#008000">        */</span>
+    <span style="color:#00f">public</span> <span style="color:#00f">readonly</span> <span style="color:#2b91af">int</span>[] _puzzle = <span style="color:#00f">new</span> <span style="color:#2b91af">int</span>[81];
+
+    <span style="color:#00f">public</span> Sudoku(<span style="color:#2b91af">int</span>[] puzzleInitializer)
+    {
+        <span style="color:#00f">if</span> (puzzleInitializer.Length &lt; _puzzle.Length)
+            <span style="color:#00f">throw</span> <span style="color:#00f">new</span> ArgumentException(<span style="color:#a31515">&#34;Not enough spaces to initialize the puzzle.&#34;</span>, nameof(puzzleInitializer));
+
+        <span style="color:#00f">for</span> (<span style="color:#2b91af">int</span> i = 0; i &lt; _puzzle.Length; i++)
+        {
+            <span style="color:#00f">if</span> (puzzleInitializer[i] &gt; 9 || puzzleInitializer[i] &lt; 0)
+                <span style="color:#00f">throw</span> <span style="color:#00f">new</span> ArgumentException(<span style="color:#a31515">&#34;All numbers must be be 0 (no entry), or 1 thru 9.&#34;</span>);
+
+            _puzzle[i] = puzzleInitializer[i];
+        }
+    }
+
+<span style="color:#008000">// ...
+</span></code></pre></td></tr></table>
+</div>
+</div><p>What did we gain by writing code this way?  We allowed ourselves to take a naive approach and just use an array. We could have used multi-dimensional array or a jagged array and stored our numbers in a structure that more closely matched a grid. However, we fundamentally just wanted our user to enter a list of numbers, so any internal representation that deviated from that would have to be translated, meaning we would spend more time on the constructor and not on the problem before us. This might have been a more maintainable approach in the long-term, but this was a trade-off we made in the interest of time. This is probably the most relevant lesson I am hoping to impart with this series. I want to teach you strategies to evaluate these trade-offs with confidence.</p>
+<p><em>It&rsquo;s also important to note that &ldquo;more maintainable&rdquo; is a very subjective measure. You could just as easily find a flat array to be the most naive approach depending upon your skill-set and abstract thinking skills. The most important thing to note here is that this approach afforded us the luxury of writing something that <strong>we</strong> could reason about <strong>fast</strong></em>.</p>
+<h3 id="objects-enable-testing-our-solution-efficiently">Objects enable testing our solution efficiently</h3>
+<p>A lot of this boils down to our ability to focus on a given problem and handle it with minimal distraction. Fundamentally, the last piece we need in order to free us from distractions is a process that allows us to write code, get fast feedback, and understand what is going wrong. For an object-oriented approach, few things accomplish this like a unit test. It may sound counterintuitive to spend more time writing code to just test our existing code, but this is where the developer tools can be used to speed up our process. And realistically, you are going to test your code on a valid puzzle anyway, so writing code to repeat that test forever will eventually save you more time than it uses.</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#00f">public</span> <span style="color:#00f">static</span> <span style="color:#00f">class</span> <span style="color:#2b91af">ValidPuzzles</span>
+{
+    <span style="color:#00f">public</span> <span style="color:#00f">static</span> <span style="color:#2b91af">int</span>[] Puzzle1 = <span style="color:#00f">new</span> <span style="color:#2b91af">int</span>[]
+    {
+        4, 3, 5, 2, 6, 9, 7, 8, 1,
+        6, 8, 2, 5, 7, 1, 4, 9, 3,
+        1, 9, 7, 8, 3, 4, 5, 6, 2,
+
+        8, 2, 6, 1, 9, 5, 3, 4, 7,
+        3, 7, 4, 6, 8, 2, 9, 1, 5,
+        9, 5, 1, 7, 4, 3, 6, 2, 8,
+
+        5, 1, 9, 3, 2, 6, 8, 7, 4,
+        2, 4, 8, 9, 5, 7, 1, 3, 6,
+        7, 6, 3, 4, 1, 8, 2, 5, 9
+    };
+
+    <span style="color:#00f">public</span> <span style="color:#00f">static</span> <span style="color:#2b91af">int</span>[] PartiallyFinished1 = <span style="color:#00f">new</span> <span style="color:#2b91af">int</span>[]
+    {
+        4, 3, 0, 2, 6, 0, 7, 8, 1,
+        6, 8, 2, 5, 7, 1, 4, 9, 3,
+        1, 9, 0, 0, 0, 4, 5, 0, 2,
+
+        0, 2, 6, 1, 9, 5, 3, 4, 7,
+        3, 0, 4, 6, 0, 2, 0, 1, 5,
+        9, 5, 0, 7, 4, 3, 6, 2, 8,
+
+        5, 1, 9, 3, 0, 6, 8, 7, 4,
+        2, 0, 8, 9, 0, 0, 1, 0, 6,
+        7, 6, 3, 4, 0, 0, 2, 5, 9
+    };
+}
+
+<span style="color:#00f">public</span> <span style="color:#00f">class</span> <span style="color:#2b91af">SudokuTests</span>
+{
+    [Fact]
+    <span style="color:#00f">public</span> <span style="color:#00f">void</span> Sudoku_Check_ValidPartiallyFinishedPuzzlesShouldCheckAsTrue()
+    {
+        <span style="color:#008000">// Arrange
+</span><span style="color:#008000"></span>        <span style="color:#2b91af">var</span> puzzle = <span style="color:#00f">new</span> Sudoku(ValidPuzzles.PartiallyFinished1);
+
+        <span style="color:#008000">// Act
+</span><span style="color:#008000"></span>        <span style="color:#2b91af">var</span> result = puzzle.Check();
+
+        <span style="color:#008000">// Assert
+</span><span style="color:#008000"></span>        Assert.True(result);
+    }
+
+    [Fact]
+    <span style="color:#00f">public</span> <span style="color:#00f">void</span> Sudoku_Check_ValidPuzzlesShouldCheckAsTrue()
+    {
+        <span style="color:#008000">// Arrange
+</span><span style="color:#008000"></span>        <span style="color:#2b91af">var</span> puzzle = <span style="color:#00f">new</span> Sudoku(ValidPuzzles.Puzzle1);
+
+        <span style="color:#008000">// Act
+</span><span style="color:#008000"></span>        <span style="color:#2b91af">var</span> result = puzzle.Check();
+
+        <span style="color:#008000">// Assert
+</span><span style="color:#008000"></span>        Assert.True(result);
+    }
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>I ended up writing more tests overall, but I felt comfortable starting with just two. The goal is to write and tweak code until these pass. The real power comes from just running these tests live. If you use the <code>dotnet</code> command line tools, this is simple.</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell"><span style="">❯</span> dotnet watch -p .\QuillGames.sln test
+watch <span style="">:</span> Started
+  Determining projects to restore...
+  All projects are up-to-date <span style="color:#00f">for</span> restore.
+Microsoft (R) Test Execution Command Line Tool Version 16.7.0
+Copyright (c) Microsoft Corporation.  All rights reserved.
+
+Starting test execution, please wait...
+
+A total of 1 test files matched the specified pattern.
+
+Test Run Successful.
+Total tests<span style="">:</span> 2
+     Passed<span style="">:</span> 2
+ Total time<span style="">:</span> 1.0838 Seconds
+watch <span style="">:</span> Exited
+watch <span style="">:</span> Waiting <span style="color:#00f">for</span> a file to change before restarting dotnet...
+</code></pre></td></tr></table>
+</div>
+</div><p>It&rsquo;s that last line that is most important: <code>Waiting for a file to change before restarting dotnet...</code>. This allows us to make changes quickly, save a file, and see if our changed worked right in the console. At this point, just line up your console window next to your text editor, and refactor your way to glory. If you run into a problem or find yourself stuck, you can always run your code in a debugger and step through slowly, but this is great when you generally know what you need to write and just want confirmation that your work is complete.</p>
+<h2 id="now-for-the-big-finish">Now for the Big Finish</h2>
+<p>By this point, it should be apparent that the actual code for the Sudoku puzzle solver is not really the point of this post, but it would also be incomplete without it. If you are interested in practicing the approach I&rsquo;ve outlined, then I would encourage you to set up a project and write your own naive approach. Give yourself a time limit if you want a challenge. I will include the code for the Sudoku checker class below, and if you would like to peruse the whole solution, you can check out <a href="https://github.com/cmcquillan/QuillGames/tree/lesson-1.1-sudoku-checker">this Github link</a>.</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 44
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 45
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 46
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 47
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 48
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 49
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 50
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 51
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 52
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 53
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 54
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 55
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 56
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 57
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 58
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 59
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 60
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 61
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 62
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 63
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 64
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 65
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 66
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 67
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 68
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 69
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 70
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 71
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 72
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 73
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 74
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 75
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 76
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 77
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 78
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 79
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 80
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 81
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 82
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 83
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 84
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 85
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 86
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 87
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 88
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 89
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 90
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 91
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 92
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 93
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 94
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 95
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 96
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 97
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 98
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 99
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">100
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">101
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">102
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">103
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">104
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">105
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">106
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">107
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">108
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">109
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">110
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">111
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">112
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">113
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">114
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">115
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">116
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">117
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">118
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">119
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">120
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">121
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">122
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">123
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">124
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">125
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">126
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">127
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">128
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">129
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">130
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">131
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">132
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">133
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">134
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">135
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">136
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">137
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">138
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">139
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">140
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">141
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">142
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">143
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#00f">using</span> System;
+<span style="color:#00f">using</span> System.Collections;
+<span style="color:#00f">using</span> System.Linq;
+<span style="color:#00f">using</span> System.Runtime.CompilerServices;
+
+<span style="color:#00f">namespace</span> QuillGames.Sudoku
+{
+    <span style="color:#00f">public</span> <span style="color:#00f">class</span> <span style="color:#2b91af">Sudoku</span>
+    {
+        <span style="color:#008000">/*
+</span><span style="color:#008000">         *      Cols
+</span><span style="color:#008000">         *        1  2  3  4  5  6  7  8  9
+</span><span style="color:#008000">         * Rows +--------------------------+
+</span><span style="color:#008000">         *   1  | 0| 1| 2| 3| 4| 5| 6| 7| 8|
+</span><span style="color:#008000">         *   2  | 9|10|11|12|13|14|15|16|17|
+</span><span style="color:#008000">         *   3  |18|19|20|21|22|23|24|25|26|
+</span><span style="color:#008000">         *   4  |27|28|29|30|31|32|33|34|35|
+</span><span style="color:#008000">         *   5  |36|37|38|39|40|41|42|43|44|
+</span><span style="color:#008000">         *   6  |45|46|47|48|49|50|51|52|52|
+</span><span style="color:#008000">         *   7  |54|55|56|57|58|59|60|61|62|
+</span><span style="color:#008000">         *   8  |63|64|65|66|67|68|69|70|71|
+</span><span style="color:#008000">         *   9  |72|73|74|75|76|77|78|79|80|
+</span><span style="color:#008000">         *      +--------------------------+
+</span><span style="color:#008000">         * 
+</span><span style="color:#008000">         * Represents the numbers in the puzzle.
+</span><span style="color:#008000">         * We will use 0 to denote an unfilled spot.
+</span><span style="color:#008000">         */</span>
+        <span style="color:#00f">public</span> <span style="color:#00f">readonly</span> <span style="color:#2b91af">int</span>[] _puzzle = <span style="color:#00f">new</span> <span style="color:#2b91af">int</span>[81];
+
+        <span style="color:#00f">public</span> Sudoku(<span style="color:#2b91af">int</span>[] puzzleInitializer)
+        {
+            <span style="color:#00f">if</span> (puzzleInitializer.Length &lt; _puzzle.Length)
+                <span style="color:#00f">throw</span> <span style="color:#00f">new</span> ArgumentException(<span style="color:#a31515">&#34;Not enough spaces to initialize the puzzle.&#34;</span>, nameof(puzzleInitializer));
+
+            <span style="color:#00f">for</span> (<span style="color:#2b91af">int</span> i = 0; i &lt; _puzzle.Length; i++)
+            {
+                <span style="color:#00f">if</span> (puzzleInitializer[i] &gt; 9 || puzzleInitializer[i] &lt; 0)
+                    <span style="color:#00f">throw</span> <span style="color:#00f">new</span> ArgumentException(<span style="color:#a31515">&#34;All numbers must be be 0 (no entry), or 1 thru 9.&#34;</span>);
+
+                _puzzle[i] = puzzleInitializer[i];
+            }
+        }
+
+        <span style="color:#00f">public</span> <span style="color:#2b91af">bool</span> Check()
+        {
+            <span style="color:#2b91af">bool</span> IsValid(<span style="color:#2b91af">int</span>[] numbers)
+            {
+                <span style="color:#2b91af">var</span> count = numbers.Where(p =&gt; p != 0).Count();
+                <span style="color:#2b91af">var</span> distinct = numbers.Where(p =&gt; p != 0).Distinct().Count();
+
+                <span style="color:#00f">return</span> distinct == count;
+            };
+
+            <span style="color:#008000">// Assume valid until we see a bad row, col, or square.
+</span><span style="color:#008000"></span>            <span style="color:#2b91af">bool</span> valid = <span style="color:#00f">true</span>;
+            <span style="color:#2b91af">int</span> ix = 0;
+            <span style="color:#00f">do</span>
+            {
+                <span style="color:#008000">// Row
+</span><span style="color:#008000"></span>                valid = valid &amp;&amp; IsValid(GetRow(ix + 1));
+
+                <span style="color:#008000">// Col
+</span><span style="color:#008000"></span>                valid = valid &amp;&amp; IsValid(GetCol(ix + 1));
+
+                <span style="color:#008000">// Square
+</span><span style="color:#008000"></span>                valid = valid &amp;&amp; IsValid(GetSquare(ix + 1));
+
+                ix++;
+            } <span style="color:#00f">while</span> (valid &amp;&amp; ix &lt; 9);
+
+            <span style="color:#00f">return</span> valid;
+        }
+
+        <span style="color:#008000">/// &lt;summary&gt;
+</span><span style="color:#008000"></span>        <span style="color:#008000">/// Gets a single cell from the puzzle. Rows and columns are indexed starting at 1.
+</span><span style="color:#008000"></span>        <span style="color:#008000">/// &lt;/summary&gt;
+</span><span style="color:#008000"></span>        <span style="color:#008000">/// &lt;remarks&gt;
+</span><span style="color:#008000"></span>        <span style="color:#008000">/// Every access to a number should go through this method. If we follow
+</span><span style="color:#008000"></span>        <span style="color:#008000">/// this rule, then changing the way that the puzzle is &#39;backed&#39; (such as 
+</span><span style="color:#008000"></span>        <span style="color:#008000">/// from a single array to a multi-dimensional), would only require changing
+</span><span style="color:#008000"></span>        <span style="color:#008000">/// this method.
+</span><span style="color:#008000"></span>        <span style="color:#008000">/// &lt;/remarks&gt;
+</span><span style="color:#008000"></span>        <span style="color:#008000">/// &lt;returns&gt;The number at the cell.&lt;/returns&gt;
+</span><span style="color:#008000"></span>        <span style="color:#00f">public</span> <span style="color:#2b91af">int</span> GetCell(<span style="color:#2b91af">int</span> row, <span style="color:#2b91af">int</span> col)
+        {
+            <span style="color:#2b91af">int</span> r = row - 1, c = col - 1;
+            <span style="color:#00f">return</span> _puzzle[(r * 9) + c];
+        }
+
+        <span style="color:#008000">/// &lt;summary&gt;
+</span><span style="color:#008000"></span>        <span style="color:#008000">/// Gets a single row from the puzzle. Rows are indexed starting at 1.
+</span><span style="color:#008000"></span>        <span style="color:#008000">/// &lt;/summary&gt;
+</span><span style="color:#008000"></span>        <span style="color:#008000">/// &lt;returns&gt;A sequence of integers in the row.&lt;/returns&gt;
+</span><span style="color:#008000"></span>        <span style="color:#00f">public</span> <span style="color:#2b91af">int</span>[] GetRow(<span style="color:#2b91af">int</span> row)
+        {
+            <span style="color:#2b91af">int</span>[] rowNumbers = <span style="color:#00f">new</span> <span style="color:#2b91af">int</span>[9];
+            <span style="color:#00f">for</span> (<span style="color:#2b91af">int</span> i = 0; i &lt; rowNumbers.Length; i++)
+            {
+                rowNumbers[i] = GetCell(row, i + 1);
+            }
+
+            <span style="color:#00f">return</span> rowNumbers;
+        }
+
+        <span style="color:#008000">/// &lt;summary&gt;
+</span><span style="color:#008000"></span>        <span style="color:#008000">/// Gets a single column from the puzzle. Columns are indexed starting at 1.
+</span><span style="color:#008000"></span>        <span style="color:#008000">/// &lt;/summary&gt;
+</span><span style="color:#008000"></span>        <span style="color:#008000">/// &lt;returns&gt;A sequence of integers in the column.&lt;/returns&gt;
+</span><span style="color:#008000"></span>        <span style="color:#00f">public</span> <span style="color:#2b91af">int</span>[] GetCol(<span style="color:#2b91af">int</span> col)
+        {
+            <span style="color:#2b91af">int</span>[] colNumbers = <span style="color:#00f">new</span> <span style="color:#2b91af">int</span>[9];
+            <span style="color:#00f">for</span> (<span style="color:#2b91af">int</span> i = 0; i &lt; colNumbers.Length; i++)
+            {
+                colNumbers[i] = GetCell(i + 1, col);
+            }
+
+            <span style="color:#00f">return</span> colNumbers;
+        }
+
+        <span style="color:#008000">/// &lt;summary&gt;
+</span><span style="color:#008000"></span>        <span style="color:#008000">/// Gets a single square from the puzzle. Squares are indexed starting at 1.
+</span><span style="color:#008000"></span>        <span style="color:#008000">/// &lt;/summary&gt;
+</span><span style="color:#008000"></span>        <span style="color:#008000">/// &lt;returns&gt;A sequence of integers in the square.&lt;/returns&gt;
+</span><span style="color:#008000"></span>        <span style="color:#00f">public</span> <span style="color:#2b91af">int</span>[] GetSquare(<span style="color:#2b91af">int</span> square)
+        {
+            <span style="color:#2b91af">int</span>[] squareNumbers = <span style="color:#00f">new</span> <span style="color:#2b91af">int</span>[9];
+            <span style="color:#2b91af">int</span> rowOffset = ((square - 1) % 3 * 3) + 1;
+            <span style="color:#2b91af">int</span> colOffset = ((square - 1) % 3 * 3) + 1;
+
+            <span style="color:#2b91af">int</span> ix = 0;
+            <span style="color:#00f">for</span> (<span style="color:#2b91af">int</span> row = 0; row &lt; 3; row++)
+            {
+                <span style="color:#00f">for</span> (<span style="color:#2b91af">int</span> col = 0; col &lt; 3; col++)
+                {
+                    squareNumbers[ix] = GetCell(row + rowOffset, col + colOffset);
+                    ix++;
+                }
+            }
+
+            <span style="color:#00f">return</span> squareNumbers;
+        }
+    }
+}
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="next-steps">Next Steps</h2>
+<p>Right now, my goal is that this series continues and helps outline my strategies for making practical trade-offs with object oriented programming. Some other topics I&rsquo;ll approach in the future are:</p>
+<ul>
+<li>Refactoring for maintainability</li>
+<li>Refactoring for performance</li>
+<li>Extending your objects with more features</li>
+<li>Extending the configurability of your objects</li>
+</ul>
+<p>If you enjoyed this, or if there is something you wanted to see in the future, feel free to reach out on <a href="https://twitter.com/QuillCodes">Twitter</a>.</p>
+</div>
+  </article>
+</div>
+
+        </main></div>
+
+</body>
+
+</html>

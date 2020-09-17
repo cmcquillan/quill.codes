@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Dotnet on Quill.Codes</title>
+    <link>https://quill.codes/tags/dotnet/</link>
+    <description>Recent content in Dotnet on Quill.Codes</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 17 Sep 2020 12:47:44 -0700</lastBuildDate>
+    
+	<atom:link href="https://quill.codes/tags/dotnet/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Set Class Fields Using &#39;out&#39; Parameters</title>
+      <link>https://quill.codes/tips/set-class-fields-with-out-parameters/</link>
+      <pubDate>Thu, 17 Sep 2020 12:47:44 -0700</pubDate>
+      
+      <guid>https://quill.codes/tips/set-class-fields-with-out-parameters/</guid>
+      <description>Did You Know? You can set class fields with &amp;lsquo;out&amp;rsquo; method parameters Whether you like out parameters or not in C#, they are here to stay. They decorate a number of common patterns in the .NET ecosystem.
+ The TryParse pattern where the return is a bool that indicates success and your parse result comes from the out parameter.  However, very often you want to set your class field with the parse result.</description>
+    </item>
+    
+  </channel>
+</rss>
