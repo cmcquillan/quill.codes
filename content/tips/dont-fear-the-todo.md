@@ -5,6 +5,7 @@ date: 2020-09-16T13:58:39-07:00
 draft: false
 author: "Casey McQuillan"
 tags: ["Visual Studio", "Productivity"]
+cover_image: https://quill-static.sfo2.digitaloceanspaces.com/images/tips/visual_studio_task_main.png
 ---
 
 ## Did You Know?
