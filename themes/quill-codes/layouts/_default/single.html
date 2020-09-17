@@ -2,6 +2,9 @@
 {{ $section := .Site.GetPage "section" .Section }}
 
 <div class="blogPostContainer">
+  {{ if isset .Params "cover_image" }}
+  <img class="blogPostTitle" src="{{ .Params.cover_image }}" />
+  {{ end }}
   <h1 class="postTitle">
     <a href="/">&lt;&lt;</a>
     &nbsp; {{ .Title }}

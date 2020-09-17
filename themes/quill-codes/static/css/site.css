@@ -445,6 +445,12 @@ a:visited {
   box-sizing: border-box;
 }
 
+.blogPostContainer img {
+  width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
 .blogPost--title {
   text-align: left;
   margin-top: 0.6em;
