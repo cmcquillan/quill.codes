@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-117840360-6', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+<meta name="description" content="Quickly prototype your first URL Shortener with .NET 5. " />
+<title>Fast Prototyping: Build a Url Shortener with .NET | Quill.Codes</title>
+<link href="/css/site.css" rel="stylesheet" />
+<link href="/css/syntax.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+</head>
+
+<body>
+    <div class="pageContainer"><header class="header">
+    <div class="header--siteTitle">
+        <a class="title header-titleLogo" href="/">
+            <object viewBox="0 0 100 100" height="60" data="/images/blog_icon.svg" alt="Quill.Codes Home"
+                type="image/svg+xml"></object>
+        </a>
+        <a class="title header--titleLink" href="/">
+            Quill.Codes
+        </a>
+    </div>
+
+    <div class="header--img">
+        <img class="header--img-logo" src="/images/profile.jpg" />
+    </div>
+
+    <div class="header--menu">
+        <div class="socialIcons">
+            <a target="_blank" href="https://twitter.com/QuillCodes" class="fa fa-twitter socialIcons--icon"></a>
+            <a target="_blank" href="https://github.com/cmcquillan" class="fa fa-github socialIcons--icon"></a>
+            <a target="_blank" href="https://www.linkedin.com/in/caseymcquillan/"
+                class="fa fa-linkedin socialIcons--icon"></a>
+        </div>
+    </div>
+
+</header><main id="content" class="content">
+
+
+<div class="blogPostContainer">
+  
+  <img class="blogPostTitle" src="https://quill-static.sfo2.digitaloceanspaces.com/images/blog/fast-prototyping-quill-url-shortener.png" />
+  
+  <h1 class="postTitle">
+    <a href="/">&lt;&lt;</a>
+    &nbsp; Fast Prototyping: Build a Url Shortener with .NET
+  </h1>
+  <article class="blogPost">
+    <div class="blogPost--details">
+      <div class="blogPostDetails--postAuthor">
+        <span class="blogPostDetails--postAuthor-formattedAuthor">
+          Casey McQuillan
+        </span>
+      </div>
+      <div class="blogPostDetails--postDate">
+        <span class="blogPostDetails--postDate-formattedDate">September 22, 2020</span>
+      </div>
+    </div>
+
+    <div class="blogPost--content"><h2 id="fast-prototyping-and-learning-to-code">Fast Prototyping and Learning to Code</h2>
+<p>Take a moment to think of your preferred way to learn a new language, framework, or skill. Most likely, there is a certain amount of value that you only get when learning by <em>doing</em>.</p>
+<p>I had an interesting transition into development. I already knew a bit about how to code, but I had never had a programming job. At the time, I was working for a company where the dev department was willing to give me a chance, so they sent me <em>an assignment</em>. It was essentially a small file upload application, which I knew I could do.</p>
+<p>The problem was that it had to be done in C#, and I had never used C# or .NET before. I had a couple nights to finish, but that had to be juggled around my current job. I tried on my own, failed, looked up docs, tried again, and shortly got to the point where I was writing code and trying to figure out the actual problem. I spent time searching for the right way to structure a class, run a build, and package up a functional project.</p>
+<p><strong>I got the job!</strong></p>
+<p>Fast forward, months later after I have been onboarded and gotten acquainted with some of the smaller dev tasks, I was sent to &lsquo;training&rsquo;. There were dozens of us in a large classroom watching PowerPoint slides, listening to a lecture on proper syntax, and being given a list of &lsquo;patterns&rsquo; to follow when writing our code.</p>
+<p><strong>It could not have been more unhelpful.</strong></p>
+<p>Sure, at some point during the class we were told we could write code, but overall we probably spent about three-quarters of our time listening rather than practicing.</p>
+<p>I learned <em>incredibly</em> more in a couple frantic nights writing my file uploader than I did in 80 hours of carefully scripted classroom training.</p>
+<p><strong>Building a quick, useful app</strong> is an unbelievably useful tool when learning to code. Not only do you get to learn about the concepts employed in the app, you get to see results extremely quickly. There is a fantastic feedback loop that takes place when you get to <em>see</em> results.</p>
+<p>In this tutorial we are going to focus on a fast prototype for a relatively simple service: a URL shortener.</p>
+<h2 id="getting-your-environment-ready">Getting your Environment Ready</h2>
+<p>For this tutorial we have a couple tools that will be necessary.</p>
+<ul>
+<li><a href="https://dotnet.microsoft.com/download/dotnet-core">.NET SDK</a>
+<ul>
+<li><em>Note: This tutorial uses some features from .NET 5, which is a Release Candidate as of this writing.</em>
+<img src="https://quill-static.sfo2.digitaloceanspaces.com/images/blog/dotnet_versions.png" alt="List of Supported Versions of .NET. The entry for version 5.0.0-rc.1 has a box highlighting it."></li>
+</ul>
+</li>
+<li><a href="https://code.visualstudio.com/">VS Code</a></li>
+<li><a href="https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp">C# Extension for VS Code</a></li>
+</ul>
+<h2 id="building-a-url-shortener">Building a URL Shortener</h2>
+<p>The plan today is to build a prototype URL shortener. While doing this we are going to explore and learn about a few concepts of .NET 5:</p>
+<ul>
+<li>Setting up our project</li>
+<li>Getting a basic webserver running requests</li>
+<li>Serving some data using endpoint routing</li>
+<li>Persisting our data in a simple no-frills database</li>
+</ul>
+<p><em>Note: At this point I should emphasize that this is tutorial code and probably not ready for your full-scale production app. If you really just need a URL shortener there are many <a href="https://github.com/awesome-selfhosted/awesome-selfhosted#url-shorteners">self-hosted options</a> from which you can choose.</em></p>
+<h2 id="setting-up-the-project">Setting up the Project</h2>
+<p>Our first step is to get our basic project files in place. Let&rsquo;s make a directory for our project and create a few files.</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">mkdir url-shortener-tutorial
+cd url-shortener-tutorial
+</code></pre></td></tr></table>
+</div>
+</div><p>Within this directory we are going to create two files:</p>
+<ul>
+<li>UrlShortener.csproj</li>
+<li>Program.cs</li>
+</ul>
+<p>The contents of the <code>csproj</code> file will be very simple:</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">&lt;Project Sdk=<span style="color:#a31515">&#34;Microsoft.NET.Sdk.Web&#34;</span>&gt;
+  &lt;PropertyGroup&gt;
+    &lt;TargetFramework&gt;net5.0&lt;/TargetFramework&gt;
+  &lt;/PropertyGroup&gt;
+&lt;/Project&gt;
+</code></pre></td></tr></table>
+</div>
+</div><p>This file tells .NET that we are going to be targeting <strong>.NET 5.0</strong> and that we are going to use the <strong>Microsoft<!-- raw HTML omitted -->.NET.Sdk.Web</strong> SDK. This is basically the flavor of .NET that we plan on using. This might feel a bit opaque at first, but at its core this is really just a console application.</p>
+<p>You can prove it to yourself just by adding two lines to <strong>Program.cs</strong>.</p>
+<h4 id="programcs">Program.cs</h4>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#00f">using</span> System;
+
+Console.WriteLine(<span style="color:#a31515">&#34;Hello, World!&#34;</span>);
+</code></pre></td></tr></table>
+</div>
+</div><p>And then running it with the <code>dotnet</code> command:</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell"><span style="">❯</span> dotnet run
+Hello, World!
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="running-a-webserver">Running a Webserver</h2>
+<p>Now that we have a basic project set up and we can run code, our next step is to get a quick webserver up and running. This will let us respond to requests and start iterating on our solution.</p>
+<h4 id="programcs-1">Program.cs</h4>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#00f">using</span> Microsoft.Extensions.Hosting;
+<span style="color:#00f">using</span> Microsoft.AspNetCore.Builder;
+<span style="color:#00f">using</span> Microsoft.AspNetCore.Hosting;
+<span style="color:#00f">using</span> Microsoft.Extensions.DependencyInjection;
+<span style="color:#00f">using</span> Microsoft.AspNetCore.Http;
+
+<span style="color:#2b91af">var</span> host = Host.CreateDefaultBuilder(args)
+    .ConfigureWebHostDefaults(builder =&gt;
+    {
+        builder.ConfigureServices(services =&gt;
+        {
+            <span style="color:#008000">// Add the necessary components for HTTP routing.
+</span><span style="color:#008000"></span>            services.AddRouting();
+        })
+        .Configure(app =&gt;
+        {
+            <span style="color:#008000">// Use routing in the pipeline.
+</span><span style="color:#008000"></span>            app.UseRouting();
+
+            <span style="color:#008000">// Use the endpoint routing module to map URLs to functions.
+</span><span style="color:#008000"></span>            app.UseEndpoints((endpoints) =&gt;
+            {
+                endpoints.MapGet(<span style="color:#a31515">&#34;/&#34;</span>, (ctx) =&gt;
+                {
+                    <span style="color:#00f">return</span> ctx.Response.WriteAsync(<span style="color:#a31515">&#34;Hello, World!&#34;</span>);
+                });
+            });
+        });
+    })
+    .Build();
+
+<span style="color:#00f">await</span> host.RunAsync();
+</code></pre></td></tr></table>
+</div>
+</div><p>This setup is doing a few things for us:</p>
+<ol>
+<li>It imports the necessary namespaces (think modules in JavaScript or Python) (see <code>using</code> statments) that we need to start serving HTTP requests.</li>
+<li>It adds endpoint routing to our application&rsquo;s services.</li>
+<li>It instructs our application to use endpoint routing to serve requests</li>
+<li>It sets up a single route at our site&rsquo;s root <code>&quot;/&quot;</code> to return the text &ldquo;Hello, World!&rdquo;.</li>
+</ol>
+<p>We can now use the <code>dotnet run</code> command and visit our site in a browser to see some successful HTTP requests!</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell"><span style="">❯</span> dotnet run
+info<span style="">:</span> Microsoft.Hosting.Lifetime[0]
+      Now listening on<span style="">:</span> http<span style="">:</span>//localhost<span style="">:</span>5000
+info<span style="">:</span> Microsoft.Hosting.Lifetime[0]
+      Now listening on<span style="">:</span> https<span style="">:</span>//localhost<span style="">:</span>5001
+info<span style="">:</span> Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info<span style="">:</span> Microsoft.Hosting.Lifetime[0]
+      Hosting environment<span style="">:</span> Production
+info<span style="">:</span> Microsoft.Hosting.Lifetime[0]
+      Content root path<span style="">:</span> C:\src\url-shortener-tutorial
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://quill-static.sfo2.digitaloceanspaces.com/images/blog/hello_world_browser.PNG" alt="An image of the chrome web browser pointed to https://localhost:5001/. The browser window displays &ldquo;Hello, World!&rdquo; in plain text."></p>
+<h2 id="serving-a-simple-html-interface">Serving a Simple HTML Interface</h2>
+<p>For this project, we only need a few components to properly interact with our URL shortener.</p>
+<ul>
+<li>A simple HTML interface served at our site root (<code>&quot;/&quot;</code>)</li>
+<li>An HTTP POST endpoint that allows us to request a short link (we will use <code>&quot;/shorten&quot;</code>)</li>
+<li>A fallback HTTP endpoint that redirects all other requests to (for example <code>&quot;/bL92qf&quot;</code> -&gt; <code>https://www.google.com/&quot;</code>)</li>
+</ul>
+<p>To serve the HTML page we are going to take our existing &ldquo;Hello, World&rdquo; route and map to to a single file. First, we will add our <code>index.html</code> to the project. This can be in the same directory as <strong>Program.cs</strong>.</p>
+<h4 id="indexhtml">index.html</h4>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#00f">&lt;!doctype html&gt;</span>
+&lt;html&gt;
+
+&lt;head&gt;
+    &lt;title&gt;Simple URL Shortener&lt;/title&gt;
+    &lt;link rel=<span style="color:#a31515">&#34;stylesheet&#34;</span> href=<span style="color:#a31515">&#34;https://unpkg.com/mvp.css&#34;</span>&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;main&gt;
+        &lt;header&gt;
+            &lt;h1&gt;Simple URL Shortener&lt;/h1&gt;
+            &lt;p&gt;
+                Enter your URL below to retrieve the shortened version.
+            &lt;/p&gt;
+        &lt;/header&gt;
+        &lt;section id=<span style="color:#a31515">&#34;urlForm&#34;</span>&gt;
+            &lt;form enctype=<span style="color:#a31515">&#34;application/x-www-form-urlencoded&#34;</span> method=<span style="color:#a31515">&#34;POST&#34;</span> action=<span style="color:#a31515">&#34;/shorten&#34;</span>&gt;
+                &lt;label for=<span style="color:#a31515">&#34;url&#34;</span>&gt;
+                    URL
+                &lt;/label&gt;
+                &lt;input type=<span style="color:#a31515">&#34;url&#34;</span> name=<span style="color:#a31515">&#34;url&#34;</span> /&gt;
+                &lt;button type=<span style="color:#a31515">&#34;submit&#34;</span>&gt;Shorten&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/section&gt;
+    &lt;/main&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+</code></pre></td></tr></table>
+</div>
+</div><p>You will notice that we are just building a very basic form that will send a POST request to the <code>&quot;/shorten&quot;</code> route with a single field named <code>url</code>. We will have to add a little JavaScript later when we actually want to display our shortened link but for now this will suffice.</p>
+<p><em>Note: You may notice a this stylesheet reference <code>&lt;link rel=&quot;stylesheet&quot; href=&quot;https://unpkg.com/mvp.css&quot;&gt;</code> at the top. This is a package called <a href="https://andybrewer.github.io/mvp/">mvp.css</a> by <a href="https://www.andybrewer.com/">Andy Brewer</a> and we are going to use it to give us some basic styling so we can focus on our code.</em></p>
+<p>Then in our application we can instruct our endpoint to serve this file.</p>
+<h4 id="programcs-2">Program.cs</h4>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">app.UseEndpoints((endpoints) =&gt;
+{
+    endpoints.MapGet(<span style="color:#a31515">&#34;/&#34;</span>, (ctx) =&gt;
+    {
+        <span style="color:#008000">// Serve root index.html
+</span><span style="color:#008000"></span>        <span style="color:#00f">return</span> ctx.Response.SendFileAsync(<span style="color:#a31515">&#34;index.html&#34;</span>);
+    });
+});
+</code></pre></td></tr></table>
+</div>
+</div><p>We can now run the app again, go to our browser and see our base interface.</p>
+<p><img src="https://quill-static.sfo2.digitaloceanspaces.com/images/blog/url_shortener_base_interface.PNG" alt="Our simple URL shortener interface. It has a title stating &ldquo;Simple URL Shortener&rdquo;, text stating &ldquo;Enter your URL below to retrieve the shortened version&rdquo;, and a form that contains a single text field and button that says &ldquo;Shorten&rdquo;"></p>
+<h2 id="time-to-shorten-some-links">Time to Shorten Some Links!</h2>
+<p>Now that we have a basic interface, we can focus a bit more on our link shortening solution. For this we are going to create a new file in our directory and call is <strong>ShortLink.cs</strong>. Here we will define a new <code>class</code> which will hold some data and functionality for our links.</p>
+<h4 id="shortlinkcs">ShortLink.cs</h4>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#00f">using</span> System;
+<span style="color:#00f">using</span> Microsoft.AspNetCore.WebUtilities;
+
+<span style="color:#00f">public</span> <span style="color:#00f">class</span> <span style="color:#2b91af">ShortLink</span>
+{
+    <span style="color:#00f">public</span> <span style="color:#2b91af">string</span> GetUrlChunk()
+    {
+        <span style="color:#008000">// Transform the &#34;Id&#34; property on this object into a short piece of text
+</span><span style="color:#008000"></span>        <span style="color:#00f">return</span> WebEncoders.Base64UrlEncode(BitConverter.GetBytes(Id));
+    }
+
+    <span style="color:#00f">public</span> <span style="color:#00f">static</span> <span style="color:#2b91af">int</span> GetId(<span style="color:#2b91af">string</span> urlChunk)
+    {
+        <span style="color:#008000">// Reverse our short url text back into an interger Id
+</span><span style="color:#008000"></span>        <span style="color:#00f">return</span> BitConverter.ToInt32(WebEncoders.Base64UrlDecode(urlChunk));
+    }
+
+    <span style="color:#00f">public</span> <span style="color:#2b91af">int</span> Id { <span style="color:#00f">get</span>; <span style="color:#00f">set</span>; }
+
+    <span style="color:#00f">public</span> <span style="color:#2b91af">string</span> Url { <span style="color:#00f">get</span>; <span style="color:#00f">set</span>; }
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>Now we will use our <code>ShortLink</code> class to iterate on our endpoints and generate some fake URLs.</p>
+<h4 id="programcs---add-this-to-the-using-section">Program.cs - Add this to the <code>using</code> section</h4>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#008000">// Other using statements ...
+</span><span style="color:#008000"></span><span style="color:#00f">using</span> System.Threading.Tasks;
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="programcs---modify-your-useendpoints-call">Program.cs - Modify your <code>UseEndpoints</code> call</h4>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">app.UseEndpoints((endpoints) =&gt;
+{
+    <span style="color:#008000">// Serve root index.html
+</span><span style="color:#008000"></span>    endpoints.MapGet(<span style="color:#a31515">&#34;/&#34;</span>, (ctx) =&gt;
+    {
+        <span style="color:#00f">return</span> ctx.Response.SendFileAsync(<span style="color:#a31515">&#34;index.html&#34;</span>);
+    });
+
+    endpoints.MapPost(<span style="color:#a31515">&#34;/shorten&#34;</span>, HandleShortenUrl);
+});
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="programcs---add-to-the-end-after-await-hostrunasync">Program.cs - Add to the end after <code>await host.RunAsync()</code></h4>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#008000">// Endpoint Methods
+</span><span style="color:#008000"></span>
+<span style="color:#00f">static</span> Task HandleShortenUrl(HttpContext context)
+{
+    <span style="color:#008000">// Perform basic form validation
+</span><span style="color:#008000"></span>    <span style="color:#00f">if</span> (!context.Request.HasFormContentType || !context.Request.Form.ContainsKey(<span style="color:#a31515">&#34;url&#34;</span>))
+    {
+        context.Response.StatusCode = StatusCodes.Status400BadRequest;
+        <span style="color:#00f">return</span> context.Response.WriteAsync(<span style="color:#a31515">&#34;Cannot process request&#34;</span>);
+    }
+
+    context.Request.Form.TryGetValue(<span style="color:#a31515">&#34;url&#34;</span>, <span style="color:#00f">out</span> <span style="color:#2b91af">var</span> formData);
+    <span style="color:#2b91af">var</span> requestedUrl = formData.ToString();
+
+    <span style="color:#008000">// Test our URL
+</span><span style="color:#008000"></span>    <span style="color:#00f">if</span> (!Uri.TryCreate(requestedUrl, UriKind.Absolute, <span style="color:#00f">out</span> Uri result))
+    {
+        context.Response.StatusCode = StatusCodes.Status400BadRequest;
+        <span style="color:#00f">return</span> context.Response.WriteAsync(<span style="color:#a31515">&#34;Could not understand URL.&#34;</span>);
+    }
+
+    <span style="color:#2b91af">var</span> url = result.ToString();
+
+    <span style="color:#008000">// Temporary short link 
+</span><span style="color:#008000"></span>    <span style="color:#2b91af">var</span> entry = <span style="color:#00f">new</span> ShortLink
+    {
+        Id = 123_456_789,
+        Url = url
+    };
+
+    <span style="color:#2b91af">var</span> urlChunk = entry.GetUrlChunk();
+    <span style="color:#2b91af">var</span> responseUri = <span style="color:#a31515">$&#34;{context.Request.Scheme}://{context.Request.Host}/{urlChunk}&#34;</span>;
+    <span style="color:#00f">return</span> context.Response.WriteAsync(responseUri);
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>There is a bit to unpack here, so let&rsquo;s go through it piece-by-piece.</p>
+<ul>
+<li>We add an endpoint that receives a POST request to the <code>&quot;/shorten&quot;</code> path. This will accept the form input that we send from <code>index.html</code></li>
+<li>We map the endpoint to a method called <code>HandleShortenUrl</code>.</li>
+<li>In the <code>HandleShortenUrl</code> method:
+<ul>
+<li>We do some basic validation to ensure that we are getting HTML form data and that the form contains our <code>url</code> data in the request. If we do not get this information, we just write an HTTP error to the browser.</li>
+<li>We retrieve the URL value and use the built-in <code>Uri.TryCreate</code> method to validate that it parses into a usable URL. If this fails, we once again send an HTTP error to the browser.</li>
+<li>Create an instance of our <code>ShortLink</code> class and use the <code>GetUrlChunk()</code> method to construct our shortened link and write it back to the browser. We are hard-coding an <code>Id</code> for now so that we can test.</li>
+</ul>
+</li>
+</ul>
+<p>At this point, we should be able to run another test. Run the project, enter a valid URL into your form and you should see the URL in your response.</p>
+<h4 id="test-your-form">Test your form</h4>
+<p><img src="https://quill-static.sfo2.digitaloceanspaces.com/images/blog/url_shortener_test_url.PNG" alt="The Simple URL Shortener form described earlier in this article with the text &ldquo;https://www.google.com/&rdquo; entered in the URL text box."></p>
+<h4 id="your-test-response">Your test response</h4>
+<p><img src="https://quill-static.sfo2.digitaloceanspaces.com/images/blog/url_shortener_test_url_response.PNG" alt="A chrome browser window shorting the URL of https://localhost:5001/shorten with the text &ldquo;https://localhost:5001/Fc1bBw&rdquo; in the content window."></p>
+<p><em>Congrats! You are successfully processing requests and returning data to your user. Next we will persist our generated short links to a database.</em></p>
+<h2 id="persisting-your-short-links">Persisting Your Short Links</h2>
+<p>Up to this point we have avoided adding dependencies to our project. For this section we have to change that by adding a database. We are going to use <a href="https://www.litedb.org/">LiteDB</a>, a simple, lightweight NoSQL database that will let us easily persist our short links to a file so they can be reitreved later.</p>
+<h3 id="adding-litedb-to-your-project">Adding LiteDB to Your Project</h3>
+<p>When just using a text editor and not a full IDE, generally the easiest way to add a package is via the command line. Run the following command when in your project directory:</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">dotnet add package LiteDB
+</code></pre></td></tr></table>
+</div>
+</div><p>Functionally, this just edits your <code>csproj</code> file to add a Package Reference. Another option is to add the line to the project file yourself:</p>
+<h4 id="urlshortenercsproj">UrlShortener.csproj</h4>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">&lt;Project Sdk=<span style="color:#a31515">&#34;Microsoft.NET.Sdk.Web&#34;</span>&gt;
+  &lt;PropertyGroup&gt;
+    &lt;TargetFramework&gt;net5.0&lt;/TargetFramework&gt;
+  &lt;/PropertyGroup&gt;
+  <span style="color:#008000">&lt;!-- Added Package Reference: --&gt;</span>
+  &lt;ItemGroup&gt;
+    &lt;PackageReference Include=<span style="color:#a31515">&#34;LiteDB&#34;</span> Version=<span style="color:#a31515">&#34;5.0.9&#34;</span> /&gt;
+  &lt;/ItemGroup&gt;
+&lt;/Project&gt;
+</code></pre></td></tr></table>
+</div>
+</div><p>Now we can utilize LiteDB to persist our short links and serve them to users.</p>
+<h3 id="persisting-data-to-litedb">Persisting Data to LiteDB</h3>
+<p>We can now modify our <strong>Program.cs</strong> file to utilize LiteDB. To do this, the first thing we have to do is add LiteDB to our available services.</p>
+<h4 id="programcs-3">Program.cs</h4>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#00f">using</span> LiteDB;
+
+<span style="color:#2b91af">var</span> host = Host.CreateDefaultBuilder(args)
+    .ConfigureWebHostDefaults(builder =&gt;
+    {
+        builder.ConfigureServices(services =&gt;
+        {
+            <span style="color:#008000">// Add the necessary components for HTTP routing.
+</span><span style="color:#008000"></span>            services.AddRouting();
+
+            <span style="color:#008000">// Add LiteDB
+</span><span style="color:#008000"></span>            services.AddSingleton&lt;ILiteDatabase, LiteDatabase&gt;(_ =&gt; <span style="color:#00f">new</span> LiteDatabase(<span style="color:#a31515">&#34;short-links.db&#34;</span>));
+        })
+</code></pre></td></tr></table>
+</div>
+</div><p>This enables us to <strong>ask</strong> for the <code>ILiteDatabase</code> object in our request methods. ASP<!-- raw HTML omitted -->.NET will hold onto services for us and delivers them to us later in our program&rsquo;s execution. We can now go into our <code>HandleShortenUrl</code> method and use this service to insert our link.</p>
+<h4 id="programcs---your-handleshortenurl-method">Program.cs - Your HandleShortenUrl method</h4>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#00f">static</span> Task HandleShortenUrl(HttpContext context)
+{
+    <span style="color:#008000">// Perform basic form validation
+</span><span style="color:#008000"></span>    <span style="color:#00f">if</span> (!context.Request.HasFormContentType || !context.Request.Form.ContainsKey(<span style="color:#a31515">&#34;url&#34;</span>))
+    {
+        context.Response.StatusCode = StatusCodes.Status400BadRequest;
+        <span style="color:#00f">return</span> context.Response.WriteAsync(<span style="color:#a31515">&#34;Cannot process request&#34;</span>);
+    }
+
+    context.Request.Form.TryGetValue(<span style="color:#a31515">&#34;url&#34;</span>, <span style="color:#00f">out</span> <span style="color:#2b91af">var</span> formData);
+    <span style="color:#2b91af">var</span> requestedUrl = formData.ToString();
+
+    <span style="color:#008000">// Test our URL
+</span><span style="color:#008000"></span>    <span style="color:#00f">if</span> (!Uri.TryCreate(requestedUrl, UriKind.Absolute, <span style="color:#00f">out</span> Uri result))
+    {
+        context.Response.StatusCode = StatusCodes.Status400BadRequest;
+        <span style="color:#00f">return</span> context.Response.WriteAsync(<span style="color:#a31515">&#34;Could not understand URL.&#34;</span>);
+    }
+
+    <span style="color:#2b91af">var</span> url = result.ToString();
+    <span style="color:#008000">// Ask for LiteDB and persist a short link
+</span><span style="color:#008000"></span>    <span style="color:#2b91af">var</span> liteDB = context.RequestServices.GetService&lt;ILiteDatabase&gt;();
+    <span style="color:#2b91af">var</span> links = liteDB.GetCollection&lt;ShortLink&gt;(BsonAutoId.Int32);
+
+    <span style="color:#008000">// Temporary short link 
+</span><span style="color:#008000"></span>    <span style="color:#2b91af">var</span> entry = <span style="color:#00f">new</span> ShortLink
+    {
+        Url = url
+    };
+
+    <span style="color:#008000">// Insert our short-link
+</span><span style="color:#008000"></span>    links.Insert(entry);
+
+    <span style="color:#2b91af">var</span> urlChunk = entry.GetUrlChunk();
+    <span style="color:#2b91af">var</span> responseUri = <span style="color:#a31515">$&#34;{context.Request.Scheme}://{context.Request.Host}/{urlChunk}&#34;</span>;
+    <span style="color:#00f">return</span> context.Response.WriteAsync(responseUri);
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>Now that we have registered our <code>ILiteDatabase</code> service, <code>HandleShortenUrl</code> is able to retrieve it using <code>context.RequestServices.GetService&lt;ILiteDatabase&gt;()</code>. From here we use the easy LiteDB API to get a <code>ShortLink</code> collection and <code>Insert()</code> it into our database. Finally, we use the same URL generation from before and send it back down to the browser.</p>
+<p><em>Note: You may notice this reference to <code>BsonAutoId.Int32</code>. This simply tells LiteDB that this collection will use regular Integers for the <code>Id</code> field.</em></p>
+<p>The last step to make this a &lsquo;complete product&rsquo; (as in, redirect users to our short links) is to add a <strong>Fallback Route</strong> which will catch every other visitor to our app and serve up the expanded link.</p>
+<p>We are now going to add another route method to our <strong>Program.cs</strong> file.</p>
+<h3 id="programcs---add-to-using-section">Program.cs - Add to <code>using</code> section</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#00f">using</span> System.Linq;
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="programcs---add-to-useendpoints-call">Program.cs - Add to UseEndpoints() Call</h4>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">endpoints.MapFallback(HandleRedirect);
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="programcs---add-after-handleshortenurl">Program.cs - Add After <code>HandleShortenUrl</code></h4>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#00f">static</span> Task HandleRedirect(HttpContext context)
+{
+    <span style="color:#2b91af">var</span> db = context.RequestServices.GetService&lt;ILiteDatabase&gt;();
+    <span style="color:#2b91af">var</span> collection = db.GetCollection&lt;ShortLink&gt;();
+
+    <span style="color:#2b91af">var</span> path = context.Request.Path.ToUriComponent().Trim(<span style="color:#a31515">&#39;/&#39;</span>);
+    <span style="color:#2b91af">var</span> id = ShortLink.GetId(path);
+    <span style="color:#2b91af">var</span> entry = collection.Find(p =&gt; p.Id == id).FirstOrDefault();
+
+    <span style="color:#00f">if</span> (entry != <span style="color:#00f">null</span>)
+        context.Response.Redirect(entry.Url);
+    <span style="color:#00f">else</span>
+        context.Response.Redirect(<span style="color:#a31515">&#34;/&#34;</span>);
+
+    <span style="color:#00f">return</span> Task.CompletedTask;
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>In this block we are taking a few steps:</p>
+<ol>
+<li>We set a <strong>default</strong> path where we will send people if we do not locate a short link for that path.</li>
+<li>We parse our the path using data from <code>context.Request.Path</code>. We convert it to a string with <code>ToUriComponent()</code> and then <code>Trim('/')</code> to remove any extra slashes (the request will always come in with one initial slash).</li>
+<li>We parse the URL back into an integer id using our <code>ShortLink.GetId()</code> method.</li>
+<li>We find that id in the LiteDB collection.</li>
+<li>We redirect to that URL if it exists, or to &lsquo;/&rsquo; if nothing was located.</li>
+</ol>
+<p>When you run the app and visit a short link, you should redirect to the expanded version of the link.</p>
+<h2 id="final-touches-to-improve-the-experience">Final Touches to Improve the Experience</h2>
+<p>Right now we are still just showing a plain-text url when someone requests a short link. Just a few small changes can allow us to provide a much cleaner user experience while keeping our small prototype form factor. First, we will modify our <code>&quot;/shorten&quot;</code> handler to redirect our user back to <code>index.html</code> with the shortened link. We will then modify <code>index.html</code> to display the link.</p>
+<h4 id="programcs---bottom-of-handleshortenurl-method">Program.cs - Bottom of HandleShortenUrl Method</h4>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">
+<span style="color:#2b91af">var</span> urlChunk = entry.GetUrlChunk();
+<span style="color:#2b91af">var</span> responseUri = <span style="color:#a31515">$&#34;{context.Request.Scheme}://{context.Request.Host}/{urlChunk}&#34;</span>;
+context.Response.Redirect(<span style="color:#a31515">$&#34;/#{responseUri}&#34;</span>);
+<span style="color:#00f">return</span> Task.CompletedTask;
+</code></pre></td></tr></table>
+</div>
+</div><p>That&rsquo;s it for <strong>Program.cs</strong>, we just replace the <code>context.Response.WriteAsync()</code> with <code>context.Response.Redirect</code> and we set the redirect URL to our root page with URL hash (#). Now with just a little bit of JavaScript we can add that URL to our page.</p>
+<h4 id="indexhtml-at-the-bottom-of-your-ltformgt">Index.html at the bottom of your &lt;form&gt;</h4>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;form enctype=<span style="color:#a31515">&#34;application/x-www-form-urlencoded&#34;</span> method=<span style="color:#a31515">&#34;POST&#34;</span> action=<span style="color:#a31515">&#34;/shorten&#34;</span>&gt;
+    &lt;label for=<span style="color:#a31515">&#34;url&#34;</span>&gt;
+        URL
+    &lt;/label&gt;
+    &lt;input type=<span style="color:#a31515">&#34;url&#34;</span> name=<span style="color:#a31515">&#34;url&#34;</span> /&gt;
+    &lt;button type=<span style="color:#a31515">&#34;submit&#34;</span>&gt;Shorten&lt;/button&gt;
+    <span style="color:#008000">&lt;!-- A a place to put our resulting short link --&gt;</span>
+    &lt;p id=<span style="color:#a31515">&#34;urlResult&#34;</span>&gt;&lt;/p&gt;
+&lt;/form&gt;
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="indexhtml-right-before-the-ltbodygt-tag">Index.html right before the &lt;/body&gt; tag</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#008000">&lt;!-- Add a script to grab the window&#39;s hash and display result --&gt;</span>
+&lt;script&gt;
+    <span style="color:#00f">let</span> data = window.location.hash;
+    <span style="color:#00f">if</span> (data) {
+
+        <span style="color:#00f">let</span> url = <span style="color:#00f">new</span> URL(data.substr(1));
+
+        <span style="color:#00f">if</span> (url.protocol === window.location.protocol
+            &amp;&amp; url.host === window.location.host) {
+            <span style="color:#00f">let</span> section = document.getElementById(<span style="color:#a31515">&#39;urlResult&#39;</span>);
+            section.innerHTML = <span style="color:#a31515">`&lt;a id=&#34;link&#34; href=&#34;</span><span style="color:#a31515">${</span>url<span style="color:#a31515">}</span><span style="color:#a31515">&#34;&gt;</span><span style="color:#a31515">${</span>url<span style="color:#a31515">}</span><span style="color:#a31515">&lt;/a&gt;`</span>;
+        }
+    }
+
+&lt;/script&gt;
+</code></pre></td></tr></table>
+</div>
+</div><p>Now you can do your final run and test!</p>
+<p><img src="https://quill-static.sfo2.digitaloceanspaces.com/images/blog/url_shortener_final_result.PNG" alt="The Simple URL Shortener page from before, but the URL bar now has the resulting short link and the short link has been added to the page below the &ldquo;Shorten&rdquo; button."></p>
+<h2 id="quick-review-and-whats-next">Quick Review and What&rsquo;s Next</h2>
+<p>I hope you enjoyed writing a quick prototype URL Shortener! We explored a few concepts in this post, and hopefully you learned a bit about how to write a minimal prototype with ASP<!-- raw HTML omitted -->.NET and .NET 5.</p>
+<p>If you learned from creating this prototype, I would encourage your to experiment on your own and start filling in new features or refactoring it to a more &lsquo;production-ready&rsquo; app. Here are a few suggestions based upon things you might want to learn:</p>
+<ul>
+<li>Refactor the app to use the ASP<!-- raw HTML omitted -->.NET MVC (Model-View-Controller) pattern so that business logic and dependencies are better managed.</li>
+<li>Refactor the app to use a remote database like MongoDB or SQL Server.</li>
+<li>Right now putting the same URL twice will result in two separate short links. Maybe enhance the link creation logic to avoid duplicate URLs?</li>
+</ul>
+<p>If you would be interested in a post that goes through any of these ideas, please <a href="https://twitter.com/QuillCodes/">Let me know</a>!</p>
+<p>You can also check out the full code for this solution <a href="https://github.com/cmcquillan/fast-aspnet-samples/tree/main/url-shortener-tutorial">on github</a>.</p>
+</div>
+  </article>
+</div>
+
+        </main></div>
+
+</body>
+
+</html>

@@ -6,10 +6,20 @@
     <description>Recent content in .NET on Quill.Codes</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 09 Aug 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 22 Sep 2020 09:22:48 -0700</lastBuildDate>
     
 	<atom:link href="https://quill.codes/tags/.net/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Fast Prototyping: Build a Url Shortener with .NET</title>
+      <link>https://quill.codes/posts/fast-prototyping-url-shortener/</link>
+      <pubDate>Tue, 22 Sep 2020 09:22:48 -0700</pubDate>
+      
+      <guid>https://quill.codes/posts/fast-prototyping-url-shortener/</guid>
+      <description>Fast Prototyping and Learning to Code Take a moment to think of your preferred way to learn a new language, framework, or skill. Most likely, there is a certain amount of value that you only get when learning by doing.
+I had an interesting transition into development. I already knew a bit about how to code, but I had never had a programming job. At the time, I was working for a company where the dev department was willing to give me a chance, so they sent me an assignment.</description>
+    </item>
     
     <item>
       <title>Practical Objects: A Beginning Approach to Object Oriented Design</title>

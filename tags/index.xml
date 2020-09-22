@@ -6,17 +6,44 @@
     <description>Recent content in Tags on Quill.Codes</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 17 Sep 2020 12:47:44 -0700</lastBuildDate>
+    <lastBuildDate>Tue, 22 Sep 2020 09:22:48 -0700</lastBuildDate>
     
 	<atom:link href="https://quill.codes/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>.NET</title>
+      <link>https://quill.codes/tags/.net/</link>
+      <pubDate>Tue, 22 Sep 2020 09:22:48 -0700</pubDate>
+      
+      <guid>https://quill.codes/tags/.net/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>.NET 5</title>
+      <link>https://quill.codes/tags/.net-5/</link>
+      <pubDate>Tue, 22 Sep 2020 09:22:48 -0700</pubDate>
+      
+      <guid>https://quill.codes/tags/.net-5/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>CSharp</title>
       <link>https://quill.codes/tags/csharp/</link>
-      <pubDate>Thu, 17 Sep 2020 12:47:44 -0700</pubDate>
+      <pubDate>Tue, 22 Sep 2020 09:22:48 -0700</pubDate>
       
       <guid>https://quill.codes/tags/csharp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Prototyping</title>
+      <link>https://quill.codes/tags/prototyping/</link>
+      <pubDate>Tue, 22 Sep 2020 09:22:48 -0700</pubDate>
+      
+      <guid>https://quill.codes/tags/prototyping/</guid>
       <description></description>
     </item>
     
@@ -53,15 +80,6 @@
       <pubDate>Wed, 16 Sep 2020 13:58:39 -0700</pubDate>
       
       <guid>https://quill.codes/tags/visual-studio/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>.NET</title>
-      <link>https://quill.codes/tags/.net/</link>
-      <pubDate>Sun, 09 Aug 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://quill.codes/tags/.net/</guid>
       <description></description>
     </item>
     
