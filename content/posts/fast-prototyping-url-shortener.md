@@ -1,7 +1,7 @@
 ---
 title: "Fast Prototyping: Build a Url Shortener with .NET"
 date: 2020-09-22T09:22:48-07:00
-draft: true
+draft: false
 author: "Casey McQuillan"
 tags: [ ".NET", ".NET 5", "CSharp", "Prototyping" ]
 description: "Quickly prototype your first URL Shortener with .NET 5. "
