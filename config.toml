@@ -6,6 +6,7 @@ theme = "quill-codes"
 
 [taxonomies]
   tag = "tags"
+  series = "series"
 
 [sitemap]
   changefreq = "monthly"
