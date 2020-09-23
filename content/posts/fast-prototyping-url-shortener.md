@@ -4,7 +4,9 @@ date: 2020-09-22T09:22:48-07:00
 draft: false
 author: "Casey McQuillan"
 tags: [ ".NET", ".NET 5", "CSharp", "Prototyping" ]
-description: "Quickly prototype your first URL Shortener with .NET 5. "
+description: "Quickly prototype your first URL Shortener with .NET 5. This tutorial will show you how!"
+images:
+- https://quill-static.sfo2.digitaloceanspaces.com/images/blog/fast-prototyping-quill-url-shortener.png
 cover_image: https://quill-static.sfo2.digitaloceanspaces.com/images/blog/fast-prototyping-quill-url-shortener.png
 ---
 
