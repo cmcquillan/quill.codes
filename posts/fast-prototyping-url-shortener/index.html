@@ -158,7 +158,7 @@ cd url-shortener-tutorial
 </div>
 </div><p>This file tells .NET that we are going to be targeting <strong>.NET 5.0</strong> and that we are going to use the <strong>Microsoft<!-- raw HTML omitted -->.NET.Sdk.Web</strong> SDK. This is basically the flavor of .NET that we plan on using. This might feel a bit opaque at first, but at its core this is really just a console application.</p>
 <p>You can prove it to yourself just by adding two lines to <strong>Program.cs</strong>.</p>
-<h4 id="programcs">Program.cs</h4>
+<h3 id="programcs">Program.cs</h3>
 <div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
@@ -184,7 +184,7 @@ Hello, World!
 </div>
 </div><h2 id="running-a-webserver">Running a Webserver</h2>
 <p>Now that we have a basic project set up and we can run code, our next step is to get a quick webserver up and running. This will let us respond to requests and start iterating on our solution.</p>
-<h4 id="programcs-1">Program.cs</h4>
+<h3 id="programcs-1">Program.cs</h3>
 <div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
@@ -300,7 +300,7 @@ info<span style="">:</span> Microsoft.Hosting.Lifetime[0]
 <li>A fallback HTTP endpoint that redirects all other requests to (for example <code>&quot;/bL92qf&quot;</code> -&gt; <code>https://www.google.com/&quot;</code>)</li>
 </ul>
 <p>To serve the HTML page we are going to take our existing &ldquo;Hello, World&rdquo; route and map to to a single file. First, we will add our <code>index.html</code> to the project. This can be in the same directory as <strong>Program.cs</strong>.</p>
-<h4 id="indexhtml">index.html</h4>
+<h3 id="indexhtml">index.html</h3>
 <div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
@@ -368,7 +368,7 @@ info<span style="">:</span> Microsoft.Hosting.Lifetime[0]
 </div><p>You will notice that we are just building a very basic form that will send a POST request to the <code>&quot;/shorten&quot;</code> route with a single field named <code>url</code>. We will have to add a little JavaScript later when we actually want to display our shortened link but for now this will suffice.</p>
 <p><em>Note: You may notice a this stylesheet reference <code>&lt;link rel=&quot;stylesheet&quot; href=&quot;https://unpkg.com/mvp.css&quot;&gt;</code> at the top. This is a package called <a href="https://andybrewer.github.io/mvp/">mvp.css</a> by <a href="https://www.andybrewer.com/">Andy Brewer</a> and we are going to use it to give us some basic styling so we can focus on our code.</em></p>
 <p>Then in our application we can instruct our endpoint to serve this file.</p>
-<h4 id="programcs-2">Program.cs</h4>
+<h3 id="programcs-2">Program.cs</h3>
 <div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
@@ -395,7 +395,7 @@ info<span style="">:</span> Microsoft.Hosting.Lifetime[0]
 <p><img src="https://quill-static.sfo2.digitaloceanspaces.com/images/blog/url_shortener_base_interface.PNG" alt="Our simple URL shortener interface. It has a title stating &ldquo;Simple URL Shortener&rdquo;, text stating &ldquo;Enter your URL below to retrieve the shortened version&rdquo;, and a form that contains a single text field and button that says &ldquo;Shorten&rdquo;"></p>
 <h2 id="time-to-shorten-some-links">Time to Shorten Some Links!</h2>
 <p>Now that we have a basic interface, we can focus a bit more on our link shortening solution. For this we are going to create a new file in our directory and call is <strong>ShortLink.cs</strong>. Here we will define a new <code>class</code> which will hold some data and functionality for our links.</p>
-<h4 id="shortlinkcs">ShortLink.cs</h4>
+<h3 id="shortlinkcs">ShortLink.cs</h3>
 <div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
@@ -445,7 +445,7 @@ info<span style="">:</span> Microsoft.Hosting.Lifetime[0]
 </code></pre></td></tr></table>
 </div>
 </div><p>Now we will use our <code>ShortLink</code> class to iterate on our endpoints and generate some fake URLs.</p>
-<h4 id="programcs---add-this-to-the-using-section">Program.cs - Add this to the <code>using</code> section</h4>
+<h3 id="programcs---add-this-to-the-using-section">Program.cs - Add this to the <code>using</code> section</h3>
 <div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
@@ -456,7 +456,7 @@ info<span style="">:</span> Microsoft.Hosting.Lifetime[0]
 </span><span style="color:#008000"></span><span style="color:#00f">using</span> System.Threading.Tasks;
 </code></pre></td></tr></table>
 </div>
-</div><h4 id="programcs---modify-your-useendpoints-call">Program.cs - Modify your <code>UseEndpoints</code> call</h4>
+</div><h3 id="programcs---modify-your-useendpoints-call">Program.cs - Modify your <code>UseEndpoints</code> call</h3>
 <div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
@@ -483,7 +483,7 @@ info<span style="">:</span> Microsoft.Hosting.Lifetime[0]
 });
 </code></pre></td></tr></table>
 </div>
-</div><h4 id="programcs---add-to-the-end-after-await-hostrunasync">Program.cs - Add to the end after <code>await host.RunAsync()</code></h4>
+</div><h3 id="programcs---add-to-the-end-after-await-hostrunasync">Program.cs - Add to the end after <code>await host.RunAsync()</code></h3>
 <div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
@@ -571,9 +571,9 @@ info<span style="">:</span> Microsoft.Hosting.Lifetime[0]
 </li>
 </ul>
 <p>At this point, we should be able to run another test. Run the project, enter a valid URL into your form and you should see the URL in your response.</p>
-<h4 id="test-your-form">Test your form</h4>
+<h3 id="test-your-form">Test your form</h3>
 <p><img src="https://quill-static.sfo2.digitaloceanspaces.com/images/blog/url_shortener_test_url.PNG" alt="The Simple URL Shortener form described earlier in this article with the text &ldquo;https://www.google.com/&rdquo; entered in the URL text box."></p>
-<h4 id="your-test-response">Your test response</h4>
+<h3 id="your-test-response">Your test response</h3>
 <p><img src="https://quill-static.sfo2.digitaloceanspaces.com/images/blog/url_shortener_test_url_response.PNG" alt="A chrome browser window shorting the URL of https://localhost:5001/shorten with the text &ldquo;https://localhost:5001/Fc1bBw&rdquo; in the content window."></p>
 <p><em>Congrats! You are successfully processing requests and returning data to your user. Next we will persist our generated short links to a database.</em></p>
 <h2 id="persisting-your-short-links">Persisting Your Short Links</h2>
@@ -589,7 +589,7 @@ info<span style="">:</span> Microsoft.Hosting.Lifetime[0]
 </code></pre></td></tr></table>
 </div>
 </div><p>Functionally, this just edits your <code>csproj</code> file to add a Package Reference. Another option is to add the line to the project file yourself:</p>
-<h4 id="urlshortenercsproj">UrlShortener.csproj</h4>
+<h3 id="urlshortenercsproj">UrlShortener.csproj</h3>
 <div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
@@ -617,7 +617,7 @@ info<span style="">:</span> Microsoft.Hosting.Lifetime[0]
 </div><p>Now we can utilize LiteDB to persist our short links and serve them to users.</p>
 <h3 id="persisting-data-to-litedb">Persisting Data to LiteDB</h3>
 <p>We can now modify our <strong>Program.cs</strong> file to utilize LiteDB. To do this, the first thing we have to do is add LiteDB to our available services.</p>
-<h4 id="programcs-3">Program.cs</h4>
+<h3 id="programcs-3">Program.cs</h3>
 <div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
@@ -651,7 +651,7 @@ info<span style="">:</span> Microsoft.Hosting.Lifetime[0]
 </code></pre></td></tr></table>
 </div>
 </div><p>This enables us to <strong>ask</strong> for the <code>ILiteDatabase</code> object in our request methods. ASP<!-- raw HTML omitted -->.NET will hold onto services for us and delivers them to us later in our program&rsquo;s execution. We can now go into our <code>HandleShortenUrl</code> method and use this service to insert our link.</p>
-<h4 id="programcs---your-handleshortenurl-method">Program.cs - Your HandleShortenUrl method</h4>
+<h3 id="programcs---your-handleshortenurl-method">Program.cs - Your HandleShortenUrl method</h3>
 <div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
@@ -745,7 +745,7 @@ info<span style="">:</span> Microsoft.Hosting.Lifetime[0]
 <pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#00f">using</span> System.Linq;
 </code></pre></td></tr></table>
 </div>
-</div><h4 id="programcs---add-to-useendpoints-call">Program.cs - Add to UseEndpoints() Call</h4>
+</div><h3 id="programcs---add-to-useendpoints-call">Program.cs - Add to UseEndpoints() Call</h3>
 <div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
@@ -754,7 +754,7 @@ info<span style="">:</span> Microsoft.Hosting.Lifetime[0]
 <pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">endpoints.MapFallback(HandleRedirect);
 </code></pre></td></tr></table>
 </div>
-</div><h4 id="programcs---add-after-handleshortenurl">Program.cs - Add After <code>HandleShortenUrl</code></h4>
+</div><h3 id="programcs---add-after-handleshortenurl">Program.cs - Add After <code>HandleShortenUrl</code></h3>
 <div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
@@ -804,7 +804,7 @@ info<span style="">:</span> Microsoft.Hosting.Lifetime[0]
 <p>When you run the app and visit a short link, you should redirect to the expanded version of the link.</p>
 <h2 id="final-touches-to-improve-the-experience">Final Touches to Improve the Experience</h2>
 <p>Right now we are still just showing a plain-text url when someone requests a short link. Just a few small changes can allow us to provide a much cleaner user experience while keeping our small prototype form factor. First, we will modify our <code>&quot;/shorten&quot;</code> handler to redirect our user back to <code>index.html</code> with the shortened link. We will then modify <code>index.html</code> to display the link.</p>
-<h4 id="programcs---bottom-of-handleshortenurl-method">Program.cs - Bottom of HandleShortenUrl Method</h4>
+<h3 id="programcs---bottom-of-handleshortenurl-method">Program.cs - Bottom of HandleShortenUrl Method</h3>
 <div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
@@ -822,7 +822,7 @@ context.Response.Redirect(<span style="color:#a31515">$&#34;/#{responseUri}&#34;
 </code></pre></td></tr></table>
 </div>
 </div><p>That&rsquo;s it for <strong>Program.cs</strong>, we just replace the <code>context.Response.WriteAsync()</code> with <code>context.Response.Redirect</code> and we set the redirect URL to our root page with URL hash (#). Now with just a little bit of JavaScript we can add that URL to our page.</p>
-<h4 id="indexhtml-at-the-bottom-of-your-ltformgt">Index.html at the bottom of your &lt;form&gt;</h4>
+<h3 id="indexhtml-at-the-bottom-of-your-ltformgt">Index.html at the bottom of your &lt;form&gt;</h3>
 <div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
