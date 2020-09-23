@@ -82,7 +82,7 @@ This file tells .NET that we are going to be targeting **.NET 5.0** and that we 
 
 You can prove it to yourself just by adding two lines to **Program.cs**.
 
-#### Program.cs
+### Program.cs
 ```csharp
 using System;
 
@@ -100,7 +100,7 @@ Hello, World!
 
 Now that we have a basic project set up and we can run code, our next step is to get a quick webserver up and running. This will let us respond to requests and start iterating on our solution.
 
-#### Program.cs
+### Program.cs
 ```csharp
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Builder;
@@ -171,7 +171,7 @@ For this project, we only need a few components to properly interact with our UR
 
 To serve the HTML page we are going to take our existing "Hello, World" route and map to to a single file. First, we will add our `index.html` to the project. This can be in the same directory as **Program.cs**. 
 
-#### index.html
+### index.html
 
 ```html
 <!doctype html>
@@ -211,7 +211,7 @@ You will notice that we are just building a very basic form that will send a POS
 
 Then in our application we can instruct our endpoint to serve this file.
 
-#### Program.cs
+### Program.cs
 ```csharp
 app.UseEndpoints((endpoints) =>
 {
@@ -231,7 +231,7 @@ We can now run the app again, go to our browser and see our base interface.
 
 Now that we have a basic interface, we can focus a bit more on our link shortening solution. For this we are going to create a new file in our directory and call is **ShortLink.cs**. Here we will define a new `class` which will hold some data and functionality for our links.
 
-#### ShortLink.cs
+### ShortLink.cs
 ```csharp
 using System;
 using Microsoft.AspNetCore.WebUtilities;
@@ -258,12 +258,12 @@ public class ShortLink
 
 Now we will use our `ShortLink` class to iterate on our endpoints and generate some fake URLs.
 
-#### Program.cs - Add this to the `using` section 
+### Program.cs - Add this to the `using` section 
 ```csharp
 // Other using statements ...
 using System.Threading.Tasks;
 ```
-#### Program.cs - Modify your `UseEndpoints` call
+### Program.cs - Modify your `UseEndpoints` call
 ```csharp
 app.UseEndpoints((endpoints) =>
 {
@@ -277,7 +277,7 @@ app.UseEndpoints((endpoints) =>
 });
 ```
 
-#### Program.cs - Add to the end after `await host.RunAsync()`
+### Program.cs - Add to the end after `await host.RunAsync()`
 ```csharp
 // Endpoint Methods
 
@@ -326,10 +326,10 @@ There is a bit to unpack here, so let's go through it piece-by-piece.
 
 At this point, we should be able to run another test. Run the project, enter a valid URL into your form and you should see the URL in your response.
 
-#### Test your form
+### Test your form
 ![The Simple URL Shortener form described earlier in this article with the text "https://www.google.com/" entered in the URL text box.](https://quill-static.sfo2.digitaloceanspaces.com/images/blog/url_shortener_test_url.PNG)
 
-#### Your test response
+### Your test response
 ![A chrome browser window shorting the URL of https://localhost:5001/shorten with the text "https://localhost:5001/Fc1bBw" in the content window.](https://quill-static.sfo2.digitaloceanspaces.com/images/blog/url_shortener_test_url_response.PNG)
 
 *Congrats! You are successfully processing requests and returning data to your user. Next we will persist our generated short links to a database.*
@@ -348,7 +348,7 @@ dotnet add package LiteDB
 
 Functionally, this just edits your `csproj` file to add a Package Reference. Another option is to add the line to the project file yourself:
 
-#### UrlShortener.csproj
+### UrlShortener.csproj
 ```xml
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
@@ -367,7 +367,7 @@ Now we can utilize LiteDB to persist our short links and serve them to users.
 
 We can now modify our **Program.cs** file to utilize LiteDB. To do this, the first thing we have to do is add LiteDB to our available services.
 
-#### Program.cs
+### Program.cs
 ```csharp
 using LiteDB;
 
@@ -386,7 +386,7 @@ var host = Host.CreateDefaultBuilder(args)
 
 This enables us to **ask** for the `ILiteDatabase` object in our request methods. ASP<nolink>.NET will hold onto services for us and delivers them to us later in our program's execution. We can now go into our `HandleShortenUrl` method and use this service to insert our link.
 
-#### Program.cs - Your HandleShortenUrl method
+### Program.cs - Your HandleShortenUrl method
 ```csharp
 static Task HandleShortenUrl(HttpContext context)
 {
@@ -440,12 +440,12 @@ We are now going to add another route method to our **Program.cs** file.
 using System.Linq;
 ```
 
-#### Program.cs - Add to UseEndpoints() Call
+### Program.cs - Add to UseEndpoints() Call
 ```csharp
 endpoints.MapFallback(HandleRedirect);
 ```
 
-#### Program.cs - Add After `HandleShortenUrl`
+### Program.cs - Add After `HandleShortenUrl`
 ```csharp
 static Task HandleRedirect(HttpContext context)
 {
@@ -479,7 +479,7 @@ When you run the app and visit a short link, you should redirect to the expanded
 
 Right now we are still just showing a plain-text url when someone requests a short link. Just a few small changes can allow us to provide a much cleaner user experience while keeping our small prototype form factor. First, we will modify our `"/shorten"` handler to redirect our user back to `index.html` with the shortened link. We will then modify `index.html` to display the link.
 
-#### Program.cs - Bottom of HandleShortenUrl Method
+### Program.cs - Bottom of HandleShortenUrl Method
 ```csharp
 
 var urlChunk = entry.GetUrlChunk();
@@ -490,7 +490,7 @@ return Task.CompletedTask;
 
 That's it for **Program.cs**, we just replace the `context.Response.WriteAsync()` with `context.Response.Redirect` and we set the redirect URL to our root page with URL hash (#). Now with just a little bit of JavaScript we can add that URL to our page.
 
-#### Index.html at the bottom of your &lt;form&gt;
+### Index.html at the bottom of your &lt;form&gt;
 ```html
 <form enctype="application/x-www-form-urlencoded" method="POST" action="/shorten">
     <label for="url">
