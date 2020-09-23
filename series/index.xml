@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Series on Quill.Codes</title>
+    <link>https://quill.codes/series/</link>
+    <description>Recent content in Series on Quill.Codes</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 22 Sep 2020 09:22:48 -0700</lastBuildDate>
+    
+	<atom:link href="https://quill.codes/series/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Fast Builds with .NET</title>
+      <link>https://quill.codes/series/fast-builds-with-.net/</link>
+      <pubDate>Tue, 22 Sep 2020 09:22:48 -0700</pubDate>
+      
+      <guid>https://quill.codes/series/fast-builds-with-.net/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

@@ -24,6 +24,13 @@
   </url>
   
   <url>
+    <loc>https://quill.codes/series/fast-builds-with-.net/</loc>
+    <lastmod>2020-09-22T09:22:48-07:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://quill.codes/posts/fast-prototyping-url-shortener/</loc>
     <lastmod>2020-09-22T09:22:48-07:00</lastmod>
     <changefreq>monthly</changefreq>
@@ -46,6 +53,13 @@
   
   <url>
     <loc>https://quill.codes/posts/</loc>
+    <lastmod>2020-09-22T09:22:48-07:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://quill.codes/series/</loc>
     <lastmod>2020-09-22T09:22:48-07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
