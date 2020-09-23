@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Fast Builds with .NET on Quill.Codes</title>
-    <link>https://quill.codes/series/fast-builds-with-.net/</link>
-    <description>Recent content in Fast Builds with .NET on Quill.Codes</description>
+    <title>Fast Builds on Quill.Codes</title>
+    <link>https://quill.codes/series/fast-builds/</link>
+    <description>Recent content in Fast Builds on Quill.Codes</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 22 Sep 2020 09:22:48 -0700</lastBuildDate>
     
-	<atom:link href="https://quill.codes/series/fast-builds-with-.net/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://quill.codes/series/fast-builds/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Fast Prototyping: Build a Url Shortener with .NET</title>
+      <title>Fast Builds: Make a Url Shortener with .NET</title>
       <link>https://quill.codes/posts/fast-prototyping-url-shortener/</link>
       <pubDate>Tue, 22 Sep 2020 09:22:48 -0700</pubDate>
       
