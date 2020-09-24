@@ -1,0 +1,15 @@
+  
+<aside class="tagGroup">
+  <header>
+    <h2 class="tagGroup--header">Tags</h2>
+  </header>
+  <ul class="tagGroup--list">
+    {{ range $index, $tag := .Site.Taxonomies.tags.ByCount }}
+      <li class="tagGroupListItem">
+        <a href="{{ "/" | relLangURL }}tags/{{ $tag.Name | urlize}}">
+          {{ $tag.Name }}({{ $tag.WeightedPages.Count }})
+        </a>
+      </li>
+    {{ end }}
+  </ul>
+</aside>

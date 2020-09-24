@@ -1,0 +1,14 @@
+{{ define "main" }}
+  <header class="taxonomyList--header">
+    <h2>"{{ .Params.title }}" Posts</h2>
+  </header>
+  <article class="taxonomyList--paging">
+      <p>{{i18n "taxonomyPageList" .}}</p>
+  </article>
+  <section class="taxonomyList--pages">
+    {{ range  .Pages }}
+        {{ partial "excerpt.html" . }}
+    {{ end }}
+  </section>
+
+{{ end }}
