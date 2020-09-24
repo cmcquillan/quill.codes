@@ -226,7 +226,6 @@ a:visited {
 }
 
 .content {
-  width: 360px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -237,7 +236,8 @@ a:visited {
 }
 
 .content {
-  padding: 8px;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .header {
@@ -347,28 +347,27 @@ a:visited {
 .recentGroup,
 .recentGroup--blogPosts,
 .recentGroup--tipPosts {
-    width: 100%;
+  width: 100%;
 }
 
 .recentGroup--blogPosts {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    padding: 4px 0px;
+  padding: 4px 0px;
 }
 
 .recentGroup--tipPosts {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 
-    padding: 4px 4px;
+  padding: 4px 4px;
 }
 
 .recentGroup--tipPosts * {
-    flex: 1 1 30%;
+  flex: 1 1 30%;
 }
-
 
 /*
  * Post Excerpt
@@ -490,6 +489,39 @@ pre code,
   border-radius: var(--code-border-radius);
 }
 
+/*
+ * Tags
+ */
+
+.tagGroup {
+  align-self: flex-start;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Basic fix for tag list */
+@media (max-width: 767px) {
+  .tagGroup--list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .tagGroupListItem {
+    margin-right: 0.5rem;
+  }
+}
+
+.tagGroup--list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.taxonomyList--header {
+  width: 100%;
+}
+
+
 @media (min-width: 768px) {
   .pageContainer {
     display: flex;
@@ -568,5 +600,13 @@ pre code,
     box-sizing: border-box;
 
     margin: 2.5rem auto;
+  }
+
+  /*
+   * Tags
+   */
+  .tagGroup {
+    position: fixed;
+    right: 2rem;
   }
 }
