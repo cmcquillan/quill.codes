@@ -3,7 +3,7 @@ title: "Practical Objects: A Beginning Approach to Object Oriented Design"
 date: 2020-08-09
 draft: false
 author: "Casey McQuillan"
-tags: [ ".NET", "CSharp", "OOP" ]
+tags: [ "dotnet", "CSharp", "OOP" ]
 description: "The first entry in a series where share strategies for Object Oriented Design in a practical way that considers time, resources, and maintainability."
 ---
 
