@@ -12,24 +12,6 @@
     
     
     <item>
-      <title>.NET</title>
-      <link>https://quill.codes/tags/.net/</link>
-      <pubDate>Tue, 22 Sep 2020 09:22:48 -0700</pubDate>
-      
-      <guid>https://quill.codes/tags/.net/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>.NET 5</title>
-      <link>https://quill.codes/tags/.net-5/</link>
-      <pubDate>Tue, 22 Sep 2020 09:22:48 -0700</pubDate>
-      
-      <guid>https://quill.codes/tags/.net-5/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>CSharp</title>
       <link>https://quill.codes/tags/csharp/</link>
       <pubDate>Tue, 22 Sep 2020 09:22:48 -0700</pubDate>
@@ -39,20 +21,20 @@
     </item>
     
     <item>
+      <title>dotnet</title>
+      <link>https://quill.codes/tags/dotnet/</link>
+      <pubDate>Tue, 22 Sep 2020 09:22:48 -0700</pubDate>
+      
+      <guid>https://quill.codes/tags/dotnet/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Prototyping</title>
       <link>https://quill.codes/tags/prototyping/</link>
       <pubDate>Tue, 22 Sep 2020 09:22:48 -0700</pubDate>
       
       <guid>https://quill.codes/tags/prototyping/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Dotnet</title>
-      <link>https://quill.codes/tags/dotnet/</link>
-      <pubDate>Thu, 17 Sep 2020 12:47:44 -0700</pubDate>
-      
-      <guid>https://quill.codes/tags/dotnet/</guid>
       <description></description>
     </item>
     

@@ -3,21 +3,14 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://quill.codes/tags/.net/</loc>
-    <lastmod>2020-09-22T09:22:48-07:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://quill.codes/tags/.net-5/</loc>
-    <lastmod>2020-09-22T09:22:48-07:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://quill.codes/tags/csharp/</loc>
+    <lastmod>2020-09-22T09:22:48-07:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://quill.codes/tags/dotnet/</loc>
     <lastmod>2020-09-22T09:22:48-07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -68,13 +61,6 @@
   <url>
     <loc>https://quill.codes/tags/</loc>
     <lastmod>2020-09-22T09:22:48-07:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://quill.codes/tags/dotnet/</loc>
-    <lastmod>2020-09-17T12:47:44-07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
