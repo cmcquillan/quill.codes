@@ -1,3 +1,6 @@
 [submodule "themes/ananke"]
 	path = themes/ananke
 	url = https://github.com/budparr/gohugo-theme-ananke.git
+[submodule "assets/apps/fiddle"]
+	path = assets/apps/fiddle
+	url = https://github.com/cmcquillan/fiddle.run.git
