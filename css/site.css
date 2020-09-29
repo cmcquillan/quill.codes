@@ -262,13 +262,16 @@ a:visited {
   flex: 1 1 auto;
 }
 
+.header-titleLogo object {
+  pointer-events: none;
+}
+
 .header-titleLogo {
   margin-right: 1rem;
 }
 
 .header--titleLink {
   display: none;
-
   font-size: 2rem;
   text-transform: uppercase;
   align-self: center;
