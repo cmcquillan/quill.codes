@@ -5,10 +5,7 @@
   {{ if isset .Params "cover_image" }}
   <img class="blogPostTitle" src="{{ .Params.cover_image }}" />
   {{ end }}
-  <h1 class="postTitle">
-    <a href="/">&lt;&lt;</a>
-    &nbsp; {{ .Title }}
-  </h1>
+  <h1 class="postTitle"> {{ .Title }}</h1>
   <article class="blogPost">
     <div class="blogPost--details">
       <div class="blogPostDetails--postAuthor">
