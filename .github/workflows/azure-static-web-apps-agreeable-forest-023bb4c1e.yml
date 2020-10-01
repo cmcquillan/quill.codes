@@ -23,7 +23,7 @@ jobs:
         run: npm install
         working-directory: assets/apps/fiddle/src/Fiddle.Run.Client/
       - name: Perform Angular Build
-        run: npm run-script ng build --prod --baseHref=/apps/fiddle/ --deployUrl=/apps/fiddle/
+        run: npm run-script ng -- build --prod --baseHref=/apps/fiddle/ --deployUrl=/apps/fiddle/
         working-directory: assets/apps/fiddle/src/Fiddle.Run.Client/
       - name: Make Angular Directory
         run: mkdir -p ../../../../../content/apps/fiddle
