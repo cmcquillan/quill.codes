@@ -25,6 +25,8 @@ jobs:
       - name: Perform Angular Build
         run: npm run-script ng build --prod --outputPath=../../../../../content/apps/fiddle --baseHref=/apps/fiddle/ --deployUrl=/apps/fiddle/
         working-directory: assets/apps/fiddle/src/Fiddle.Run.Client/
+      - name: Debug ls
+        run: ls content/apps/fiddle
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v0.0.1-preview
