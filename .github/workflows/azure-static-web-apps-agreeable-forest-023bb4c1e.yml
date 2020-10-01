@@ -20,9 +20,11 @@ jobs:
           lfs: true
           submodules: true
       - name: Run npm install
-        run: pushd ./assets/apps/fiddle/src/Fiddle.Run.Client/ && npm install
+        run: npm install
+        working-directory: assets/apps/fiddle/src/Fiddle.Run.Client/
       - name: Perform Angular Build
-        run: npm run-script ng build --prod --outputPath=../../../../../content/apps/fiddle --baseHref=/apps/fiddle/ --deployUrl=/apps/fiddle/ && popd
+        run: npm run-script ng build --prod --outputPath=../../../../../content/apps/fiddle --baseHref=/apps/fiddle/ --deployUrl=/apps/fiddle/
+        working-directory: assets/apps/fiddle/src/Fiddle.Run.Client/
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v0.0.1-preview
