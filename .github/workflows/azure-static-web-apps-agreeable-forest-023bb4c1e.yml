@@ -29,7 +29,7 @@ jobs:
         run: mkdir -p ../../../../../content/apps/fiddle
         working-directory: assets/apps/fiddle/src/Fiddle.Run.Client/
       - name: Copy Angular App
-        run: cp -r dist/fiddle/ ../../../../../content/apps/fiddle
+        run: cp -r dist/fiddle/* ../../../../../content/apps/fiddle
         working-directory: assets/apps/fiddle/src/Fiddle.Run.Client/
       - name: Build And Deploy
         id: builddeploy
