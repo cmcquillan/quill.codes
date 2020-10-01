@@ -26,7 +26,7 @@ jobs:
         run: npm run-script ng build --prod --outputPath=../../../../../content/apps/fiddle --baseHref=/apps/fiddle/ --deployUrl=/apps/fiddle/
         working-directory: assets/apps/fiddle/src/Fiddle.Run.Client/
       - name: Copy Angular App
-        run: cp -r dist/ ../../../../../content/apps/fiddle
+        run: mkdir -p ../../../../../content/apps/fiddle && cp -r dist/ ../../../../../content/apps/fiddle
         working-directory: assets/apps/fiddle/src/Fiddle.Run.Client/
       - name: Build And Deploy
         id: builddeploy
