@@ -26,7 +26,7 @@ jobs:
         run: npm run-script ng build --prod --outputPath=../../../../../content/apps/fiddle --baseHref=/apps/fiddle/ --deployUrl=/apps/fiddle/
         working-directory: assets/apps/fiddle/src/Fiddle.Run.Client/
       - name: Debug ls
-        run: assets/apps/fiddle/src/Fiddle.Run.Client/
+        run: ls assets/apps/fiddle/src/Fiddle.Run.Client/
       - name: Debug ls
         run: ls .
       - name: Debug ls
