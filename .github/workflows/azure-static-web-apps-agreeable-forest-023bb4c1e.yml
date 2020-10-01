@@ -28,11 +28,11 @@ jobs:
       - name: Debug ls
         run: ls .
       - name: Debug ls
+        run: ls ../
+      - name: Debug ls
         run: ls content/
       - name: Debug ls
         run: ls content/apps/
-      - name: Debug ls
-        run: ls ../
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v0.0.1-preview
