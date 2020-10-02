@@ -1,0 +1,21 @@
+{{ define "headAppend" }}
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <base href="{{ .RelPermalink }}" />
+
+  {{ range (.Resources.Match "*.css") }}
+    <link href="{{ .Name }}" rel="stylesheet" />
+  {{ end }}
+{{ end }}
+
+
+{{ define "main" }}
+
+  <app-root></app-root>
+
+  {{ range (.Resources.Match "*.js") }}
+    <script src="{{ .Name }}"></script>
+  {{ end }}
+{{ end }}
