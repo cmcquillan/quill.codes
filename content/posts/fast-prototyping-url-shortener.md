@@ -10,6 +10,7 @@ description: "Quickly prototype your first URL Shortener with .NET 5. This tutor
 images:
 - https://quill-static.sfo2.digitaloceanspaces.com/images/blog/fast-prototyping-quill-url-shortener.png
 cover_image: https://quill-static.sfo2.digitaloceanspaces.com/images/blog/fast-prototyping-quill-url-shortener.png
+cover_image_alt: "A logo with the text 'Quill.Codes' and a picture of a large letter 'Q' with a quill pen superimposed over it. To the right is text stating 'Fast Builds with .NET'"
 ---
 
 ## Fast Prototyping and Learning to Code

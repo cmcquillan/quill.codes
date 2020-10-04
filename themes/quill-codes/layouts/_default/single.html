@@ -3,7 +3,7 @@
 
 <div class="blogPostContainer">
   {{ if isset .Params "cover_image" }}
-  <img class="blogPostTitle" src="{{ .Params.cover_image }}" />
+  <img class="blogPostTitle" src="{{ .Params.cover_image }}" alt="{{ .Params.cover_image_alt }}" />
   {{ end }}
   <h1 class="postTitle"> {{ .Title }}</h1>
   <article class="blogPost">
