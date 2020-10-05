@@ -27,6 +27,9 @@
 <script async defer data-domain="quill.codes" src="https://plausible.io/js/plausible.js"></script>
 
     
+    
+
+    
 </head>
 
 <body>
@@ -63,7 +66,7 @@
 
 <div class="blogPostContainer">
   
-  <img class="blogPostTitle" src="https://quill-static.sfo2.digitaloceanspaces.com/images/tips/set_class_fields_with_out_parameters.png" />
+  <img class="blogPostTitle" src="https://quill-static.sfo2.digitaloceanspaces.com/images/tips/set_class_fields_with_out_parameters.png" alt="" />
   
   <h1 class="postTitle"> Set Class Fields Using &#39;out&#39; Parameters</h1>
   <article class="blogPost">
@@ -85,69 +88,69 @@
 <li>The <code>TryParse</code> pattern where the return is a <code>bool</code> that indicates success and your parse result comes from the <code>out</code> parameter.</li>
 </ul>
 <p>However, very often you want to set your class field with the parse result. At first you would assume that you need to declare a temporary variable to hold the value and then assign the field.</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#00f">public</span> <span style="color:#00f">class</span> <span style="color:#2b91af">MyClass</span>
-{
-  <span style="color:#00f">private</span> <span style="color:#2b91af">int</span> _parsedIntField;
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">MyClass</span>
+<span class="p">{</span>
+  <span class="k">private</span> <span class="kt">int</span> <span class="n">_parsedIntField</span><span class="p">;</span>
 
-  <span style="color:#00f">public</span> MyClass(<span style="color:#2b91af">string</span> strToParse)
-  {
-    <span style="color:#00f">if</span> (!Int32.TryParse(strToParse, <span style="color:#00f">out</span> <span style="color:#2b91af">int</span> result))
-    {
-      <span style="color:#00f">throw</span> <span style="color:#00f">new</span> ArgumentException(<span style="color:#a31515">&#34;Please provide a valid numerical string.&#34;</span>, nameof(strToParse));
-    }
+  <span class="k">public</span> <span class="n">MyClass</span><span class="p">(</span><span class="kt">string</span> <span class="n">strToParse</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(!</span><span class="n">Int32</span><span class="p">.</span><span class="n">TryParse</span><span class="p">(</span><span class="n">strToParse</span><span class="p">,</span> <span class="k">out</span> <span class="kt">int</span> <span class="n">result</span><span class="p">))</span>
+    <span class="p">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="n">ArgumentException</span><span class="p">(</span><span class="s">&#34;Please provide a valid numerical string.&#34;</span><span class="p">,</span> <span class="n">nameof</span><span class="p">(</span><span class="n">strToParse</span><span class="p">));</span>
+    <span class="p">}</span>
 
-    _parsedIntField = result;
-  }
-}
+    <span class="n">_parsedIntField</span> <span class="p">=</span> <span class="n">result</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>However, this isn&rsquo;t necessary. Turns out you can just set the field directly.</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#00f">public</span> <span style="color:#00f">class</span> <span style="color:#2b91af">MyClass</span>
-{
-  <span style="color:#00f">private</span> <span style="color:#2b91af">int</span> _parsedIntField;
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">MyClass</span>
+<span class="p">{</span>
+  <span class="k">private</span> <span class="kt">int</span> <span class="n">_parsedIntField</span><span class="p">;</span>
 
-  <span style="color:#00f">public</span> MyClass(<span style="color:#2b91af">string</span> strToParse)
-  {
-    <span style="color:#00f">if</span> (!Int32.TryParse(strToParse, <span style="color:#00f">out</span> _parsedIntField))
-    {
-      <span style="color:#00f">throw</span> <span style="color:#00f">new</span> ArgumentException(<span style="color:#a31515">&#34;Please provide a valid numerical string.&#34;</span>, nameof(strToParse));
-    }
-  }
-}
+  <span class="k">public</span> <span class="n">MyClass</span><span class="p">(</span><span class="kt">string</span> <span class="n">strToParse</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(!</span><span class="n">Int32</span><span class="p">.</span><span class="n">TryParse</span><span class="p">(</span><span class="n">strToParse</span><span class="p">,</span> <span class="k">out</span> <span class="n">_parsedIntField</span><span class="p">))</span>
+    <span class="p">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="n">ArgumentException</span><span class="p">(</span><span class="s">&#34;Please provide a valid numerical string.&#34;</span><span class="p">,</span> <span class="n">nameof</span><span class="p">(</span><span class="n">strToParse</span><span class="p">));</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></td></tr></table>
 </div>
 </div></div>
@@ -157,6 +160,15 @@
 
         </main>  
 <aside class="tagGroup">
+  <header>
+    <h2 class="tagGroup--header">Utilities</h2>
+    <ul class="tagGroup--list">
+      <li class="tagGroupListItem">
+        <a href="apps/fiddle">Web Tools</a>
+      </li>
+    </ul>
+  </header>
+
   <header>
     <h2 class="tagGroup--header">Tags</h2>
   </header>

@@ -31,6 +31,9 @@
 <script async defer data-domain="quill.codes" src="https://plausible.io/js/plausible.js"></script>
 
     
+    
+
+    
 </head>
 
 <body>
@@ -67,7 +70,7 @@
 
 <div class="blogPostContainer">
   
-  <img class="blogPostTitle" src="https://quill-static.sfo2.digitaloceanspaces.com/images/blog/fast-prototyping-quill-url-shortener.png" />
+  <img class="blogPostTitle" src="https://quill-static.sfo2.digitaloceanspaces.com/images/blog/fast-prototyping-quill-url-shortener.png" alt="A logo with the text &#39;Quill.Codes&#39; and a picture of a large letter &#39;Q&#39; with a quill pen superimposed over it. To the right is text stating &#39;Fast Builds with .NET&#39;" />
   
   <h1 class="postTitle"> Fast Builds: Make a Url Shortener with .NET</h1>
   <article class="blogPost">
@@ -116,14 +119,14 @@
 <p><em>Note: At this point I should emphasize that this is tutorial code and probably not ready for your full-scale production app. If you really just need a URL shortener there are many <a href="https://github.com/awesome-selfhosted/awesome-selfhosted#url-shorteners">self-hosted options</a> from which you can choose.</em></p>
 <h2 id="setting-up-the-project">Setting up the Project</h2>
 <p>Our first step is to get our basic project files in place. Let&rsquo;s make a directory for our project and create a few files.</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">mkdir url-shortener-tutorial
-cd url-shortener-tutorial
+<td class="lntd">
+<pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="n">mkdir</span> <span class="n">url-shortener-tutorial</span>
+<span class="nb">cd </span><span class="n">url-shortener-tutorial</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>Within this directory we are going to create two files:</p>
@@ -132,119 +135,119 @@ cd url-shortener-tutorial
 <li>Program.cs</li>
 </ul>
 <p>The contents of the <code>csproj</code> file will be very simple:</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">&lt;Project Sdk=<span style="color:#a31515">&#34;Microsoft.NET.Sdk.Web&#34;</span>&gt;
-  &lt;PropertyGroup&gt;
-    &lt;TargetFramework&gt;net5.0&lt;/TargetFramework&gt;
-  &lt;/PropertyGroup&gt;
-&lt;/Project&gt;
+<td class="lntd">
+<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;Project</span> <span class="na">Sdk=</span><span class="s">&#34;Microsoft.NET.Sdk.Web&#34;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;PropertyGroup&gt;</span>
+    <span class="nt">&lt;TargetFramework&gt;</span>net5.0<span class="nt">&lt;/TargetFramework&gt;</span>
+  <span class="nt">&lt;/PropertyGroup&gt;</span>
+<span class="nt">&lt;/Project&gt;</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>This file tells .NET that we are going to be targeting <strong>.NET 5.0</strong> and that we are going to use the <strong>Microsoft<!-- raw HTML omitted -->.NET.Sdk.Web</strong> SDK. This is basically the flavor of .NET that we plan on using. This might feel a bit opaque at first, but at its core this is really just a console application.</p>
 <p>You can prove it to yourself just by adding two lines to <strong>Program.cs</strong>.</p>
 <h3 id="programcs">Program.cs</h3>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#00f">using</span> System;
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
 
-Console.WriteLine(<span style="color:#a31515">&#34;Hello, World!&#34;</span>);
+<span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&#34;Hello, World!&#34;</span><span class="p">);</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>And then running it with the <code>dotnet</code> command:</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell"><span style="">❯</span> dotnet run
-Hello, World!
+<td class="lntd">
+<pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="err">❯</span> <span class="n">dotnet</span> <span class="n">run</span>
+<span class="n">Hello</span><span class="p">,</span> <span class="n">World</span><span class="p">!</span>
 </code></pre></td></tr></table>
 </div>
 </div><h2 id="running-a-webserver">Running a Webserver</h2>
 <p>Now that we have a basic project set up and we can run code, our next step is to get a quick webserver up and running. This will let us respond to requests and start iterating on our solution.</p>
 <h3 id="programcs-1">Program.cs</h3>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#00f">using</span> Microsoft.Extensions.Hosting;
-<span style="color:#00f">using</span> Microsoft.AspNetCore.Builder;
-<span style="color:#00f">using</span> Microsoft.AspNetCore.Hosting;
-<span style="color:#00f">using</span> Microsoft.Extensions.DependencyInjection;
-<span style="color:#00f">using</span> Microsoft.AspNetCore.Http;
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">using</span> <span class="nn">Microsoft.Extensions.Hosting</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Microsoft.AspNetCore.Builder</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Microsoft.AspNetCore.Hosting</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Microsoft.Extensions.DependencyInjection</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Microsoft.AspNetCore.Http</span><span class="p">;</span>
 
-<span style="color:#2b91af">var</span> host = Host.CreateDefaultBuilder(args)
-    .ConfigureWebHostDefaults(builder =&gt;
-    {
-        builder.ConfigureServices(services =&gt;
-        {
-            <span style="color:#008000">// Add the necessary components for HTTP routing.
-</span><span style="color:#008000"></span>            services.AddRouting();
-        })
-        .Configure(app =&gt;
-        {
-            <span style="color:#008000">// Use routing in the pipeline.
-</span><span style="color:#008000"></span>            app.UseRouting();
+<span class="kt">var</span> <span class="n">host</span> <span class="p">=</span> <span class="n">Host</span><span class="p">.</span><span class="n">CreateDefaultBuilder</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">ConfigureWebHostDefaults</span><span class="p">(</span><span class="n">builder</span> <span class="p">=&gt;</span>
+    <span class="p">{</span>
+        <span class="n">builder</span><span class="p">.</span><span class="n">ConfigureServices</span><span class="p">(</span><span class="n">services</span> <span class="p">=&gt;</span>
+        <span class="p">{</span>
+            <span class="c1">// Add the necessary components for HTTP routing.
+</span><span class="c1"></span>            <span class="n">services</span><span class="p">.</span><span class="n">AddRouting</span><span class="p">();</span>
+        <span class="p">})</span>
+        <span class="p">.</span><span class="n">Configure</span><span class="p">(</span><span class="n">app</span> <span class="p">=&gt;</span>
+        <span class="p">{</span>
+            <span class="c1">// Use routing in the pipeline.
+</span><span class="c1"></span>            <span class="n">app</span><span class="p">.</span><span class="n">UseRouting</span><span class="p">();</span>
 
-            <span style="color:#008000">// Use the endpoint routing module to map URLs to functions.
-</span><span style="color:#008000"></span>            app.UseEndpoints((endpoints) =&gt;
-            {
-                endpoints.MapGet(<span style="color:#a31515">&#34;/&#34;</span>, (ctx) =&gt;
-                {
-                    <span style="color:#00f">return</span> ctx.Response.WriteAsync(<span style="color:#a31515">&#34;Hello, World!&#34;</span>);
-                });
-            });
-        });
-    })
-    .Build();
+            <span class="c1">// Use the endpoint routing module to map URLs to functions.
+</span><span class="c1"></span>            <span class="n">app</span><span class="p">.</span><span class="n">UseEndpoints</span><span class="p">((</span><span class="n">endpoints</span><span class="p">)</span> <span class="p">=&gt;</span>
+            <span class="p">{</span>
+                <span class="n">endpoints</span><span class="p">.</span><span class="n">MapGet</span><span class="p">(</span><span class="s">&#34;/&#34;</span><span class="p">,</span> <span class="p">(</span><span class="n">ctx</span><span class="p">)</span> <span class="p">=&gt;</span>
+                <span class="p">{</span>
+                    <span class="k">return</span> <span class="n">ctx</span><span class="p">.</span><span class="n">Response</span><span class="p">.</span><span class="n">WriteAsync</span><span class="p">(</span><span class="s">&#34;Hello, World!&#34;</span><span class="p">);</span>
+                <span class="p">});</span>
+            <span class="p">});</span>
+        <span class="p">});</span>
+    <span class="p">})</span>
+    <span class="p">.</span><span class="n">Build</span><span class="p">();</span>
 
-<span style="color:#00f">await</span> host.RunAsync();
+<span class="k">await</span> <span class="n">host</span><span class="p">.</span><span class="n">RunAsync</span><span class="p">();</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>This setup is doing a few things for us:</p>
@@ -255,32 +258,32 @@ Hello, World!
 <li>It sets up a single route at our site&rsquo;s root <code>&quot;/&quot;</code> to return the text &ldquo;Hello, World!&rdquo;.</li>
 </ol>
 <p>We can now use the <code>dotnet run</code> command and visit our site in a browser to see some successful HTTP requests!</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell"><span style="">❯</span> dotnet run
-info<span style="">:</span> Microsoft.Hosting.Lifetime[0]
-      Now listening on<span style="">:</span> http<span style="">:</span>//localhost<span style="">:</span>5000
-info<span style="">:</span> Microsoft.Hosting.Lifetime[0]
-      Now listening on<span style="">:</span> https<span style="">:</span>//localhost<span style="">:</span>5001
-info<span style="">:</span> Microsoft.Hosting.Lifetime[0]
-      Application started. Press Ctrl+C to shut down.
-info<span style="">:</span> Microsoft.Hosting.Lifetime[0]
-      Hosting environment<span style="">:</span> Production
-info<span style="">:</span> Microsoft.Hosting.Lifetime[0]
-      Content root path<span style="">:</span> C:\src\url-shortener-tutorial
+<td class="lntd">
+<pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="err">❯</span> <span class="n">dotnet</span> <span class="n">run</span>
+<span class="n">info</span><span class="err">:</span> <span class="n">Microsoft</span><span class="p">.</span><span class="n">Hosting</span><span class="p">.</span><span class="n">Lifetime</span><span class="p">[</span><span class="n">0</span><span class="p">]</span>
+      <span class="n">Now</span> <span class="n">listening</span> <span class="n">on</span><span class="err">:</span> <span class="n">http</span><span class="err">:</span><span class="p">//</span><span class="n">localhost</span><span class="err">:</span><span class="n">5000</span>
+<span class="n">info</span><span class="err">:</span> <span class="n">Microsoft</span><span class="p">.</span><span class="n">Hosting</span><span class="p">.</span><span class="n">Lifetime</span><span class="p">[</span><span class="n">0</span><span class="p">]</span>
+      <span class="n">Now</span> <span class="n">listening</span> <span class="n">on</span><span class="err">:</span> <span class="n">https</span><span class="err">:</span><span class="p">//</span><span class="n">localhost</span><span class="err">:</span><span class="n">5001</span>
+<span class="n">info</span><span class="err">:</span> <span class="n">Microsoft</span><span class="p">.</span><span class="n">Hosting</span><span class="p">.</span><span class="n">Lifetime</span><span class="p">[</span><span class="n">0</span><span class="p">]</span>
+      <span class="n">Application</span> <span class="n">started</span><span class="p">.</span> <span class="n">Press</span> <span class="n">Ctrl</span><span class="p">+</span><span class="n">C</span> <span class="n">to</span> <span class="n">shut</span> <span class="n">down</span><span class="p">.</span>
+<span class="n">info</span><span class="err">:</span> <span class="n">Microsoft</span><span class="p">.</span><span class="n">Hosting</span><span class="p">.</span><span class="n">Lifetime</span><span class="p">[</span><span class="n">0</span><span class="p">]</span>
+      <span class="n">Hosting</span> <span class="n">environment</span><span class="err">:</span> <span class="n">Production</span>
+<span class="n">info</span><span class="err">:</span> <span class="n">Microsoft</span><span class="p">.</span><span class="n">Hosting</span><span class="p">.</span><span class="n">Lifetime</span><span class="p">[</span><span class="n">0</span><span class="p">]</span>
+      <span class="n">Content</span> <span class="n">root</span> <span class="n">path</span><span class="err">:</span> <span class="n">C:</span><span class="p">\</span><span class="n">src</span><span class="p">\</span><span class="n">url-shortener-tutorial</span>
 </code></pre></td></tr></table>
 </div>
 </div><p><img src="https://quill-static.sfo2.digitaloceanspaces.com/images/blog/hello_world_browser.PNG" alt="An image of the chrome web browser pointed to https://localhost:5001/. The browser window displays &ldquo;Hello, World!&rdquo; in plain text."></p>
@@ -293,94 +296,94 @@ info<span style="">:</span> Microsoft.Hosting.Lifetime[0]
 </ul>
 <p>To serve the HTML page we are going to take our existing &ldquo;Hello, World&rdquo; route and map to to a single file. First, we will add our <code>index.html</code> to the project. This can be in the same directory as <strong>Program.cs</strong>.</p>
 <h3 id="indexhtml">index.html</h3>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#00f">&lt;!doctype html&gt;</span>
-&lt;html&gt;
+<td class="lntd">
+<pre class="chroma"><code class="language-html" data-lang="html"><span class="cp">&lt;!doctype html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
 
-&lt;head&gt;
-    &lt;title&gt;Simple URL Shortener&lt;/title&gt;
-    &lt;link rel=<span style="color:#a31515">&#34;stylesheet&#34;</span> href=<span style="color:#a31515">&#34;https://unpkg.com/mvp.css&#34;</span>&gt;
-&lt;/head&gt;
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Simple URL Shortener<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&#34;stylesheet&#34;</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;https://unpkg.com/mvp.css&#34;</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
 
-&lt;body&gt;
-    &lt;main&gt;
-        &lt;header&gt;
-            &lt;h1&gt;Simple URL Shortener&lt;/h1&gt;
-            &lt;p&gt;
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">main</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">header</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Simple URL Shortener<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>
                 Enter your URL below to retrieve the shortened version.
-            &lt;/p&gt;
-        &lt;/header&gt;
-        &lt;section id=<span style="color:#a31515">&#34;urlForm&#34;</span>&gt;
-            &lt;form enctype=<span style="color:#a31515">&#34;application/x-www-form-urlencoded&#34;</span> method=<span style="color:#a31515">&#34;POST&#34;</span> action=<span style="color:#a31515">&#34;/shorten&#34;</span>&gt;
-                &lt;label for=<span style="color:#a31515">&#34;url&#34;</span>&gt;
+            <span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">header</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">section</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;urlForm&#34;</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">form</span> <span class="na">enctype</span><span class="o">=</span><span class="s">&#34;application/x-www-form-urlencoded&#34;</span> <span class="na">method</span><span class="o">=</span><span class="s">&#34;POST&#34;</span> <span class="na">action</span><span class="o">=</span><span class="s">&#34;/shorten&#34;</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&#34;url&#34;</span><span class="p">&gt;</span>
                     URL
-                &lt;/label&gt;
-                &lt;input type=<span style="color:#a31515">&#34;url&#34;</span> name=<span style="color:#a31515">&#34;url&#34;</span> /&gt;
-                &lt;button type=<span style="color:#a31515">&#34;submit&#34;</span>&gt;Shorten&lt;/button&gt;
-            &lt;/form&gt;
-        &lt;/section&gt;
-    &lt;/main&gt;
-&lt;/body&gt;
+                <span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;url&#34;</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;url&#34;</span> <span class="p">/&gt;</span>
+                <span class="p">&lt;</span><span class="nt">button</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;submit&#34;</span><span class="p">&gt;</span>Shorten<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">section</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">main</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
 
-&lt;/html&gt;
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>You will notice that we are just building a very basic form that will send a POST request to the <code>&quot;/shorten&quot;</code> route with a single field named <code>url</code>. We will have to add a little JavaScript later when we actually want to display our shortened link but for now this will suffice.</p>
 <p><em>Note: You may notice a this stylesheet reference <code>&lt;link rel=&quot;stylesheet&quot; href=&quot;https://unpkg.com/mvp.css&quot;&gt;</code> at the top. This is a package called <a href="https://andybrewer.github.io/mvp/">mvp.css</a> by <a href="https://www.andybrewer.com/">Andy Brewer</a> and we are going to use it to give us some basic styling so we can focus on our code.</em></p>
 <p>Then in our application we can instruct our endpoint to serve this file.</p>
 <h3 id="programcs-2">Program.cs</h3>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">app.UseEndpoints((endpoints) =&gt;
-{
-    endpoints.MapGet(<span style="color:#a31515">&#34;/&#34;</span>, (ctx) =&gt;
-    {
-        <span style="color:#008000">// Serve root index.html
-</span><span style="color:#008000"></span>        <span style="color:#00f">return</span> ctx.Response.SendFileAsync(<span style="color:#a31515">&#34;index.html&#34;</span>);
-    });
-});
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">app</span><span class="p">.</span><span class="n">UseEndpoints</span><span class="p">((</span><span class="n">endpoints</span><span class="p">)</span> <span class="p">=&gt;</span>
+<span class="p">{</span>
+    <span class="n">endpoints</span><span class="p">.</span><span class="n">MapGet</span><span class="p">(</span><span class="s">&#34;/&#34;</span><span class="p">,</span> <span class="p">(</span><span class="n">ctx</span><span class="p">)</span> <span class="p">=&gt;</span>
+    <span class="p">{</span>
+        <span class="c1">// Serve root index.html
+</span><span class="c1"></span>        <span class="k">return</span> <span class="n">ctx</span><span class="p">.</span><span class="n">Response</span><span class="p">.</span><span class="n">SendFileAsync</span><span class="p">(</span><span class="s">&#34;index.html&#34;</span><span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">});</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>We can now run the app again, go to our browser and see our base interface.</p>
@@ -388,166 +391,166 @@ info<span style="">:</span> Microsoft.Hosting.Lifetime[0]
 <h2 id="time-to-shorten-some-links">Time to Shorten Some Links!</h2>
 <p>Now that we have a basic interface, we can focus a bit more on our link shortening solution. For this we are going to create a new file in our directory and call is <strong>ShortLink.cs</strong>. Here we will define a new <code>class</code> which will hold some data and functionality for our links.</p>
 <h3 id="shortlinkcs">ShortLink.cs</h3>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#00f">using</span> System;
-<span style="color:#00f">using</span> Microsoft.AspNetCore.WebUtilities;
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">Microsoft.AspNetCore.WebUtilities</span><span class="p">;</span>
 
-<span style="color:#00f">public</span> <span style="color:#00f">class</span> <span style="color:#2b91af">ShortLink</span>
-{
-    <span style="color:#00f">public</span> <span style="color:#2b91af">string</span> GetUrlChunk()
-    {
-        <span style="color:#008000">// Transform the &#34;Id&#34; property on this object into a short piece of text
-</span><span style="color:#008000"></span>        <span style="color:#00f">return</span> WebEncoders.Base64UrlEncode(BitConverter.GetBytes(Id));
-    }
+<span class="k">public</span> <span class="k">class</span> <span class="nc">ShortLink</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="kt">string</span> <span class="n">GetUrlChunk</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="c1">// Transform the &#34;Id&#34; property on this object into a short piece of text
+</span><span class="c1"></span>        <span class="k">return</span> <span class="n">WebEncoders</span><span class="p">.</span><span class="n">Base64UrlEncode</span><span class="p">(</span><span class="n">BitConverter</span><span class="p">.</span><span class="n">GetBytes</span><span class="p">(</span><span class="n">Id</span><span class="p">));</span>
+    <span class="p">}</span>
 
-    <span style="color:#00f">public</span> <span style="color:#00f">static</span> <span style="color:#2b91af">int</span> GetId(<span style="color:#2b91af">string</span> urlChunk)
-    {
-        <span style="color:#008000">// Reverse our short url text back into an interger Id
-</span><span style="color:#008000"></span>        <span style="color:#00f">return</span> BitConverter.ToInt32(WebEncoders.Base64UrlDecode(urlChunk));
-    }
+    <span class="k">public</span> <span class="k">static</span> <span class="kt">int</span> <span class="n">GetId</span><span class="p">(</span><span class="kt">string</span> <span class="n">urlChunk</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Reverse our short url text back into an interger Id
+</span><span class="c1"></span>        <span class="k">return</span> <span class="n">BitConverter</span><span class="p">.</span><span class="n">ToInt32</span><span class="p">(</span><span class="n">WebEncoders</span><span class="p">.</span><span class="n">Base64UrlDecode</span><span class="p">(</span><span class="n">urlChunk</span><span class="p">));</span>
+    <span class="p">}</span>
 
-    <span style="color:#00f">public</span> <span style="color:#2b91af">int</span> Id { <span style="color:#00f">get</span>; <span style="color:#00f">set</span>; }
+    <span class="k">public</span> <span class="kt">int</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
 
-    <span style="color:#00f">public</span> <span style="color:#2b91af">string</span> Url { <span style="color:#00f">get</span>; <span style="color:#00f">set</span>; }
-}
+    <span class="k">public</span> <span class="kt">string</span> <span class="n">Url</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>Now we will use our <code>ShortLink</code> class to iterate on our endpoints and generate some fake URLs.</p>
 <h3 id="programcs---add-this-to-the-using-section">Program.cs - Add this to the <code>using</code> section</h3>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#008000">// Other using statements ...
-</span><span style="color:#008000"></span><span style="color:#00f">using</span> System.Threading.Tasks;
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="c1">// Other using statements ...
+</span><span class="c1"></span><span class="k">using</span> <span class="nn">System.Threading.Tasks</span><span class="p">;</span>
 </code></pre></td></tr></table>
 </div>
 </div><h3 id="programcs---modify-your-useendpoints-call">Program.cs - Modify your <code>UseEndpoints</code> call</h3>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">app.UseEndpoints((endpoints) =&gt;
-{
-    <span style="color:#008000">// Serve root index.html
-</span><span style="color:#008000"></span>    endpoints.MapGet(<span style="color:#a31515">&#34;/&#34;</span>, (ctx) =&gt;
-    {
-        <span style="color:#00f">return</span> ctx.Response.SendFileAsync(<span style="color:#a31515">&#34;index.html&#34;</span>);
-    });
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">app</span><span class="p">.</span><span class="n">UseEndpoints</span><span class="p">((</span><span class="n">endpoints</span><span class="p">)</span> <span class="p">=&gt;</span>
+<span class="p">{</span>
+    <span class="c1">// Serve root index.html
+</span><span class="c1"></span>    <span class="n">endpoints</span><span class="p">.</span><span class="n">MapGet</span><span class="p">(</span><span class="s">&#34;/&#34;</span><span class="p">,</span> <span class="p">(</span><span class="n">ctx</span><span class="p">)</span> <span class="p">=&gt;</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">ctx</span><span class="p">.</span><span class="n">Response</span><span class="p">.</span><span class="n">SendFileAsync</span><span class="p">(</span><span class="s">&#34;index.html&#34;</span><span class="p">);</span>
+    <span class="p">});</span>
 
-    endpoints.MapPost(<span style="color:#a31515">&#34;/shorten&#34;</span>, HandleShortenUrl);
-});
+    <span class="n">endpoints</span><span class="p">.</span><span class="n">MapPost</span><span class="p">(</span><span class="s">&#34;/shorten&#34;</span><span class="p">,</span> <span class="n">HandleShortenUrl</span><span class="p">);</span>
+<span class="p">});</span>
 </code></pre></td></tr></table>
 </div>
 </div><h3 id="programcs---add-to-the-end-after-await-hostrunasync">Program.cs - Add to the end after <code>await host.RunAsync()</code></h3>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#008000">// Endpoint Methods
-</span><span style="color:#008000"></span>
-<span style="color:#00f">static</span> Task HandleShortenUrl(HttpContext context)
-{
-    <span style="color:#008000">// Perform basic form validation
-</span><span style="color:#008000"></span>    <span style="color:#00f">if</span> (!context.Request.HasFormContentType || !context.Request.Form.ContainsKey(<span style="color:#a31515">&#34;url&#34;</span>))
-    {
-        context.Response.StatusCode = StatusCodes.Status400BadRequest;
-        <span style="color:#00f">return</span> context.Response.WriteAsync(<span style="color:#a31515">&#34;Cannot process request&#34;</span>);
-    }
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="c1">// Endpoint Methods
+</span><span class="c1"></span>
+<span class="k">static</span> <span class="n">Task</span> <span class="n">HandleShortenUrl</span><span class="p">(</span><span class="n">HttpContext</span> <span class="n">context</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// Perform basic form validation
+</span><span class="c1"></span>    <span class="k">if</span> <span class="p">(!</span><span class="n">context</span><span class="p">.</span><span class="n">Request</span><span class="p">.</span><span class="n">HasFormContentType</span> <span class="p">||</span> <span class="p">!</span><span class="n">context</span><span class="p">.</span><span class="n">Request</span><span class="p">.</span><span class="n">Form</span><span class="p">.</span><span class="n">ContainsKey</span><span class="p">(</span><span class="s">&#34;url&#34;</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="n">context</span><span class="p">.</span><span class="n">Response</span><span class="p">.</span><span class="n">StatusCode</span> <span class="p">=</span> <span class="n">StatusCodes</span><span class="p">.</span><span class="n">Status400BadRequest</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">context</span><span class="p">.</span><span class="n">Response</span><span class="p">.</span><span class="n">WriteAsync</span><span class="p">(</span><span class="s">&#34;Cannot process request&#34;</span><span class="p">);</span>
+    <span class="p">}</span>
 
-    context.Request.Form.TryGetValue(<span style="color:#a31515">&#34;url&#34;</span>, <span style="color:#00f">out</span> <span style="color:#2b91af">var</span> formData);
-    <span style="color:#2b91af">var</span> requestedUrl = formData.ToString();
+    <span class="n">context</span><span class="p">.</span><span class="n">Request</span><span class="p">.</span><span class="n">Form</span><span class="p">.</span><span class="n">TryGetValue</span><span class="p">(</span><span class="s">&#34;url&#34;</span><span class="p">,</span> <span class="k">out</span> <span class="kt">var</span> <span class="n">formData</span><span class="p">);</span>
+    <span class="kt">var</span> <span class="n">requestedUrl</span> <span class="p">=</span> <span class="n">formData</span><span class="p">.</span><span class="n">ToString</span><span class="p">();</span>
 
-    <span style="color:#008000">// Test our URL
-</span><span style="color:#008000"></span>    <span style="color:#00f">if</span> (!Uri.TryCreate(requestedUrl, UriKind.Absolute, <span style="color:#00f">out</span> Uri result))
-    {
-        context.Response.StatusCode = StatusCodes.Status400BadRequest;
-        <span style="color:#00f">return</span> context.Response.WriteAsync(<span style="color:#a31515">&#34;Could not understand URL.&#34;</span>);
-    }
+    <span class="c1">// Test our URL
+</span><span class="c1"></span>    <span class="k">if</span> <span class="p">(!</span><span class="n">Uri</span><span class="p">.</span><span class="n">TryCreate</span><span class="p">(</span><span class="n">requestedUrl</span><span class="p">,</span> <span class="n">UriKind</span><span class="p">.</span><span class="n">Absolute</span><span class="p">,</span> <span class="k">out</span> <span class="n">Uri</span> <span class="n">result</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="n">context</span><span class="p">.</span><span class="n">Response</span><span class="p">.</span><span class="n">StatusCode</span> <span class="p">=</span> <span class="n">StatusCodes</span><span class="p">.</span><span class="n">Status400BadRequest</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">context</span><span class="p">.</span><span class="n">Response</span><span class="p">.</span><span class="n">WriteAsync</span><span class="p">(</span><span class="s">&#34;Could not understand URL.&#34;</span><span class="p">);</span>
+    <span class="p">}</span>
 
-    <span style="color:#2b91af">var</span> url = result.ToString();
+    <span class="kt">var</span> <span class="n">url</span> <span class="p">=</span> <span class="n">result</span><span class="p">.</span><span class="n">ToString</span><span class="p">();</span>
 
-    <span style="color:#008000">// Temporary short link 
-</span><span style="color:#008000"></span>    <span style="color:#2b91af">var</span> entry = <span style="color:#00f">new</span> ShortLink
-    {
-        Id = 123_456_789,
-        Url = url
-    };
+    <span class="c1">// Temporary short link 
+</span><span class="c1"></span>    <span class="kt">var</span> <span class="n">entry</span> <span class="p">=</span> <span class="k">new</span> <span class="n">ShortLink</span>
+    <span class="p">{</span>
+        <span class="n">Id</span> <span class="p">=</span> <span class="m">123</span><span class="n">_456_789</span><span class="p">,</span>
+        <span class="n">Url</span> <span class="p">=</span> <span class="n">url</span>
+    <span class="p">};</span>
 
-    <span style="color:#2b91af">var</span> urlChunk = entry.GetUrlChunk();
-    <span style="color:#2b91af">var</span> responseUri = <span style="color:#a31515">$&#34;{context.Request.Scheme}://{context.Request.Host}/{urlChunk}&#34;</span>;
-    <span style="color:#00f">return</span> context.Response.WriteAsync(responseUri);
-}
+    <span class="kt">var</span> <span class="n">urlChunk</span> <span class="p">=</span> <span class="n">entry</span><span class="p">.</span><span class="n">GetUrlChunk</span><span class="p">();</span>
+    <span class="kt">var</span> <span class="n">responseUri</span> <span class="p">=</span> <span class="s">$&#34;{context.Request.Scheme}://{context.Request.Host}/{urlChunk}&#34;</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">context</span><span class="p">.</span><span class="n">Response</span><span class="p">.</span><span class="n">WriteAsync</span><span class="p">(</span><span class="n">responseUri</span><span class="p">);</span>
+<span class="p">}</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>There is a bit to unpack here, so let&rsquo;s go through it piece-by-piece.</p>
@@ -572,156 +575,156 @@ info<span style="">:</span> Microsoft.Hosting.Lifetime[0]
 <p>Up to this point we have avoided adding dependencies to our project. For this section we have to change that by adding a database. We are going to use <a href="https://www.litedb.org/">LiteDB</a>, a simple, lightweight NoSQL database that will let us easily persist our short links to a file so they can be reitreved later.</p>
 <h3 id="adding-litedb-to-your-project">Adding LiteDB to Your Project</h3>
 <p>When just using a text editor and not a full IDE, generally the easiest way to add a package is via the command line. Run the following command when in your project directory:</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">dotnet add package LiteDB
+<td class="lntd">
+<pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="n">dotnet</span> <span class="n">add</span> <span class="n">package</span> <span class="n">LiteDB</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>Functionally, this just edits your <code>csproj</code> file to add a Package Reference. Another option is to add the line to the project file yourself:</p>
 <h3 id="urlshortenercsproj">UrlShortener.csproj</h3>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">&lt;Project Sdk=<span style="color:#a31515">&#34;Microsoft.NET.Sdk.Web&#34;</span>&gt;
-  &lt;PropertyGroup&gt;
-    &lt;TargetFramework&gt;net5.0&lt;/TargetFramework&gt;
-  &lt;/PropertyGroup&gt;
-  <span style="color:#008000">&lt;!-- Added Package Reference: --&gt;</span>
-  &lt;ItemGroup&gt;
-    &lt;PackageReference Include=<span style="color:#a31515">&#34;LiteDB&#34;</span> Version=<span style="color:#a31515">&#34;5.0.9&#34;</span> /&gt;
-  &lt;/ItemGroup&gt;
-&lt;/Project&gt;
+<td class="lntd">
+<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;Project</span> <span class="na">Sdk=</span><span class="s">&#34;Microsoft.NET.Sdk.Web&#34;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;PropertyGroup&gt;</span>
+    <span class="nt">&lt;TargetFramework&gt;</span>net5.0<span class="nt">&lt;/TargetFramework&gt;</span>
+  <span class="nt">&lt;/PropertyGroup&gt;</span>
+  <span class="c">&lt;!-- Added Package Reference: --&gt;</span>
+  <span class="nt">&lt;ItemGroup&gt;</span>
+    <span class="nt">&lt;PackageReference</span> <span class="na">Include=</span><span class="s">&#34;LiteDB&#34;</span> <span class="na">Version=</span><span class="s">&#34;5.0.9&#34;</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;/ItemGroup&gt;</span>
+<span class="nt">&lt;/Project&gt;</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>Now we can utilize LiteDB to persist our short links and serve them to users.</p>
 <h3 id="persisting-data-to-litedb">Persisting Data to LiteDB</h3>
 <p>We can now modify our <strong>Program.cs</strong> file to utilize LiteDB. To do this, the first thing we have to do is add LiteDB to our available services.</p>
 <h3 id="programcs-3">Program.cs</h3>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#00f">using</span> LiteDB;
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">using</span> <span class="nn">LiteDB</span><span class="p">;</span>
 
-<span style="color:#2b91af">var</span> host = Host.CreateDefaultBuilder(args)
-    .ConfigureWebHostDefaults(builder =&gt;
-    {
-        builder.ConfigureServices(services =&gt;
-        {
-            <span style="color:#008000">// Add the necessary components for HTTP routing.
-</span><span style="color:#008000"></span>            services.AddRouting();
+<span class="kt">var</span> <span class="n">host</span> <span class="p">=</span> <span class="n">Host</span><span class="p">.</span><span class="n">CreateDefaultBuilder</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">ConfigureWebHostDefaults</span><span class="p">(</span><span class="n">builder</span> <span class="p">=&gt;</span>
+    <span class="p">{</span>
+        <span class="n">builder</span><span class="p">.</span><span class="n">ConfigureServices</span><span class="p">(</span><span class="n">services</span> <span class="p">=&gt;</span>
+        <span class="p">{</span>
+            <span class="c1">// Add the necessary components for HTTP routing.
+</span><span class="c1"></span>            <span class="n">services</span><span class="p">.</span><span class="n">AddRouting</span><span class="p">();</span>
 
-            <span style="color:#008000">// Add LiteDB
-</span><span style="color:#008000"></span>            services.AddSingleton&lt;ILiteDatabase, LiteDatabase&gt;(_ =&gt; <span style="color:#00f">new</span> LiteDatabase(<span style="color:#a31515">&#34;short-links.db&#34;</span>));
-        })
+            <span class="c1">// Add LiteDB
+</span><span class="c1"></span>            <span class="n">services</span><span class="p">.</span><span class="n">AddSingleton</span><span class="p">&lt;</span><span class="n">ILiteDatabase</span><span class="p">,</span> <span class="n">LiteDatabase</span><span class="p">&gt;(</span><span class="n">_</span> <span class="p">=&gt;</span> <span class="k">new</span> <span class="n">LiteDatabase</span><span class="p">(</span><span class="s">&#34;short-links.db&#34;</span><span class="p">));</span>
+        <span class="p">})</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>This enables us to <strong>ask</strong> for the <code>ILiteDatabase</code> object in our request methods. ASP<!-- raw HTML omitted -->.NET will hold onto services for us and delivers them to us later in our program&rsquo;s execution. We can now go into our <code>HandleShortenUrl</code> method and use this service to insert our link.</p>
 <h3 id="programcs---your-handleshortenurl-method">Program.cs - Your HandleShortenUrl method</h3>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#00f">static</span> Task HandleShortenUrl(HttpContext context)
-{
-    <span style="color:#008000">// Perform basic form validation
-</span><span style="color:#008000"></span>    <span style="color:#00f">if</span> (!context.Request.HasFormContentType || !context.Request.Form.ContainsKey(<span style="color:#a31515">&#34;url&#34;</span>))
-    {
-        context.Response.StatusCode = StatusCodes.Status400BadRequest;
-        <span style="color:#00f">return</span> context.Response.WriteAsync(<span style="color:#a31515">&#34;Cannot process request&#34;</span>);
-    }
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">static</span> <span class="n">Task</span> <span class="n">HandleShortenUrl</span><span class="p">(</span><span class="n">HttpContext</span> <span class="n">context</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// Perform basic form validation
+</span><span class="c1"></span>    <span class="k">if</span> <span class="p">(!</span><span class="n">context</span><span class="p">.</span><span class="n">Request</span><span class="p">.</span><span class="n">HasFormContentType</span> <span class="p">||</span> <span class="p">!</span><span class="n">context</span><span class="p">.</span><span class="n">Request</span><span class="p">.</span><span class="n">Form</span><span class="p">.</span><span class="n">ContainsKey</span><span class="p">(</span><span class="s">&#34;url&#34;</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="n">context</span><span class="p">.</span><span class="n">Response</span><span class="p">.</span><span class="n">StatusCode</span> <span class="p">=</span> <span class="n">StatusCodes</span><span class="p">.</span><span class="n">Status400BadRequest</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">context</span><span class="p">.</span><span class="n">Response</span><span class="p">.</span><span class="n">WriteAsync</span><span class="p">(</span><span class="s">&#34;Cannot process request&#34;</span><span class="p">);</span>
+    <span class="p">}</span>
 
-    context.Request.Form.TryGetValue(<span style="color:#a31515">&#34;url&#34;</span>, <span style="color:#00f">out</span> <span style="color:#2b91af">var</span> formData);
-    <span style="color:#2b91af">var</span> requestedUrl = formData.ToString();
+    <span class="n">context</span><span class="p">.</span><span class="n">Request</span><span class="p">.</span><span class="n">Form</span><span class="p">.</span><span class="n">TryGetValue</span><span class="p">(</span><span class="s">&#34;url&#34;</span><span class="p">,</span> <span class="k">out</span> <span class="kt">var</span> <span class="n">formData</span><span class="p">);</span>
+    <span class="kt">var</span> <span class="n">requestedUrl</span> <span class="p">=</span> <span class="n">formData</span><span class="p">.</span><span class="n">ToString</span><span class="p">();</span>
 
-    <span style="color:#008000">// Test our URL
-</span><span style="color:#008000"></span>    <span style="color:#00f">if</span> (!Uri.TryCreate(requestedUrl, UriKind.Absolute, <span style="color:#00f">out</span> Uri result))
-    {
-        context.Response.StatusCode = StatusCodes.Status400BadRequest;
-        <span style="color:#00f">return</span> context.Response.WriteAsync(<span style="color:#a31515">&#34;Could not understand URL.&#34;</span>);
-    }
+    <span class="c1">// Test our URL
+</span><span class="c1"></span>    <span class="k">if</span> <span class="p">(!</span><span class="n">Uri</span><span class="p">.</span><span class="n">TryCreate</span><span class="p">(</span><span class="n">requestedUrl</span><span class="p">,</span> <span class="n">UriKind</span><span class="p">.</span><span class="n">Absolute</span><span class="p">,</span> <span class="k">out</span> <span class="n">Uri</span> <span class="n">result</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="n">context</span><span class="p">.</span><span class="n">Response</span><span class="p">.</span><span class="n">StatusCode</span> <span class="p">=</span> <span class="n">StatusCodes</span><span class="p">.</span><span class="n">Status400BadRequest</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">context</span><span class="p">.</span><span class="n">Response</span><span class="p">.</span><span class="n">WriteAsync</span><span class="p">(</span><span class="s">&#34;Could not understand URL.&#34;</span><span class="p">);</span>
+    <span class="p">}</span>
 
-    <span style="color:#2b91af">var</span> url = result.ToString();
-    <span style="color:#008000">// Ask for LiteDB and persist a short link
-</span><span style="color:#008000"></span>    <span style="color:#2b91af">var</span> liteDB = context.RequestServices.GetService&lt;ILiteDatabase&gt;();
-    <span style="color:#2b91af">var</span> links = liteDB.GetCollection&lt;ShortLink&gt;(BsonAutoId.Int32);
+    <span class="kt">var</span> <span class="n">url</span> <span class="p">=</span> <span class="n">result</span><span class="p">.</span><span class="n">ToString</span><span class="p">();</span>
+    <span class="c1">// Ask for LiteDB and persist a short link
+</span><span class="c1"></span>    <span class="kt">var</span> <span class="n">liteDB</span> <span class="p">=</span> <span class="n">context</span><span class="p">.</span><span class="n">RequestServices</span><span class="p">.</span><span class="n">GetService</span><span class="p">&lt;</span><span class="n">ILiteDatabase</span><span class="p">&gt;();</span>
+    <span class="kt">var</span> <span class="n">links</span> <span class="p">=</span> <span class="n">liteDB</span><span class="p">.</span><span class="n">GetCollection</span><span class="p">&lt;</span><span class="n">ShortLink</span><span class="p">&gt;(</span><span class="n">BsonAutoId</span><span class="p">.</span><span class="n">Int32</span><span class="p">);</span>
 
-    <span style="color:#008000">// Temporary short link 
-</span><span style="color:#008000"></span>    <span style="color:#2b91af">var</span> entry = <span style="color:#00f">new</span> ShortLink
-    {
-        Url = url
-    };
+    <span class="c1">// Temporary short link 
+</span><span class="c1"></span>    <span class="kt">var</span> <span class="n">entry</span> <span class="p">=</span> <span class="k">new</span> <span class="n">ShortLink</span>
+    <span class="p">{</span>
+        <span class="n">Url</span> <span class="p">=</span> <span class="n">url</span>
+    <span class="p">};</span>
 
-    <span style="color:#008000">// Insert our short-link
-</span><span style="color:#008000"></span>    links.Insert(entry);
+    <span class="c1">// Insert our short-link
+</span><span class="c1"></span>    <span class="n">links</span><span class="p">.</span><span class="n">Insert</span><span class="p">(</span><span class="n">entry</span><span class="p">);</span>
 
-    <span style="color:#2b91af">var</span> urlChunk = entry.GetUrlChunk();
-    <span style="color:#2b91af">var</span> responseUri = <span style="color:#a31515">$&#34;{context.Request.Scheme}://{context.Request.Host}/{urlChunk}&#34;</span>;
-    <span style="color:#00f">return</span> context.Response.WriteAsync(responseUri);
-}
+    <span class="kt">var</span> <span class="n">urlChunk</span> <span class="p">=</span> <span class="n">entry</span><span class="p">.</span><span class="n">GetUrlChunk</span><span class="p">();</span>
+    <span class="kt">var</span> <span class="n">responseUri</span> <span class="p">=</span> <span class="s">$&#34;{context.Request.Scheme}://{context.Request.Host}/{urlChunk}&#34;</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">context</span><span class="p">.</span><span class="n">Response</span><span class="p">.</span><span class="n">WriteAsync</span><span class="p">(</span><span class="n">responseUri</span><span class="p">);</span>
+<span class="p">}</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>Now that we have registered our <code>ILiteDatabase</code> service, <code>HandleShortenUrl</code> is able to retrieve it using <code>context.RequestServices.GetService&lt;ILiteDatabase&gt;()</code>. From here we use the easy LiteDB API to get a <code>ShortLink</code> collection and <code>Insert()</code> it into our database. Finally, we use the same URL generation from before and send it back down to the browser.</p>
@@ -729,60 +732,60 @@ info<span style="">:</span> Microsoft.Hosting.Lifetime[0]
 <p>The last step to make this a &lsquo;complete product&rsquo; (as in, redirect users to our short links) is to add a <strong>Fallback Route</strong> which will catch every other visitor to our app and serve up the expanded link.</p>
 <p>We are now going to add another route method to our <strong>Program.cs</strong> file.</p>
 <h3 id="programcs---add-to-using-section">Program.cs - Add to <code>using</code> section</h3>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#00f">using</span> System.Linq;
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">using</span> <span class="nn">System.Linq</span><span class="p">;</span>
 </code></pre></td></tr></table>
 </div>
 </div><h3 id="programcs---add-to-useendpoints-call">Program.cs - Add to UseEndpoints() Call</h3>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">endpoints.MapFallback(HandleRedirect);
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">endpoints</span><span class="p">.</span><span class="n">MapFallback</span><span class="p">(</span><span class="n">HandleRedirect</span><span class="p">);</span>
 </code></pre></td></tr></table>
 </div>
 </div><h3 id="programcs---add-after-handleshortenurl">Program.cs - Add After <code>HandleShortenUrl</code></h3>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#00f">static</span> Task HandleRedirect(HttpContext context)
-{
-    <span style="color:#2b91af">var</span> db = context.RequestServices.GetService&lt;ILiteDatabase&gt;();
-    <span style="color:#2b91af">var</span> collection = db.GetCollection&lt;ShortLink&gt;();
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">static</span> <span class="n">Task</span> <span class="n">HandleRedirect</span><span class="p">(</span><span class="n">HttpContext</span> <span class="n">context</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">var</span> <span class="n">db</span> <span class="p">=</span> <span class="n">context</span><span class="p">.</span><span class="n">RequestServices</span><span class="p">.</span><span class="n">GetService</span><span class="p">&lt;</span><span class="n">ILiteDatabase</span><span class="p">&gt;();</span>
+    <span class="kt">var</span> <span class="n">collection</span> <span class="p">=</span> <span class="n">db</span><span class="p">.</span><span class="n">GetCollection</span><span class="p">&lt;</span><span class="n">ShortLink</span><span class="p">&gt;();</span>
 
-    <span style="color:#2b91af">var</span> path = context.Request.Path.ToUriComponent().Trim(<span style="color:#a31515">&#39;/&#39;</span>);
-    <span style="color:#2b91af">var</span> id = ShortLink.GetId(path);
-    <span style="color:#2b91af">var</span> entry = collection.Find(p =&gt; p.Id == id).FirstOrDefault();
+    <span class="kt">var</span> <span class="n">path</span> <span class="p">=</span> <span class="n">context</span><span class="p">.</span><span class="n">Request</span><span class="p">.</span><span class="n">Path</span><span class="p">.</span><span class="n">ToUriComponent</span><span class="p">().</span><span class="n">Trim</span><span class="p">(</span><span class="sc">&#39;/&#39;</span><span class="p">);</span>
+    <span class="kt">var</span> <span class="n">id</span> <span class="p">=</span> <span class="n">ShortLink</span><span class="p">.</span><span class="n">GetId</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
+    <span class="kt">var</span> <span class="n">entry</span> <span class="p">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">Find</span><span class="p">(</span><span class="n">p</span> <span class="p">=&gt;</span> <span class="n">p</span><span class="p">.</span><span class="n">Id</span> <span class="p">==</span> <span class="n">id</span><span class="p">).</span><span class="n">FirstOrDefault</span><span class="p">();</span>
 
-    <span style="color:#00f">if</span> (entry != <span style="color:#00f">null</span>)
-        context.Response.Redirect(entry.Url);
-    <span style="color:#00f">else</span>
-        context.Response.Redirect(<span style="color:#a31515">&#34;/&#34;</span>);
+    <span class="k">if</span> <span class="p">(</span><span class="n">entry</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+        <span class="n">context</span><span class="p">.</span><span class="n">Response</span><span class="p">.</span><span class="n">Redirect</span><span class="p">(</span><span class="n">entry</span><span class="p">.</span><span class="n">Url</span><span class="p">);</span>
+    <span class="k">else</span>
+        <span class="n">context</span><span class="p">.</span><span class="n">Response</span><span class="p">.</span><span class="n">Redirect</span><span class="p">(</span><span class="s">&#34;/&#34;</span><span class="p">);</span>
 
-    <span style="color:#00f">return</span> Task.CompletedTask;
-}
+    <span class="k">return</span> <span class="n">Task</span><span class="p">.</span><span class="n">CompletedTask</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>In this block we are taking a few steps:</p>
@@ -797,83 +800,83 @@ info<span style="">:</span> Microsoft.Hosting.Lifetime[0]
 <h2 id="final-touches-to-improve-the-experience">Final Touches to Improve the Experience</h2>
 <p>Right now we are still just showing a plain-text url when someone requests a short link. Just a few small changes can allow us to provide a much cleaner user experience while keeping our small prototype form factor. First, we will modify our <code>&quot;/shorten&quot;</code> handler to redirect our user back to <code>index.html</code> with the shortened link. We will then modify <code>index.html</code> to display the link.</p>
 <h3 id="programcs---bottom-of-handleshortenurl-method">Program.cs - Bottom of HandleShortenUrl Method</h3>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">
-<span style="color:#2b91af">var</span> urlChunk = entry.GetUrlChunk();
-<span style="color:#2b91af">var</span> responseUri = <span style="color:#a31515">$&#34;{context.Request.Scheme}://{context.Request.Host}/{urlChunk}&#34;</span>;
-context.Response.Redirect(<span style="color:#a31515">$&#34;/#{responseUri}&#34;</span>);
-<span style="color:#00f">return</span> Task.CompletedTask;
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp">
+<span class="kt">var</span> <span class="n">urlChunk</span> <span class="p">=</span> <span class="n">entry</span><span class="p">.</span><span class="n">GetUrlChunk</span><span class="p">();</span>
+<span class="kt">var</span> <span class="n">responseUri</span> <span class="p">=</span> <span class="s">$&#34;{context.Request.Scheme}://{context.Request.Host}/{urlChunk}&#34;</span><span class="p">;</span>
+<span class="n">context</span><span class="p">.</span><span class="n">Response</span><span class="p">.</span><span class="n">Redirect</span><span class="p">(</span><span class="s">$&#34;/#{responseUri}&#34;</span><span class="p">);</span>
+<span class="k">return</span> <span class="n">Task</span><span class="p">.</span><span class="n">CompletedTask</span><span class="p">;</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>That&rsquo;s it for <strong>Program.cs</strong>, we just replace the <code>context.Response.WriteAsync()</code> with <code>context.Response.Redirect</code> and we set the redirect URL to our root page with URL hash (#). Now with just a little bit of JavaScript we can add that URL to our page.</p>
 <h3 id="indexhtml-at-the-bottom-of-your-ltformgt">Index.html at the bottom of your &lt;form&gt;</h3>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;form enctype=<span style="color:#a31515">&#34;application/x-www-form-urlencoded&#34;</span> method=<span style="color:#a31515">&#34;POST&#34;</span> action=<span style="color:#a31515">&#34;/shorten&#34;</span>&gt;
-    &lt;label for=<span style="color:#a31515">&#34;url&#34;</span>&gt;
+<td class="lntd">
+<pre class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">form</span> <span class="na">enctype</span><span class="o">=</span><span class="s">&#34;application/x-www-form-urlencoded&#34;</span> <span class="na">method</span><span class="o">=</span><span class="s">&#34;POST&#34;</span> <span class="na">action</span><span class="o">=</span><span class="s">&#34;/shorten&#34;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&#34;url&#34;</span><span class="p">&gt;</span>
         URL
-    &lt;/label&gt;
-    &lt;input type=<span style="color:#a31515">&#34;url&#34;</span> name=<span style="color:#a31515">&#34;url&#34;</span> /&gt;
-    &lt;button type=<span style="color:#a31515">&#34;submit&#34;</span>&gt;Shorten&lt;/button&gt;
-    <span style="color:#008000">&lt;!-- A a place to put our resulting short link --&gt;</span>
-    &lt;p id=<span style="color:#a31515">&#34;urlResult&#34;</span>&gt;&lt;/p&gt;
-&lt;/form&gt;
+    <span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;url&#34;</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;url&#34;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">button</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;submit&#34;</span><span class="p">&gt;</span>Shorten<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+    <span class="c">&lt;!-- A a place to put our resulting short link --&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;urlResult&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
 </code></pre></td></tr></table>
 </div>
 </div><h3 id="indexhtml-right-before-the-ltbodygt-tag">Index.html right before the &lt;/body&gt; tag</h3>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#008000">&lt;!-- Add a script to grab the window&#39;s hash and display result --&gt;</span>
-&lt;script&gt;
-    <span style="color:#00f">let</span> data = window.location.hash;
-    <span style="color:#00f">if</span> (data) {
+<td class="lntd">
+<pre class="chroma"><code class="language-html" data-lang="html"><span class="c">&lt;!-- Add a script to grab the window&#39;s hash and display result --&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="kd">let</span> <span class="nx">data</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">hash</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
 
-        <span style="color:#00f">let</span> url = <span style="color:#00f">new</span> URL(data.substr(1));
+        <span class="kd">let</span> <span class="nx">url</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">URL</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
 
-        <span style="color:#00f">if</span> (url.protocol === window.location.protocol
-            &amp;&amp; url.host === window.location.host) {
-            <span style="color:#00f">let</span> section = document.getElementById(<span style="color:#a31515">&#39;urlResult&#39;</span>);
-            section.innerHTML = <span style="color:#a31515">`&lt;a id=&#34;link&#34; href=&#34;</span><span style="color:#a31515">${</span>url<span style="color:#a31515">}</span><span style="color:#a31515">&#34;&gt;</span><span style="color:#a31515">${</span>url<span style="color:#a31515">}</span><span style="color:#a31515">&lt;/a&gt;`</span>;
-        }
-    }
+        <span class="k">if</span> <span class="p">(</span><span class="nx">url</span><span class="p">.</span><span class="nx">protocol</span> <span class="o">===</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">protocol</span>
+            <span class="o">&amp;&amp;</span> <span class="nx">url</span><span class="p">.</span><span class="nx">host</span> <span class="o">===</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">host</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">let</span> <span class="nx">section</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;urlResult&#39;</span><span class="p">);</span>
+            <span class="nx">section</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="sb">`&lt;a id=&#34;link&#34; href=&#34;</span><span class="si">${</span><span class="nx">url</span><span class="si">}</span><span class="sb">&#34;&gt;</span><span class="si">${</span><span class="nx">url</span><span class="si">}</span><span class="sb">&lt;/a&gt;`</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
 
-&lt;/script&gt;
+<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>Now you can do your final run and test!</p>
@@ -895,6 +898,15 @@ context.Response.Redirect(<span style="color:#a31515">$&#34;/#{responseUri}&#34;
 
         </main>  
 <aside class="tagGroup">
+  <header>
+    <h2 class="tagGroup--header">Utilities</h2>
+    <ul class="tagGroup--list">
+      <li class="tagGroupListItem">
+        <a href="apps/fiddle">Web Tools</a>
+      </li>
+    </ul>
+  </header>
+
   <header>
     <h2 class="tagGroup--header">Tags</h2>
   </header>
