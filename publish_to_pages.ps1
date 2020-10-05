@@ -11,8 +11,10 @@ git worktree prune
 # rm -Recurse -Force .git/worktrees/public/
 
 # Build Angular Application
+rm content\apps\fiddle\*.js
+rm content\apps\fiddle\*.css
 pushd assets\apps\fiddle\src\Fiddle.Run.Client
-ng build --prod --outputPath=..\..\..\..\..\content\apps\fiddle --baseHref=/apps/fiddle/ --deployUrl=/apps/fiddle/
+ng build --prod --outputPath=..\..\..\..\..\content\apps\fiddle --baseHref=/apps/fiddle/ --deployUrl=/apps/fiddle/ --deleteOutputPath=false
 popd
 
 echo "Checking out gh-pages branch into public"
