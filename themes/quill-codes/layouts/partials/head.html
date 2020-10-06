@@ -11,4 +11,8 @@
 
 {{ template "_internal/opengraph.html" . }}
 
+{{ range .AlternativeOutputFormats -}}
+    {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
+{{ end -}}
+
 <script async defer data-domain="quill.codes" src="https://plausible.io/js/plausible.js"></script>
