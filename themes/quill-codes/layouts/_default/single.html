@@ -6,6 +6,12 @@
   <img class="blogPostTitle" src="{{ .Params.cover_image }}" alt="{{ .Params.cover_image_alt }}" />
   {{ end }}
   <h1 class="postTitle"> {{ .Title }}</h1>
+  <aside class="shareIcons">
+    <a class="fa fa-facebook" rel="nofollow noopener" href="https://www.facebook.com/sharer/sharer.php?u={{ .Permalink }}" target="_blank"
+      onclick="shareFacebook('{{ .Permalink }}'); return false;" title="Share on Facebook"></a>
+    <a class="fa fa-twitter" rel="nofollow noopener" href="http://twitter.com/share?text={{ .Title }}&url={{ .Permalink }}&&via={{ .Site.Params.twitter }}" target="_blank" title="Share on Twitter"></a>
+    <a class="fa fa-linkedin" rel="nofollow noopener" href="https://www.linkedin.com/sharing/share-offsite/?url=https://quill.codes/posts/fast-prototyping-url-shortener/" onclick="shareLinkedin('{{ .Permalink }}'); return false;" title="Share on LinkedIn"></a>
+  </aside>
   <article class="blogPost">
     <div class="blogPost--details">
       <div class="blogPostDetails--postAuthor">
