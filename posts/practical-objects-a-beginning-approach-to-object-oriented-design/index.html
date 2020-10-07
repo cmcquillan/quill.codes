@@ -6,7 +6,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
 <meta name="description" content="The first entry in a series where share strategies for Object Oriented Design in a practical way that considers time, resources, and maintainability." />
 <title>Practical Objects: A Beginning Approach to Object Oriented Design | Quill.Codes</title>
-<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@500&family=Montserrat:ital,wght@1,300&display=swap" rel="stylesheet">
+<link
+    href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@500&family=Montserrat:ital,wght@1,300&display=swap"
+    rel="stylesheet">
 <link href="/css/site.css" rel="stylesheet" />
 <link href="/css/syntax.css" rel="stylesheet" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -26,6 +28,21 @@
 
 <script async defer data-domain="quill.codes" src="https://plausible.io/js/plausible.js"></script>
 
+<script>
+    function shareFacebook(uri) {
+        let newWindow = window.open(
+            'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(uri),
+            'facebook-share-dialog',
+            'width=626,height=436');
+    }
+
+    function shareLinkedin(uri) {
+        let newWindow = window.open(
+            'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(uri),
+            'linkedin-share-dialog',
+            'width=626,height=436');
+    }
+</script>
     
     
 
@@ -67,6 +84,12 @@
 <div class="blogPostContainer">
   
   <h1 class="postTitle"> Practical Objects: A Beginning Approach to Object Oriented Design</h1>
+  <aside class="shareIcons">
+    <a class="fa fa-facebook" rel="nofollow noopener" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fquill.codes%2fposts%2fpractical-objects-a-beginning-approach-to-object-oriented-design%2f" target="_blank"
+      onclick="shareFacebook('https:\/\/quill.codes\/posts\/practical-objects-a-beginning-approach-to-object-oriented-design\/'); return false;" title="Share on Facebook"></a>
+    <a class="fa fa-twitter" rel="nofollow noopener" href="http://twitter.com/share?text=Practical%20Objects%3a%20A%20Beginning%20Approach%20to%20Object%20Oriented%20Design&url=https%3a%2f%2fquill.codes%2fposts%2fpractical-objects-a-beginning-approach-to-object-oriented-design%2f&&via=QuillCodes" target="_blank" title="Share on Twitter"></a>
+    <a class="fa fa-linkedin" rel="nofollow noopener" href="https://www.linkedin.com/sharing/share-offsite/?url=https://quill.codes/posts/fast-prototyping-url-shortener/" onclick="shareLinkedin('https:\/\/quill.codes\/posts\/practical-objects-a-beginning-approach-to-object-oriented-design\/'); return false;" title="Share on LinkedIn"></a>
+  </aside>
   <article class="blogPost">
     <div class="blogPost--details">
       <div class="blogPostDetails--postAuthor">

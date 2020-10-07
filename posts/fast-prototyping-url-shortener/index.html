@@ -6,7 +6,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
 <meta name="description" content="Quickly prototype your first URL Shortener with .NET 5. This tutorial will show you how!" />
 <title>Fast Builds: Make a Url Shortener with .NET | Quill.Codes</title>
-<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@500&family=Montserrat:ital,wght@1,300&display=swap" rel="stylesheet">
+<link
+    href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@500&family=Montserrat:ital,wght@1,300&display=swap"
+    rel="stylesheet">
 <link href="/css/site.css" rel="stylesheet" />
 <link href="/css/syntax.css" rel="stylesheet" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -30,6 +32,21 @@
 
 <script async defer data-domain="quill.codes" src="https://plausible.io/js/plausible.js"></script>
 
+<script>
+    function shareFacebook(uri) {
+        let newWindow = window.open(
+            'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(uri),
+            'facebook-share-dialog',
+            'width=626,height=436');
+    }
+
+    function shareLinkedin(uri) {
+        let newWindow = window.open(
+            'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(uri),
+            'linkedin-share-dialog',
+            'width=626,height=436');
+    }
+</script>
     
     
 
@@ -73,6 +90,12 @@
   <img class="blogPostTitle" src="https://quill-static.sfo2.digitaloceanspaces.com/images/blog/fast-prototyping-quill-url-shortener.png" alt="A logo with the text &#39;Quill.Codes&#39; and a picture of a large letter &#39;Q&#39; with a quill pen superimposed over it. To the right is text stating &#39;Fast Builds with .NET&#39;" />
   
   <h1 class="postTitle"> Fast Builds: Make a Url Shortener with .NET</h1>
+  <aside class="shareIcons">
+    <a class="fa fa-facebook" rel="nofollow noopener" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fquill.codes%2fposts%2ffast-prototyping-url-shortener%2f" target="_blank"
+      onclick="shareFacebook('https:\/\/quill.codes\/posts\/fast-prototyping-url-shortener\/'); return false;" title="Share on Facebook"></a>
+    <a class="fa fa-twitter" rel="nofollow noopener" href="http://twitter.com/share?text=Fast%20Builds%3a%20Make%20a%20Url%20Shortener%20with%20.NET&url=https%3a%2f%2fquill.codes%2fposts%2ffast-prototyping-url-shortener%2f&&via=QuillCodes" target="_blank" title="Share on Twitter"></a>
+    <a class="fa fa-linkedin" rel="nofollow noopener" href="https://www.linkedin.com/sharing/share-offsite/?url=https://quill.codes/posts/fast-prototyping-url-shortener/" onclick="shareLinkedin('https:\/\/quill.codes\/posts\/fast-prototyping-url-shortener\/'); return false;" title="Share on LinkedIn"></a>
+  </aside>
   <article class="blogPost">
     <div class="blogPost--details">
       <div class="blogPostDetails--postAuthor">
