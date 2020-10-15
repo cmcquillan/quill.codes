@@ -4,14 +4,49 @@
   
   <url>
     <loc>https://quill.codes/tags/csharp/</loc>
-    <lastmod>2020-09-22T09:22:48-07:00</lastmod>
+    <lastmod>2020-10-15T14:39:57-07:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://quill.codes/tags/dotnet/</loc>
-    <lastmod>2020-09-22T09:22:48-07:00</lastmod>
+    <lastmod>2020-10-15T14:39:57-07:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://quill.codes/</loc>
+    <lastmod>2020-10-15T14:39:57-07:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://quill.codes/tips/</loc>
+    <lastmod>2020-10-15T14:39:57-07:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://quill.codes/tips/expression-bodied-members/</loc>
+    <lastmod>2020-10-15T14:39:57-07:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://quill.codes/tags/syntax-tips/</loc>
+    <lastmod>2020-10-15T14:39:57-07:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://quill.codes/tags/</loc>
+    <lastmod>2020-10-15T14:39:57-07:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
@@ -31,21 +66,14 @@
   </url>
   
   <url>
-    <loc>https://quill.codes/tags/prototyping/</loc>
-    <lastmod>2020-09-22T09:22:48-07:00</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://quill.codes/</loc>
-    <lastmod>2020-09-22T09:22:48-07:00</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://quill.codes/posts/</loc>
+    <lastmod>2020-09-22T09:22:48-07:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://quill.codes/tags/prototyping/</loc>
     <lastmod>2020-09-22T09:22:48-07:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
@@ -59,28 +87,7 @@
   </url>
   
   <url>
-    <loc>https://quill.codes/tags/</loc>
-    <lastmod>2020-09-22T09:22:48-07:00</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://quill.codes/tips/</loc>
-    <lastmod>2020-09-17T12:47:44-07:00</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://quill.codes/tips/set-class-fields-with-out-parameters/</loc>
-    <lastmod>2020-09-17T12:47:44-07:00</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://quill.codes/tags/syntax-tips/</loc>
     <lastmod>2020-09-17T12:47:44-07:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>

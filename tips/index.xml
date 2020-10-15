@@ -6,10 +6,20 @@
     <description>Recent content in quill.codes.tips on Quill.Codes</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 17 Sep 2020 12:47:44 -0700</lastBuildDate>
+    <lastBuildDate>Thu, 15 Oct 2020 14:39:57 -0700</lastBuildDate>
     
 	<atom:link href="https://quill.codes/tips/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Simplify C# with Expression-Bodied Members</title>
+      <link>https://quill.codes/tips/expression-bodied-members/</link>
+      <pubDate>Thu, 15 Oct 2020 14:39:57 -0700</pubDate>
+      
+      <guid>https://quill.codes/tips/expression-bodied-members/</guid>
+      <description>You Can Simplify Your Syntax C# is a fantastic language because it constantly evolves in a way that simplifies syntax and makes the your code more expressive. Expression-bodied members were released in C# 6 and further enhanced in C# 7. At the time I was still a junior developer and had not yet decided that C# and .NET were going to be my long-term focus.
+I am not going to say that this feature &amp;ldquo;sealed the deal&amp;rdquo; for me and .</description>
+    </item>
     
     <item>
       <title>Set Class Fields Using &#39;out&#39; Parameters</title>

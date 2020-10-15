@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+<meta name="description" content="Worthwhile articles, tips, and freelance advice from Casey McQuillan, a freelance cloud software engineer." />
+<title>Simplify C# with Expression-Bodied Members | Quill.Codes</title>
+<link
+    href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@500&family=Montserrat:ital,wght@1,300&display=swap"
+    rel="stylesheet">
+<link href="/css/site.css" rel="stylesheet" />
+<link href="/css/syntax.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Simplify C# with Expression-Bodied Members"/>
+<meta name="twitter:description" content="You Can Simplify Your Syntax C# is a fantastic language because it constantly evolves in a way that simplifies syntax and makes the your code more expressive. Expression-bodied members were released in C# 6 and further enhanced in C# 7. At the time I was still a junior developer and had not yet decided that C# and .NET were going to be my long-term focus.
+I am not going to say that this feature &ldquo;sealed the deal&rdquo; for me and ."/>
+
+
+<meta property="og:title" content="Simplify C# with Expression-Bodied Members" />
+<meta property="og:description" content="You Can Simplify Your Syntax C# is a fantastic language because it constantly evolves in a way that simplifies syntax and makes the your code more expressive. Expression-bodied members were released in C# 6 and further enhanced in C# 7. At the time I was still a junior developer and had not yet decided that C# and .NET were going to be my long-term focus.
+I am not going to say that this feature &ldquo;sealed the deal&rdquo; for me and ." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://quill.codes/tips/expression-bodied-members/" />
+<meta property="article:published_time" content="2020-10-15T14:39:57-07:00" />
+<meta property="article:modified_time" content="2020-10-15T14:39:57-07:00" />
+
+
+<script async defer data-domain="quill.codes" src="https://plausible.io/js/plausible.js"></script>
+
+<script>
+    function shareFacebook(uri) {
+        let newWindow = window.open(
+            'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(uri),
+            'facebook-share-dialog',
+            'width=626,height=436');
+    }
+
+    function shareLinkedin(uri) {
+        let newWindow = window.open(
+            'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(uri),
+            'linkedin-share-dialog',
+            'width=626,height=640');
+    }
+</script>
+    
+    
+
+    
+</head>
+
+<body>
+    <div class="pageContainer"><header class="header">
+    <div class="header--siteTitle">
+        <a title="Back to Site Home" class="title header-titleLogo" href="/">
+            <object viewBox="0 0 100 100" height="60" data="/images/blog_icon.svg" alt="The Quill.Codes Site Logo. Logo is an inkwell with a Quill superimposed in front."
+                type="image/svg+xml">
+                The Quill.Codes Site Logo. Logo is an inkwell with a Quill superimposed in front.
+            </object>
+        </a>
+        <a title="Back to Site Home" class="title header--titleLink" href="/">
+            Quill.Codes
+        </a>
+    </div>
+
+    <div class="header--img">
+        <img class="header--img-logo" src="/images/profile.png" alt="Picture of Casey (Quill)" />
+    </div>
+
+    <div class="header--menu">
+        <div class="socialIcons">
+            <a title="Casey's Twitter Account" rel="nofollow noopener" target="_blank" href="https://twitter.com/QuillCodes" class="fa fa-twitter socialIcons--icon"></a>
+            <a title="Casey's Github Account" rel="nofollow noopener" target="_blank" href="https://github.com/cmcquillan" class="fa fa-github socialIcons--icon"></a>
+            <a title="Casey's LinkedIn Account" rel="nofollow noopener" target="_blank" href="https://www.linkedin.com/in/caseymcquillan/"
+                class="fa fa-linkedin socialIcons--icon"></a>
+            <a title="Quill.Codes RSS Feed" rel="nofollow noopener" target="_blank" href="https://quill.codes/index.xml"
+                class="fa fa-rss socialIcons--icon"></a>
+        </div>
+    </div>
+
+</header><main id="content" class="content">
+
+
+<div class="blogPostContainer">
+  
+  <h1 class="postTitle"> Simplify C# with Expression-Bodied Members</h1>
+  <aside class="shareIcons">
+    <a class="fa fa-facebook" rel="nofollow noopener" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fquill.codes%2ftips%2fexpression-bodied-members%2f" target="_blank"
+      onclick="shareFacebook('https:\/\/quill.codes\/tips\/expression-bodied-members\/'); return false;" title="Share on Facebook"></a>
+    <a class="fa fa-twitter" rel="nofollow noopener" href="http://twitter.com/share?text=Simplify%20C%23%20with%20Expression-Bodied%20Members&url=https%3a%2f%2fquill.codes%2ftips%2fexpression-bodied-members%2f&&via=QuillCodes" target="_blank" title="Share on Twitter"></a>
+    <a class="fa fa-linkedin" rel="nofollow noopener" href="https://www.linkedin.com/sharing/share-offsite/?url=https://quill.codes/posts/fast-prototyping-url-shortener/" onclick="shareLinkedin('https:\/\/quill.codes\/tips\/expression-bodied-members\/'); return false;" title="Share on LinkedIn"></a>
+  </aside>
+  <article class="blogPost">
+    <div class="blogPost--details">
+      <div class="blogPostDetails--postAuthor">
+        <span class="blogPostDetails--postAuthor-formattedAuthor">
+          Casey McQuillan
+        </span>
+      </div>
+      <div class="blogPostDetails--postDate">
+        <span class="blogPostDetails--postDate-formattedDate">October 15, 2020</span>
+      </div>
+    </div>
+
+    <div class="blogPost--content"><h2 id="you-can-simplify-your-syntax">You Can Simplify Your Syntax</h2>
+<p>C# is a fantastic language because it constantly evolves in a way that simplifies syntax and makes the your code more expressive. Expression-bodied members were released in C# 6 and further enhanced in C# 7. At the time I was still a junior developer and had not yet decided that C# and .NET were going to be my long-term focus.</p>
+<p>I am not going to say that this feature &ldquo;sealed the deal&rdquo; for me and .NET, but it&rsquo;s definitely the feature I miss most when using any other language.</p>
+<h3 id="simple-expression-bodied-members">Simple Expression-bodied Members</h3>
+<p>The simplest form is just to take any existing read-only property and condense it down.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="kt">int</span> <span class="n">MyProperty</span>
+<span class="p">{</span>
+  <span class="k">get</span> 
+  <span class="p">{</span>
+    <span class="k">return</span> <span class="n">_myField</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>This becomes:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="kt">int</span> <span class="n">MyProperty</span> <span class="p">=&gt;</span> <span class="n">_myField</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>You can even use it for simple method bodies:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="kt">decimal</span> <span class="n">CalculateTax</span><span class="p">(</span><span class="kt">decimal</span> <span class="n">rate</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="n">_totalPrice</span> <span class="p">*</span> <span class="n">rate</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>It saves you time, and it saves you space on your screen. Most C# style conventions say that the opening bracket <code>{</code> and closing bracket <code>}</code> belong on new lines (with some exceptions). You could argue with the style guide, but on a larger team that is probably a losing battle. This feature solves this problem by omitting the brackets entirely.</p>
+<h3 id="expression-bodied-members-can-help-reduce-boilerplate">Expression-bodied Members Can Help Reduce Boilerplate</h3>
+<p>Not impressed yet? What if I told you that you can use expression-bodied members on full properties?</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">private</span> <span class="kt">int</span> <span class="n">_myField</span><span class="p">;</span>
+
+<span class="k">public</span> <span class="kt">int</span> <span class="n">MyProperty</span> 
+<span class="p">{</span>
+  <span class="k">get</span> <span class="p">=&gt;</span> <span class="n">_myField</span><span class="p">;</span> 
+  <span class="k">set</span> <span class="p">=&gt;</span> <span class="n">_myField</span> <span class="p">=</span> <span class="k">value</span><span class="p">;</span>  
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>That is pretty nifty, but honestly not impressive unless you have logic to call on your getter/setter.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">private</span> <span class="kt">int</span> <span class="n">_myField</span><span class="p">;</span>
+
+<span class="k">private</span> <span class="k">void</span> <span class="n">SetField</span><span class="p">(</span><span class="k">ref</span> <span class="kt">int</span> <span class="n">field</span><span class="p">,</span> <span class="kt">int</span> <span class="k">value</span><span class="p">,</span> <span class="p">[</span><span class="n">CallerMemberName</span><span class="p">]</span><span class="kt">string</span> <span class="n">memberName</span> <span class="p">=</span>  <span class="s">&#34;&#34;</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">field</span> <span class="p">=</span> <span class="k">value</span><span class="p">;</span>
+  <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$&#34;{memberName} was set to {value}.&#34;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">public</span> <span class="kt">int</span> <span class="n">MyProperty</span>
+<span class="p">{</span>
+  <span class="k">get</span> <span class="p">=&gt;</span> <span class="n">_myField</span><span class="p">;</span>
+  <span class="k">set</span> <span class="p">=&gt;</span> <span class="n">SetField</span><span class="p">(</span><span class="k">ref</span> <span class="n">_myField</span><span class="p">,</span> <span class="k">value</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// Output for &#34;MyProperty = 5&#34;
+</span><span class="c1">// MyProperty was set to 5.
+</span></code></pre></td></tr></table>
+</div>
+</div><h3 id="expression-bodied-members-can-be-used-in-constructors">Expression-Bodied Members Can be Used in Constructors</h3>
+<p>The most repetive boilerplate you tend to get with C# is setting class fields in constructors.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">Cake</span>
+<span class="p">{</span>
+  <span class="k">private</span> <span class="k">readonly</span> <span class="n">IFrosting</span> <span class="n">_frosting</span><span class="p">;</span>
+
+  <span class="k">public</span> <span class="n">Cake</span><span class="p">(</span><span class="n">IFrosting</span> <span class="n">frosting</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="n">_frosting</span> <span class="p">=</span> <span class="n">frosting</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>This simplifies your single-assignment constructors greatly. However, you can also combine this with tuple syntax in order to perform multiple assignments at once.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">Cake</span>
+<span class="p">{</span>
+  <span class="k">private</span> <span class="k">readonly</span> <span class="n">ISprinkles</span> <span class="n">_sprinkles</span><span class="p">;</span>
+  <span class="k">private</span> <span class="k">readonly</span> <span class="n">IFrosting</span> <span class="n">_frosting</span><span class="p">;</span>
+
+  <span class="k">public</span> <span class="n">Cake</span><span class="p">(</span><span class="n">ISprinkles</span> <span class="n">sprinkles</span><span class="p">,</span> <span class="n">IFrosting</span> <span class="n">frosting</span><span class="p">)</span>
+    <span class="p">=&gt;</span> <span class="p">(</span><span class="n">_sprinkles</span><span class="p">,</span> <span class="n">_frosting</span><span class="p">)</span> <span class="p">=</span> <span class="p">(</span><span class="n">sprinkles</span><span class="p">,</span> <span class="n">frosting</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>This syntax will assign the fields in the order that they appear in the tuple.</p>
+<p><em>Note: Keep in mind that if your parameters are all of similar types, like <code>string</code>, that getting them in the wrong order can be easy using this syntax. However, fields of different types will be caught by the compiles. Thus, I would only recommend it when assigning a set of varied fields.</em></p>
+<p>Hope you enjoyed this quick overview of one of my favorite features of C#!</p>
+</div>
+  </article>
+</div>
+
+
+        </main>  
+<aside class="tagGroup">
+  <header>
+    <h2 class="tagGroup--header">Utilities</h2>
+    <ul class="tagGroup--list">
+      <li class="tagGroupListItem">
+        <a href="/apps/fiddle">Web Tools</a>
+      </li>
+    </ul>
+  </header>
+
+  <header>
+    <h2 class="tagGroup--header">Tags</h2>
+  </header>
+  <ul class="tagGroup--list">
+    
+      <li class="tagGroupListItem">
+        <a href="/tags/csharp">
+          csharp(4)
+        </a>
+      </li>
+    
+      <li class="tagGroupListItem">
+        <a href="/tags/dotnet">
+          dotnet(4)
+        </a>
+      </li>
+    
+      <li class="tagGroupListItem">
+        <a href="/tags/syntax-tips">
+          syntax-tips(2)
+        </a>
+      </li>
+    
+      <li class="tagGroupListItem">
+        <a href="/tags/oop">
+          oop(1)
+        </a>
+      </li>
+    
+      <li class="tagGroupListItem">
+        <a href="/tags/productivity">
+          productivity(1)
+        </a>
+      </li>
+    
+      <li class="tagGroupListItem">
+        <a href="/tags/prototyping">
+          prototyping(1)
+        </a>
+      </li>
+    
+      <li class="tagGroupListItem">
+        <a href="/tags/visual-studio">
+          visual-studio(1)
+        </a>
+      </li>
+    
+  </ul>
+</aside></div></body>
+
+</html>
