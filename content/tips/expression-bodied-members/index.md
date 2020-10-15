@@ -1,5 +1,6 @@
 ---
 title: "Simplify C# with Expression-Bodied Members"
+description: "Expression-bodied members are a fantastic feature of the C# language that simplifies and condenses your code."
 date: 2020-10-15T14:39:57-07:00
 author: "Casey McQuillan"
 tags: ["CSharp", "Dotnet", "Syntax Tips"]
