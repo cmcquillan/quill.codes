@@ -8,8 +8,8 @@ series:
 - "Fast Builds"
 description: "Quickly prototype your first URL Shortener with .NET 5. This tutorial will show you how!"
 images:
-- https://quill-static.sfo2.digitaloceanspaces.com/images/blog/fast-prototyping-quill-url-shortener.png
-cover_image: https://quill-static.sfo2.digitaloceanspaces.com/images/blog/fast-prototyping-quill-url-shortener.png
+- fast-prototyping-quill-url-shortener.png
+cover_image: fast-prototyping-quill-url-shortener.png
 cover_image_alt: "A logo with the text 'Quill.Codes' and a picture of a large letter 'Q' with a quill pen superimposed over it. To the right is text stating 'Fast Builds with .NET'"
 ---
 
@@ -41,7 +41,7 @@ For this tutorial we have a couple tools that will be necessary.
 
 * [.NET SDK](https://dotnet.microsoft.com/download/dotnet-core)
   * *Note: This tutorial uses some features from .NET 5, which is a Release Candidate as of this writing.*
-  ![List of Supported Versions of .NET. The entry for version 5.0.0-rc.1 has a box highlighting it.](https://quill-static.sfo2.digitaloceanspaces.com/images/blog/dotnet_versions.png)
+  ![List of Supported Versions of .NET. The entry for version 5.0.0-rc.1 has a box highlighting it.](dotnet_versions.png)
 * [VS Code](https://code.visualstudio.com/)
 * [C# Extension for VS Code](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp)
 
@@ -160,7 +160,7 @@ info: Microsoft.Hosting.Lifetime[0]
       Content root path: C:\src\url-shortener-tutorial
 ```
 
-![An image of the chrome web browser pointed to https://localhost:5001/. The browser window displays "Hello, World!" in plain text.](https://quill-static.sfo2.digitaloceanspaces.com/images/blog/hello_world_browser.PNG)
+![An image of the chrome web browser pointed to https://localhost:5001/. The browser window displays "Hello, World!" in plain text.](hello_world_browser.png)
 
 ## Serving a Simple HTML Interface
 
@@ -226,7 +226,7 @@ app.UseEndpoints((endpoints) =>
 
 We can now run the app again, go to our browser and see our base interface.
 
-![Our simple URL shortener interface. It has a title stating "Simple URL Shortener", text stating "Enter your URL below to retrieve the shortened version", and a form that contains a single text field and button that says "Shorten"](https://quill-static.sfo2.digitaloceanspaces.com/images/blog/url_shortener_base_interface.PNG)
+![Our simple URL shortener interface. It has a title stating "Simple URL Shortener", text stating "Enter your URL below to retrieve the shortened version", and a form that contains a single text field and button that says "Shorten"](url_shortener_base_interface.png)
 
 ## Time to Shorten Some Links!
 
@@ -328,10 +328,10 @@ There is a bit to unpack here, so let's go through it piece-by-piece.
 At this point, we should be able to run another test. Run the project, enter a valid URL into your form and you should see the URL in your response.
 
 ### Test your form
-![The Simple URL Shortener form described earlier in this article with the text "https://www.google.com/" entered in the URL text box.](https://quill-static.sfo2.digitaloceanspaces.com/images/blog/url_shortener_test_url.PNG)
+![The Simple URL Shortener form described earlier in this article with the text "https://www.google.com/" entered in the URL text box.](url_shortener_test_url.png)
 
 ### Your test response
-![A chrome browser window shorting the URL of https://localhost:5001/shorten with the text "https://localhost:5001/Fc1bBw" in the content window.](https://quill-static.sfo2.digitaloceanspaces.com/images/blog/url_shortener_test_url_response.PNG)
+![A chrome browser window shorting the URL of https://localhost:5001/shorten with the text "https://localhost:5001/Fc1bBw" in the content window.](url_shortener_test_url_response.png)
 
 *Congrats! You are successfully processing requests and returning data to your user. Next we will persist our generated short links to a database.*
 
@@ -525,7 +525,7 @@ That's it for **Program.cs**, we just replace the `context.Response.WriteAsync()
 
 Now you can do your final run and test!
 
-![The Simple URL Shortener page from before, but the URL bar now has the resulting short link and the short link has been added to the page below the "Shorten" button.](https://quill-static.sfo2.digitaloceanspaces.com/images/blog/url_shortener_final_result.PNG)
+![The Simple URL Shortener page from before, but the URL bar now has the resulting short link and the short link has been added to the page below the "Shorten" button.](url_shortener_final_result.png)
 
 ## Quick Review and What's Next
 
