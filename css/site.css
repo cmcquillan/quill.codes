@@ -318,7 +318,8 @@ a:visited {
   font-size: 1.5rem;
 }
 
-.blogPostContainer {
+.blogPostContainer,
+.blogCommentContainer {
   width: var(--content-size);
   box-sizing: border-box;
 }
