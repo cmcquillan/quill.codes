@@ -14,7 +14,7 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://quill-static.sfo2.digitaloceanspaces.com/images/blog/fast-prototyping-quill-url-shortener.png"/>
+<meta name="twitter:image" content="https://quill.codes/fast-prototyping-quill-url-shortener.png"/>
 
 <meta name="twitter:title" content="Fast Builds: Make a Url Shortener with .NET"/>
 <meta name="twitter:description" content="Quickly prototype your first URL Shortener with .NET 5. This tutorial will show you how!"/>
@@ -24,7 +24,7 @@
 <meta property="og:description" content="Quickly prototype your first URL Shortener with .NET 5. This tutorial will show you how!" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://quill.codes/posts/fast-prototyping-url-shortener/" />
-<meta property="og:image" content="https://quill-static.sfo2.digitaloceanspaces.com/images/blog/fast-prototyping-quill-url-shortener.png" />
+<meta property="og:image" content="https://quill.codes/fast-prototyping-quill-url-shortener.png" />
 <meta property="article:published_time" content="2020-09-22T09:22:48-07:00" />
 <meta property="article:modified_time" content="2020-09-22T09:22:48-07:00" />
 
@@ -87,7 +87,7 @@
 
 <div class="blogPostContainer">
   
-  <img class="blogPostTitle" src="https://quill-static.sfo2.digitaloceanspaces.com/images/blog/fast-prototyping-quill-url-shortener.png" alt="A logo with the text &#39;Quill.Codes&#39; and a picture of a large letter &#39;Q&#39; with a quill pen superimposed over it. To the right is text stating &#39;Fast Builds with .NET&#39;" />
+  <img class="blogPostTitle" src="fast-prototyping-quill-url-shortener.png" alt="A logo with the text &#39;Quill.Codes&#39; and a picture of a large letter &#39;Q&#39; with a quill pen superimposed over it. To the right is text stating &#39;Fast Builds with .NET&#39;" />
   
   <h1 class="postTitle"> Fast Builds: Make a Url Shortener with .NET</h1>
   <aside class="shareIcons">
@@ -125,7 +125,7 @@
 <li><a href="https://dotnet.microsoft.com/download/dotnet-core">.NET SDK</a>
 <ul>
 <li><em>Note: This tutorial uses some features from .NET 5, which is a Release Candidate as of this writing.</em>
-<img src="https://quill-static.sfo2.digitaloceanspaces.com/images/blog/dotnet_versions.png" alt="List of Supported Versions of .NET. The entry for version 5.0.0-rc.1 has a box highlighting it."></li>
+<img src="dotnet_versions.png" alt="List of Supported Versions of .NET. The entry for version 5.0.0-rc.1 has a box highlighting it."></li>
 </ul>
 </li>
 <li><a href="https://code.visualstudio.com/">VS Code</a></li>
@@ -309,7 +309,7 @@
       <span class="n">Content</span> <span class="n">root</span> <span class="n">path</span><span class="err">:</span> <span class="n">C:</span><span class="p">\</span><span class="n">src</span><span class="p">\</span><span class="n">url-shortener-tutorial</span>
 </code></pre></td></tr></table>
 </div>
-</div><p><img src="https://quill-static.sfo2.digitaloceanspaces.com/images/blog/hello_world_browser.PNG" alt="An image of the chrome web browser pointed to https://localhost:5001/. The browser window displays &ldquo;Hello, World!&rdquo; in plain text."></p>
+</div><p><img src="hello_world_browser.png" alt="An image of the chrome web browser pointed to https://localhost:5001/. The browser window displays &ldquo;Hello, World!&rdquo; in plain text."></p>
 <h2 id="serving-a-simple-html-interface">Serving a Simple HTML Interface</h2>
 <p>For this project, we only need a few components to properly interact with our URL shortener.</p>
 <ul>
@@ -410,7 +410,7 @@
 </code></pre></td></tr></table>
 </div>
 </div><p>We can now run the app again, go to our browser and see our base interface.</p>
-<p><img src="https://quill-static.sfo2.digitaloceanspaces.com/images/blog/url_shortener_base_interface.PNG" alt="Our simple URL shortener interface. It has a title stating &ldquo;Simple URL Shortener&rdquo;, text stating &ldquo;Enter your URL below to retrieve the shortened version&rdquo;, and a form that contains a single text field and button that says &ldquo;Shorten&rdquo;"></p>
+<p><img src="url_shortener_base_interface.png" alt="Our simple URL shortener interface. It has a title stating &ldquo;Simple URL Shortener&rdquo;, text stating &ldquo;Enter your URL below to retrieve the shortened version&rdquo;, and a form that contains a single text field and button that says &ldquo;Shorten&rdquo;"></p>
 <h2 id="time-to-shorten-some-links">Time to Shorten Some Links!</h2>
 <p>Now that we have a basic interface, we can focus a bit more on our link shortening solution. For this we are going to create a new file in our directory and call is <strong>ShortLink.cs</strong>. Here we will define a new <code>class</code> which will hold some data and functionality for our links.</p>
 <h3 id="shortlinkcs">ShortLink.cs</h3>
@@ -590,9 +590,9 @@
 </ul>
 <p>At this point, we should be able to run another test. Run the project, enter a valid URL into your form and you should see the URL in your response.</p>
 <h3 id="test-your-form">Test your form</h3>
-<p><img src="https://quill-static.sfo2.digitaloceanspaces.com/images/blog/url_shortener_test_url.PNG" alt="The Simple URL Shortener form described earlier in this article with the text &ldquo;https://www.google.com/&rdquo; entered in the URL text box."></p>
+<p><img src="url_shortener_test_url.png" alt="The Simple URL Shortener form described earlier in this article with the text &ldquo;https://www.google.com/&rdquo; entered in the URL text box."></p>
 <h3 id="your-test-response">Your test response</h3>
-<p><img src="https://quill-static.sfo2.digitaloceanspaces.com/images/blog/url_shortener_test_url_response.PNG" alt="A chrome browser window shorting the URL of https://localhost:5001/shorten with the text &ldquo;https://localhost:5001/Fc1bBw&rdquo; in the content window."></p>
+<p><img src="url_shortener_test_url_response.png" alt="A chrome browser window shorting the URL of https://localhost:5001/shorten with the text &ldquo;https://localhost:5001/Fc1bBw&rdquo; in the content window."></p>
 <p><em>Congrats! You are successfully processing requests and returning data to your user. Next we will persist our generated short links to a database.</em></p>
 <h2 id="persisting-your-short-links">Persisting Your Short Links</h2>
 <p>Up to this point we have avoided adding dependencies to our project. For this section we have to change that by adding a database. We are going to use <a href="https://www.litedb.org/">LiteDB</a>, a simple, lightweight NoSQL database that will let us easily persist our short links to a file so they can be reitreved later.</p>
@@ -903,7 +903,7 @@
 </code></pre></td></tr></table>
 </div>
 </div><p>Now you can do your final run and test!</p>
-<p><img src="https://quill-static.sfo2.digitaloceanspaces.com/images/blog/url_shortener_final_result.PNG" alt="The Simple URL Shortener page from before, but the URL bar now has the resulting short link and the short link has been added to the page below the &ldquo;Shorten&rdquo; button."></p>
+<p><img src="url_shortener_final_result.png" alt="The Simple URL Shortener page from before, but the URL bar now has the resulting short link and the short link has been added to the page below the &ldquo;Shorten&rdquo; button."></p>
 <h2 id="quick-review-and-whats-next">Quick Review and What&rsquo;s Next</h2>
 <p>I hope you enjoyed writing a quick prototype URL Shortener! We explored a few concepts in this post, and hopefully you learned a bit about how to write a minimal prototype with ASP<!-- raw HTML omitted -->.NET and .NET 5.</p>
 <p>If you learned from creating this prototype, I would encourage your to experiment on your own and start filling in new features or refactoring it to a more &lsquo;production-ready&rsquo; app. Here are a few suggestions based upon things you might want to learn:</p>
