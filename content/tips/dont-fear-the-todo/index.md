@@ -5,7 +5,8 @@ date: 2020-09-16T13:58:39-07:00
 draft: false
 author: "Casey McQuillan"
 tags: ["Visual Studio", "Productivity"]
-cover_image: https://quill-static.sfo2.digitaloceanspaces.com/images/tips/visual_studio_task_main.png
+cover_image: visual_studio_task_main.png
+cover_image_alt: "A CSharp class named App with a Main() method and a single comment that says 'TODO: Don't be afraid' with a sunglasses emoji."
 ---
 
 ## Did You Know?
@@ -14,10 +15,10 @@ cover_image: https://quill-static.sfo2.digitaloceanspaces.com/images/tips/visual
 
 From within Visual Studio Go to View -> Task List. This will display the **Task List** window and show you any area of your open Solution. You can even filter down to your Current Project, Current Document, or Open Documents.
 
-![Visual Studio Task View showing two TODO comments](https://quill-static.sfo2.digitaloceanspaces.com/images/tips/visual_studio_task_view.PNG)
+![Visual Studio Task View showing two TODO comments](visual_studio_task_view.png)
 
 It doesn't just recognize `// TODO`, but will also recognize `// HACK`
-![Visual Studio Task View showing single HACK comment](https://quill-static.sfo2.digitaloceanspaces.com/images/tips/visual_studio_task_view_hack.PNG)
+![Visual Studio Task View showing single HACK comment](visual_studio_task_view_hack.png)
 
 ### What if I Don't Use English?
 
@@ -29,7 +30,7 @@ You can customize the words that trigger a Task View entry in your Visual Studio
 4. Go to *Task List*
 5. Enter any words you would like to highlight from your code comments.
 
-![Visual Studio Options dialog showing the Task List menu](https://quill-static.sfo2.digitaloceanspaces.com/images/tips/visual_studio_task_list_options.PNG)
+![Visual Studio Options dialog showing the Task List menu](visual_studio_task_list_options.png)
 
 ## Additional Links
 

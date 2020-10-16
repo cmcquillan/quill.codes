@@ -5,7 +5,18 @@ draft: false
 description: "Learn a creative way that you can leverage 'out' parameters on your class methods."
 author: "Casey McQuillan"
 tags: ["CSharp", "Dotnet", "Syntax Tips"]
-cover_image: https://quill-static.sfo2.digitaloceanspaces.com/images/tips/set_class_fields_with_out_parameters.png
+cover_image: set_class_fields_with_out_parameters.png
+cover_image_alt: 'class LetMeOut
+    {
+        // You can assign class fields with ''out'' parameters
+        private readonly int _fieldAssign;
+
+        public LetMeOut(string data)
+        {
+            if (!Int32.TryParse(data, out _fieldAssign))
+                throw new ArgumentException("Invalid data", nameof(data));
+        }
+    }'
 ---
 
 ## Did You Know?
