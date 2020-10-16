@@ -235,23 +235,12 @@ a:visited {
   padding-right: 1rem;
 }
 
-.recentGroup--blogPosts {
+.recentGroup--blogPosts,
+.recentGroup--tipPosts {
   display: flex;
   flex-direction: column;
 
   padding: 4px 0px;
-}
-
-.recentGroup--tipPosts {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-
-  padding: 4px 4px;
-}
-
-.recentGroup--tipPosts * {
-  flex: 1 1 30%;
 }
 
 /*
