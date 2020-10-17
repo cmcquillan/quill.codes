@@ -7,13 +7,13 @@ tags: ["CSharp", "Dotnet", "Syntax Tips"]
 draft: false
 ---
 
-## You Can Simplify Your Syntax
+## You Can Simplify Your Syntax With Effective Application of These Techniques
 
 C# is a fantastic language because it constantly evolves in a way that simplifies syntax and makes the your code more expressive. Expression-bodied members were released in C# 6 and further enhanced in C# 7. At the time I was still a junior developer and had not yet decided that C# and .NET were going to be my long-term focus. 
 
 I am not going to say that this feature "sealed the deal" for me and .NET, but it's definitely the feature I miss most when using any other language.
 
-### Simple Expression-bodied Members
+### Basics of Expression-bodied Members
 
 The simplest form is just to take any existing read-only property and condense it down.
 
@@ -27,13 +27,13 @@ public int MyProperty
 }
 ```
 
-This becomes:
+When converted to an expression-bodied member this becomes:
 
 ```csharp
 public int MyProperty => _myField;
 ```
 
-You can even use it for simple method bodies:
+You can even use it to simplify method bodies:
 
 ```csharp
 public decimal CalculateTax(decimal rate) => _totalPrice * rate;
@@ -41,9 +41,9 @@ public decimal CalculateTax(decimal rate) => _totalPrice * rate;
 
 It saves you time, and it saves you space on your screen. Most C# style conventions say that the opening bracket `{` and closing bracket `}` belong on new lines (with some exceptions). You could argue with the style guide, but on a larger team that is probably a losing battle. This feature solves this problem by omitting the brackets entirely.
 
-### Expression-bodied Members Can Help Reduce Boilerplate
+### Expression-bodied Members Can Reduce Boilerplate
 
-Not impressed yet? What if I told you that you can use expression-bodied members on full properties?
+Not impressed yet? What if I told you that you can use expression-bodied members on full properties? This means that you can use this technique for both a getter and setter to reduce the clutter associated with a fully-implemented C# property.
 
 ```csharp
 private int _myField;
@@ -55,21 +55,21 @@ public int MyProperty
 }
 ```
 
-That is pretty nifty, but honestly not impressive unless you have logic to call on your getter/setter. 
+That is a bit more efficient when reading your code, but honestly it is not *that* impressive until you have some more logic to call on your getter/setter. Extracting that logic to a method and using a `ref` parameter for your field can help clarify how your code functions.
 
 ```csharp
 private int _myField;
 
-private void SetField(ref int field, int value, [CallerMemberName]string memberName =  "")
-{
-  field = value;
-  Console.WriteLine($"{memberName} was set to {value}.");
-}
-
 public int MyProperty
 {
   get => _myField;
-  set => SetField(ref _myField, value);
+  set => SetAndLogField(ref _myField, value);
+}
+
+private void SetAndLogField(ref int field, int value, [CallerMemberName]string memberName =  "")
+{
+  field = value;
+  Console.WriteLine($"{memberName} was set to {value}.");
 }
 
 // Output for "MyProperty = 5"
@@ -78,7 +78,9 @@ public int MyProperty
 
 ### Expression-Bodied Members Can be Used in Constructors
 
-The most repetive boilerplate you tend to get with C# is setting class fields in constructors.
+The most repetive boilerplate I see in my own C# code is when I am setting class fields in constructors. It accomplishes the critical task of initializing the object, but if someone is focused on making *simple* and *legible* objects with clear APIs, then the task often becomes repetive. 
+
+When there is just a single assignment, expression-bodied members are extremely consise:
 
 ```csharp
 public class Cake
@@ -89,7 +91,7 @@ public class Cake
 }
 ```
 
-This simplifies your single-assignment constructors greatly. However, you can also combine this with tuple syntax in order to perform multiple assignments at once.
+This simplifies your single-assignment constructors greatly. However, you can also combine this with tuple syntax in order to perform multiple assignments at once. 
 
 ```csharp
 public class Cake
@@ -104,6 +106,8 @@ public class Cake
 
 This syntax will assign the fields in the order that they appear in the tuple. 
 
-*Note: Keep in mind that if your parameters are all of similar types, like `string`, that getting them in the wrong order can be easy using this syntax. However, fields of different types will be caught by the compiles. Thus, I would only recommend it when assigning a set of varied fields.*
+*Note: Keep in mind that if your parameters are all of similar types, like `string`, that getting them in the wrong order can be easy using this syntax. However, fields of different types will be caught by the compiles. Thus, I would only recommend it when assigning simple constructors with varied types for fields.*
 
-Hope you enjoyed this quick overview of one of my favorite features of C#!
+### In Conclusion
+
+I hope you enjoyed this quick overview of one of my favorite features of the C# language. This language feature can be used to improve readability, identify areas for logic encapsulation, and to simplify rote object construction. As C# continues to evolve, there are likely to be other improvements that enhance the expressiveness and overall cleanliness of the language.

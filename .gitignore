@@ -1,3 +1,4 @@
 public/
 offsite_images/
 content/apps/fiddle
+content/**/Sample.cs
