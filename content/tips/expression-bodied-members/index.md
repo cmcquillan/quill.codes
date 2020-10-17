@@ -5,6 +5,8 @@ date: 2020-10-15T14:39:57-07:00
 author: "Casey McQuillan"
 tags: ["CSharp", "Dotnet", "Syntax Tips"]
 draft: false
+cover_image: expression_bodied_members.png
+cover_image_alt: "A picture of a C# class with a single string property that uses an expression-bodied member to return a 'thumbs up' emoji."
 ---
 
 ## You Can Simplify Your Syntax With Effective Application of These Techniques
