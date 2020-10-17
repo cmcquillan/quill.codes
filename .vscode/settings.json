@@ -1,3 +1,7 @@
 {
-    "editor.tabSize": 2
+    "editor.tabSize": 2,
+    "csharp.referencesCodeLens.enabled": false,
+    "csharp.semanticHighlighting.enabled": true,
+    "csharp.testsCodeLens.enabled": false,
+    "omnisharp.autoStart": false
 }
