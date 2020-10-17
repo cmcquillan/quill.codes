@@ -101,10 +101,10 @@
       </div>
     </div>
 
-    <div class="blogPost--content"><h2 id="you-can-simplify-your-syntax">You Can Simplify Your Syntax</h2>
+    <div class="blogPost--content"><h2 id="you-can-simplify-your-syntax-with-effective-application-of-these-techniques">You Can Simplify Your Syntax With Effective Application of These Techniques</h2>
 <p>C# is a fantastic language because it constantly evolves in a way that simplifies syntax and makes the your code more expressive. Expression-bodied members were released in C# 6 and further enhanced in C# 7. At the time I was still a junior developer and had not yet decided that C# and .NET were going to be my long-term focus.</p>
 <p>I am not going to say that this feature &ldquo;sealed the deal&rdquo; for me and .NET, but it&rsquo;s definitely the feature I miss most when using any other language.</p>
-<h3 id="simple-expression-bodied-members">Simple Expression-bodied Members</h3>
+<h3 id="basics-of-expression-bodied-members">Basics of Expression-bodied Members</h3>
 <p>The simplest form is just to take any existing read-only property and condense it down.</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -126,7 +126,7 @@
 <span class="p">}</span>
 </code></pre></td></tr></table>
 </div>
-</div><p>This becomes:</p>
+</div><p>When converted to an expression-bodied member this becomes:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -135,7 +135,7 @@
 <pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="kt">int</span> <span class="n">MyProperty</span> <span class="p">=&gt;</span> <span class="n">_myField</span><span class="p">;</span>
 </code></pre></td></tr></table>
 </div>
-</div><p>You can even use it for simple method bodies:</p>
+</div><p>You can even use it to simplify method bodies:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -145,8 +145,8 @@
 </code></pre></td></tr></table>
 </div>
 </div><p>It saves you time, and it saves you space on your screen. Most C# style conventions say that the opening bracket <code>{</code> and closing bracket <code>}</code> belong on new lines (with some exceptions). You could argue with the style guide, but on a larger team that is probably a losing battle. This feature solves this problem by omitting the brackets entirely.</p>
-<h3 id="expression-bodied-members-can-help-reduce-boilerplate">Expression-bodied Members Can Help Reduce Boilerplate</h3>
-<p>Not impressed yet? What if I told you that you can use expression-bodied members on full properties?</p>
+<h3 id="expression-bodied-members-can-reduce-boilerplate">Expression-bodied Members Can Reduce Boilerplate</h3>
+<p>Not impressed yet? What if I told you that you can use expression-bodied members on full properties? This means that you can use this technique for both a getter and setter to reduce the clutter associated with a fully-implemented C# property.</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -167,7 +167,7 @@
 <span class="p">}</span>
 </code></pre></td></tr></table>
 </div>
-</div><p>That is pretty nifty, but honestly not impressive unless you have logic to call on your getter/setter.</p>
+</div><p>That is a bit more efficient when reading your code, but honestly it is not <em>that</em> impressive until you have some more logic to call on your getter/setter. Extracting that logic to a method and using a <code>ref</code> parameter for your field can help clarify how your code functions.</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -190,16 +190,16 @@
 <td class="lntd">
 <pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">private</span> <span class="kt">int</span> <span class="n">_myField</span><span class="p">;</span>
 
-<span class="k">private</span> <span class="k">void</span> <span class="n">SetField</span><span class="p">(</span><span class="k">ref</span> <span class="kt">int</span> <span class="n">field</span><span class="p">,</span> <span class="kt">int</span> <span class="k">value</span><span class="p">,</span> <span class="p">[</span><span class="n">CallerMemberName</span><span class="p">]</span><span class="kt">string</span> <span class="n">memberName</span> <span class="p">=</span>  <span class="s">&#34;&#34;</span><span class="p">)</span>
-<span class="p">{</span>
-  <span class="n">field</span> <span class="p">=</span> <span class="k">value</span><span class="p">;</span>
-  <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$&#34;{memberName} was set to {value}.&#34;</span><span class="p">);</span>
-<span class="p">}</span>
-
 <span class="k">public</span> <span class="kt">int</span> <span class="n">MyProperty</span>
 <span class="p">{</span>
   <span class="k">get</span> <span class="p">=&gt;</span> <span class="n">_myField</span><span class="p">;</span>
-  <span class="k">set</span> <span class="p">=&gt;</span> <span class="n">SetField</span><span class="p">(</span><span class="k">ref</span> <span class="n">_myField</span><span class="p">,</span> <span class="k">value</span><span class="p">);</span>
+  <span class="k">set</span> <span class="p">=&gt;</span> <span class="n">SetAndLogField</span><span class="p">(</span><span class="k">ref</span> <span class="n">_myField</span><span class="p">,</span> <span class="k">value</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">private</span> <span class="k">void</span> <span class="n">SetAndLogField</span><span class="p">(</span><span class="k">ref</span> <span class="kt">int</span> <span class="n">field</span><span class="p">,</span> <span class="kt">int</span> <span class="k">value</span><span class="p">,</span> <span class="p">[</span><span class="n">CallerMemberName</span><span class="p">]</span><span class="kt">string</span> <span class="n">memberName</span> <span class="p">=</span>  <span class="s">&#34;&#34;</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">field</span> <span class="p">=</span> <span class="k">value</span><span class="p">;</span>
+  <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$&#34;{memberName} was set to {value}.&#34;</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="c1">// Output for &#34;MyProperty = 5&#34;
@@ -207,7 +207,8 @@
 </span></code></pre></td></tr></table>
 </div>
 </div><h3 id="expression-bodied-members-can-be-used-in-constructors">Expression-Bodied Members Can be Used in Constructors</h3>
-<p>The most repetive boilerplate you tend to get with C# is setting class fields in constructors.</p>
+<p>The most repetive boilerplate I see in my own C# code is when I am setting class fields in constructors. It accomplishes the critical task of initializing the object, but if someone is focused on making <em>simple</em> and <em>legible</em> objects with clear APIs, then the task often becomes repetive.</p>
+<p>When there is just a single assignment, expression-bodied members are extremely consise:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -250,8 +251,9 @@
 </code></pre></td></tr></table>
 </div>
 </div><p>This syntax will assign the fields in the order that they appear in the tuple.</p>
-<p><em>Note: Keep in mind that if your parameters are all of similar types, like <code>string</code>, that getting them in the wrong order can be easy using this syntax. However, fields of different types will be caught by the compiles. Thus, I would only recommend it when assigning a set of varied fields.</em></p>
-<p>Hope you enjoyed this quick overview of one of my favorite features of C#!</p>
+<p><em>Note: Keep in mind that if your parameters are all of similar types, like <code>string</code>, that getting them in the wrong order can be easy using this syntax. However, fields of different types will be caught by the compiles. Thus, I would only recommend it when assigning simple constructors with varied types for fields.</em></p>
+<h3 id="in-conclusion">In Conclusion</h3>
+<p>I hope you enjoyed this quick overview of one of my favorite features of the C# language. This language feature can be used to improve readability, identify areas for logic encapsulation, and to simplify rote object construction. As C# continues to evolve, there are likely to be other improvements that enhance the expressiveness and overall cleanliness of the language.</p>
 </div>
   </article>
 </div>
