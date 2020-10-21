@@ -1,7 +1,7 @@
 baseURL = "https://quill.codes/"
 languageCode = "en-us"
 title = "Quill.Codes"
-googleAnalytics = "UA-117840360-6"
+googleAnalytics = "G-TRTKF60805"
 disqusShortname = "quill-codes"
 theme = "quill-codes"
 
