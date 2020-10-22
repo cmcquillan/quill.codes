@@ -482,6 +482,11 @@ pre code,
     margin: 2.5rem auto;
   }
 
+  .blogPost--content table {
+    width: 100%;
+    overflow: unset;
+  }
+
   /*
    * Tags
    */

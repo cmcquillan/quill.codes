@@ -36,8 +36,34 @@ Let's take a deep dive into the `String` object in C#. Since the .NET Runtime is
 
 Building a string from the constructor requires a [pointer to a character array](https://github.com/dotnet/runtime/blob/master/src/libraries/System.Private.CoreLib/src/System/String.cs#L57). 
 
+This is the code that runs when you allocate a string using its constructor. It's probably rather uncommon for most .NET users to use the constructor directly, but I chose this as a comparison because it is the 'least ceremony' method compared to `String.Create()`. 
 
-Constructing a string using `String.Create()` 
+```csharp {hl_lines=["6-11"],linenostart=57}
+string Ctor(char[]? value)
+{
+    if (value == null || value.Length == 0)
+        return Empty;
+
+    string result = FastAllocateString(value.Length);
+
+    Buffer.Memmove(
+        elementCount: (uint)result.Length, // derefing Length now allows JIT to prove 'result' not null below
+        destination: ref result._firstChar,
+        source: ref MemoryMarshal.GetArrayDataReference(value));
+
+    return result;
+}
+```
+
+To summarize the important steps:
+1) Inputs are validated. The invalid-array case returns `String.Empty`.
+2) We allocate memory using `FastAllocateString` based on the array `Length`.
+3) We call `Buffer.Memmove`, which copies all bytes from the original array into the new allocation.
+4) Return the resulting `string`.
+
+In order to use this constructor, we need to supply it with a `char` array. After its job is complete, we end up with a `char` array and a `string`, each with identical data. If we were to modify the original `char` array, then the `string` would remain unmodified, because it is a distinct copy of the memory. 
+
+To contrast, this is the code that runs Constructing a string using `String.Create()`:
 
 ```csharp {hl_lines=["13-14"],linenostart=363}
 public static string Create<TState>(int length, TState state, SpanAction<char, TState> action)
@@ -59,25 +85,12 @@ public static string Create<TState>(int length, TState state, SpanAction<char, T
 }
 ```
 
-
-Constructing a string normally
-
-```csharp {hl_lines=["6-11"],linenostart=57}
-string Ctor(char[]? value)
-{
-    if (value == null || value.Length == 0)
-        return Empty;
-
-    string result = FastAllocateString(value.Length);
-
-    Buffer.Memmove(
-        elementCount: (uint)result.Length, // derefing Length now allows JIT to prove 'result' not null below
-        destination: ref result._firstChar,
-        source: ref MemoryMarshal.GetArrayDataReference(value));
-
-    return result;
-}
-```
+The steps are similar but contain a critical difference:
+1) Inputs are validated. Invalid `action` or negative `Length` will throw and `Length` of 0 returns Empty;
+2) We allocate memory using `FastAllocateString` based on the `length` parameter.
+3) Convert the newly-allocated `string` to a `Span<char>`.
+4) Invoke the provided `action` and pass in the new `Span<char>` along with the provided `state`.
+5) Return the resulting `string`.
 
 ***Make a graphic: Constructor version should show that it's taking an input, making a copy, and then giving back both the original and the copy. String.Create() version should show it it's creating something and delivering it.***
 
@@ -87,17 +100,30 @@ The process for `String.Create()` is closer to if you had started by reaching ou
 
 ### Why is this useful
 
-1) It pre-allocates a bucket and gives you an interface to fill that bucket *safely*.
-2) It avoids extra copy-operations of data. In some situations it may also avoid the extra string allocation.
+There are a few reasons why the 
+
+1) It pre-allocates a bucket and gives you an interface to fill that bucket *safely*. Performing similar work at the same performance level would require writing your own `unsafe` code. Luckily, the .NET Core team has written that code for you.
+2) It avoids extra copy-operations of your data. In some situations it may also avoid the extra string allocation.
 3) It allows you to focus on the task at hand (building your desired string) rather than managing buffer pools in order to avoid the extra allocations. 
 
 ### Use Cases for String.Create()
+
+
 
 Ultimately, `String.Create()` is at its most useful when you already know the length of your string. Within this one restriction
 
 #### Generating IDs
 
-Consider this class from the ASP.NET Core repository:
+Consider this class from the ASP.NET Core repository used for generating correlation IDs on each web request. The format is 13 characters chosen from the numbers (0-9) and most upper-case letters (A-V). The algorithm is brief: 
+1) Start your correlation ID at the latest tick count for UTC time.
+2) Increment by one on each ID request.
+3) For each of 13 characters:
+    1) Shift the value by 5 additional bits
+    2) Grab the rightmost 5 bits and choose a character 
+
+
+
+Fundamentally, they are incrementing a `long` and converting the individual bytes into characters  
 
 ```csharp {hl_lines=["23-40"]}
 // Copyright (c) .NET Foundation. All rights reserved.
@@ -145,16 +171,44 @@ namespace Microsoft.AspNetCore.Connections
 }
 ```
 
+For our baseline comparison, we will use a naive implementation that uses `StringBuilder`. I chose this option because `StringBuilder` is [often recommended](https://docs.microsoft.com/en-us/troubleshoot/dotnet/csharp/string-concatenation) as a best practice for performance over regular string concatenation. In the github repo for this post, there are also implementations using `StringBuilder` with a specified capacity and using `String.Concat()`. The GitHub code for each method is linked below.
+
+* [StringCreate](https://www.google.com/)
+* [StringConcatenation](https://www.google.com/)
+* [StringBuilder](https://www.google.com/)
+* [StringBuilderNoCapacity](https://www.google.com/)
+
+| Method | Mean | Error | StdDev | Gen 0 | Allocated |
+|:-------|:-----|:------|:-------|:------|:----------|
+|          *StringCreate* |  20.10 ns | 0.485 ns | 1.303 ns | 0.0115 |  48 B |
+|           StringBuilder |  59.55 ns | 1.355 ns | 3.953 ns | 0.0362 | 152 B |
+|     StringConcatenation | 324.14 ns | 6.208 ns | 6.901 ns | 0.2217 | 928 B |
+| StringBuilderNoCapacity |  56.88 ns | 1.220 ns | 2.491 ns | 0.0362 | 152 B |
+
+The `String.Create()` method shows the best performance in both speed (20 nanoseconds) and allocations (only 48 bytes!). Interestingly, the `StringBuilder` with no capacity specified also shows a small edge over the regular `StringBuilder` (it still loses to `String.Create()`, but that is interesting to note for future `StringBuilder` use). 
+
+
 #### Performance-Sensitive Concatenation
 
 
 
 #### Formatting of Complex Strings
 
+`String.Create()` shows great promise in performance-critical code, but there are many legitimate reasons to avoid it.
+
 ### When NOT To Use String.Create()
 
-* When readability is important. Ultimately, this API is not maintenance-friendly. Your scenario really should demand screaming performance and your code should be well-factored with unit tests.
-* 
+#### Do Not Use When Readability is Important
+
+Ultimately, this API is not maintenance-friendly. Your scenario should demand *very* high performance and your code should be well-factored with unit tests. There are many reasonable alternatives that are more readable:
+
+* `String.Format()` or **String Interpolation** when generating simple strings with dynamic values.
+* `StringBuilder` when creating strings in a loop.
+* `String.Concat()` or a simple `+` when you just need to combine two strings.
+
+#### Do Not Use When Culture is Important
+
+`String.Format()`, **String Interpolation**, and most `ToString()` methods respect cultural formatting options. This gives your code the crucial ability to adapt to culture-specific date, numeral, and other formats. `String.Create()` does not offfer any support for these APIs on its own, and attempting to mimic the behavior in your own code would often require allocating additional strings, thus defeating the purpose of using `String.Create()`. Your 
 
 ### Conclusion
 
