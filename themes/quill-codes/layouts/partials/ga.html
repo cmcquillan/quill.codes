@@ -1,13 +1,18 @@
+{{ $display := not .Site.IsServer }}
 {{ with .Site.GoogleAnalytics }}
 
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-TRTKF60805"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag() { dataLayer.push(arguments); }
-  gtag('js', new Date());
+  {{ if $display }}
 
-  gtag('config', '{{ . }}');
-</script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRTKF60805"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', '{{ . }}');
+    </script>
+
+  {{ end }}
 
 {{ end }}
