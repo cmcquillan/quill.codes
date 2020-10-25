@@ -8,7 +8,7 @@ series:
 - "Fast Builds"
 description: "Quickly prototype your first URL Shortener with .NET 5. This tutorial will show you how!"
 images:
-- fast-prototyping-quill-url-shortener.png
+- posts/fast-prototyping-url-shortener/fast-prototyping-quill-url-shortener.png
 cover_image: fast-prototyping-quill-url-shortener.png
 cover_image_alt: "A logo with the text 'Quill.Codes' and a picture of a large letter 'Q' with a quill pen superimposed over it. To the right is text stating 'Fast Builds with .NET'"
 ---
