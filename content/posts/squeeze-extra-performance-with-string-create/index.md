@@ -108,22 +108,19 @@ There are a few reasons why the
 
 ### Use Cases for String.Create()
 
-
-
-Ultimately, `String.Create()` is at its most useful when you already know the length of your string. Within this one restriction
+You can only use the `String.Create()` method by providing a positive integer length. This piece of the method signature shows that it is only useful when you already know the length of your final string. However, by working within this constraint, we can discover a number of ways to leverage `String.Create()`. I also did a search through the codebases for dotnet/aspnetcore and dotnet/runtime to see where the Microsoft team decided to utilize the method. The rest of this article will dive deep on three trends that I found:
+1) Generating IDs
+2) Performance-Sensitive Concatenations
+3) Formatting Complex Strings
 
 #### Generating IDs
 
 Consider this class from the ASP.NET Core repository used for generating correlation IDs on each web request. The format is 13 characters chosen from the numbers (0-9) and most upper-case letters (A-V). The algorithm is brief: 
-1) Start your correlation ID at the latest tick count for UTC time.
+1) Start your correlation ID at the latest tick count for UTC time. The tick count is a 64-bit integer.
 2) Increment by one on each ID request.
 3) For each of 13 characters:
-    1) Shift the value by 5 additional bits
-    2) Grab the rightmost 5 bits and choose a character 
-
-
-
-Fundamentally, they are incrementing a `long` and converting the individual bytes into characters  
+    1) Shift the value by 5 additional bits.
+    2) Grab the rightmost 5 bits (`& 31`) and choose a character based upon a predetermined table.
 
 ```csharp {hl_lines=["23-40"]}
 // Copyright (c) .NET Foundation. All rights reserved.
@@ -187,16 +184,182 @@ For our baseline comparison, we will use a naive implementation that uses `Strin
 
 The `String.Create()` method shows the best performance in both speed (20 nanoseconds) and allocations (only 48 bytes!). Interestingly, the `StringBuilder` with no capacity specified also shows a small edge over the regular `StringBuilder` (it still loses to `String.Create()`, but that is interesting to note for future `StringBuilder` use). 
 
-
 #### Performance-Sensitive Concatenation
+
+The C# Roslyn compiler is very intelligent about optimizing poor concatenations. The compiler will tend to convert multiple uses of the plus `+` operator into singular calls to `String.Concat()` and likely has many additional tricks. For these reasons, concatenation is generally a fast operation, but it still can be edged out by `String.Create()` for simple scenarios.
+
+The sample code to demonstrate `String.Create()` concatenation is relatively straightforward.
+
+```csharp
+public static class ConcatenationStringCreate
+{
+    public static string Concat(string first, string second)
+    {
+        first ??= string.Empty;
+        int length = second != null ? first.Length + 1 + second.Length : first.Length;
+        return string.Create(length, (first, second),
+        (dst, v) =>
+        {
+            ReadOnlySpan<char> prefix = v.first;
+            prefix.CopyTo(dst);
+
+            if (v.second != null)
+            {
+                dst[prefix.Length] = ' ';
+
+                ReadOnlySpan<char> detail = v.second;
+                detail.CopyTo(dst.Slice(prefix.Length + 1, detail.Length));
+            }
+        });
+    }
+}
+```
+
+I crafted this particular case after finding only [one real example](https://github.com/dotnet/runtime/blob/a9b1173e64f628c7233850be6b762a58897bc6be/src/libraries/System.Diagnostics.TextWriterTraceListener/src/System/Diagnostics/XmlWriterTraceListener.cs) in the .NET Core source code. This feels like a case that could be reasonably abstracted and sprinkled throughout a codebase that is making excessive use of the plus `+` operator or `String.Concat` very frequently. A likely reason that I did not find more cases is that the benchmarks bear this out as being a marginal gain. 
+
+***INSERT Concatenation BENCHMARKS***
 
 
 
 #### Formatting of Complex Strings
 
-`String.Create()` shows great promise in performance-critical code, but there are many legitimate reasons to avoid it.
+Complex formats can also be built using `String.Create()` when you know the length of all the string segments involved. Usually this will be when you have these strings encapsulated as properties of a single class. A [good example](https://github.com/dotnet/aspnetcore/blob/8a81194f372fa6fe63ded2d932d379955854d080/src/Http/Headers/src/SetCookieHeaderValue.cs) found in the ASP.NET Core repository is the `SetCookieHeaderValue` class, which contains all of the properties necessary to write a single cookie header. This example is particularly useful in that it has methods that use both `String.Create()` and a `StringBuilder` to accomplish the same formatting task. This allows us to write a very easy benchmark. 
+
+Here is the table that shows the two methods up against each other:
+
+**INSERT SetCookieHeaderValue BENCHMARK**
+
+The `SetCookieHeaderValue` class is a good example to review, but is extremely complex to detail step-by-step in this article. For this use case we will just demonstrate with a smaller class with just three properties.
+
+```csharp
+public class Dog
+{
+    public string Name { get; set; }
+
+    public int? Age { get; set; }
+
+    public string Color { get; set; }
+
+    public override string ToString()
+    {
+        return StringCreate();
+    }
+
+    public string StringCreate()
+    {
+        var length = 0;
+        // Constants
+        const string unknownName = "Unknown";
+        const string leftAgeChunk = " (";
+        const char rightAgeChunk = ')';
+        const string leftColorChunk = " [";
+        const char rightColorChunk = ']';
+        static int integerLength(int val) => (int)Math.Floor(Math.Log10((double)val) + 1);
+
+        /* Compute Lengths */
+        length += (Name ?? unknownName).Length; // Name
+
+        if (Color is string)
+        {
+            length += 3 /* left + right chunk length */ + Color.Length;
+        }
+
+        if (Age.HasValue)
+        {
+            length += 3 /* left + right chunk length */ + integerLength(Age.Value); /* Digits in age */
+        }
+        /* Use State + Computed Length to Build String */
+        return String.Create<Dog>(length, this, (buffer, dog) =>
+        {
+            var nameSpan = (dog.Name ?? unknownName).AsSpan();
+            nameSpan.CopyTo(buffer);
+            var span = buffer.Slice(nameSpan.Length);
+
+            if(dog.Color is string)
+            {
+                leftColorChunk.AsSpan().CopyTo(span);
+                span = span.Slice(2);
+
+                var colorSpan = dog.Color.AsSpan();
+                colorSpan.CopyTo(span);
+                span = span.Slice(colorSpan.Length);
+                
+                span[0] = rightColorChunk;
+                span = span.Slice(1);
+            }
+
+            if(dog.Age.HasValue)
+            {
+                leftAgeChunk.AsSpan().CopyTo(span);
+                span = span.Slice(2);
+                
+                dog.Age.Value.TryFormat(span, out int written, provider: CultureInfo.InvariantCulture);
+                span = span.Slice(written);
+                
+                span[0] = rightAgeChunk;
+            }
+        });
+    }
+
+    public string Concatenation() 
+    {
+        var val = Name ?? "Unknown";
+
+        if(Color is string)
+        {
+            val += " [" + Color + "]";
+        }
+
+        if(Age.HasValue)
+        {
+            val += " (" + Age.Value + ")";
+        }
+
+        return val;
+    }
+
+    public string StringFormat()
+    {
+        return String.Format("{0}{5}{4}{6}{2}{1}{3})",
+            Name ?? "Unknown",
+            Age,
+            Age.HasValue ? " (" : String.Empty,
+            Age.HasValue ? ")" : String.Empty,
+            Color,
+            Color is string ? " [" : String.Empty,
+            Color is string ? "]" : String.Empty);
+    }
+}
+```
+
+The `Dog` class above contains three methods that should produce identical output: `StringCreate`, `Concatenation` and `StringFormat`. Each method uses a formatting strategy that matches its name. Despite being much more complex, the actual strategy of `StringCreate` is relatively simple:
+1) Pre-emptively calculate the length of each property of the `Dog` class. Some properties may require some creative logic in order to calculate lenth without materializing the full string (`Int32` is a good example). 
+2) Invoke `String.Create` using the current class (`this`) as the `state` parameter along with the pre-calculated length.
+3) Use the `Span<T>` APIs to fill the newly instantiated `buffer` variable and return the final string.
+
+Overall, it is easy to see that `StringFormat` and `Concatenation` are far shorter and less complex. This well exemplifies the difficulties one might have when properly formatting complex strings using `String.Create()` and why it is best to use only on hot paths in your own code. However, utilizing this method appropriately can pay dividends in overall performance.
+
+|        Method |                  Dog |      Mean |    Error |    StdDev | Ratio | Rank |
+|-------------- |--------------------- |----------:|---------:|----------:|------:|-----:|
+|  StringCreate | [DOG] Fido (20) [23] |  68.73 ns | 1.218 ns |  1.017 ns |  0.18 |    1 |
+| Concatenation | [DOG] Fido (20) [23] | 105.18 ns | 2.118 ns |  2.828 ns |  0.27 |    2 |
+|  StringFormat | [DOG] Fido (20) [23] | 377.44 ns | 7.363 ns | 19.653 ns |  1.00 |    3 |
+|               |                      |           |          |           |       |      |
+| Concatenation |         [DOG] Fluffy |  18.60 ns | 0.451 ns |  0.901 ns |  0.06 |    1 |
+|  StringCreate |         [DOG] Fluffy |  27.85 ns | 0.630 ns |  1.213 ns |  0.09 |    2 |
+|  StringFormat |         [DOG] Fluffy | 295.93 ns | 5.952 ns |  9.440 ns |  1.00 |    3 |
+|               |                      |           |          |           |       |      |
+|  StringCreate | [DOG] Pluto [Yellow] |  37.60 ns | 0.835 ns |  1.325 ns |  0.12 |    1 |
+| Concatenation | [DOG] Pluto [Yellow] |  51.16 ns | 1.437 ns |  4.213 ns |  0.16 |    2 |
+|  StringFormat | [DOG] Pluto [Yellow] | 318.94 ns | 6.312 ns | 17.595 ns |  1.00 |    3 |
+
+The benchmarks methods I chose show another reason to carefully consider this use case for the `String.Create` method. You can see that simple concatenation performs slightly better when we have very few operations to perform, but quickly becomes a worse option the more we have to concatenate. `String.Format()` is consistently the slowest option, though is arguably the fastest method to write initially. 
+
+It is also worth noting that these results almost runs counter to our separate concatenation benchmark above. We showed above that just concatenating two strings in marginally faster, so why doesn't the simplest cast for the `Dog` class run faster? Likely, it is because of the overhead of detecting that we are running the simplest case. Checks for null can add up, 
 
 ### When NOT To Use String.Create()
+
+`String.Create()` shows great promise in performance-critical code, but there are many legitimate reasons to avoid it.
 
 #### Do Not Use When Readability is Important
 
