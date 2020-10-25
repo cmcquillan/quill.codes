@@ -5,6 +5,8 @@ draft: false
 description: "Learn a creative way that you can leverage 'out' parameters on your class methods."
 author: "Casey McQuillan"
 tags: ["CSharp", "Dotnet", "Syntax Tips"]
+images:
+  - tips/set-class-fields-with-out-parameters/set_class_fields_with_out_parameters.png
 cover_image: set_class_fields_with_out_parameters.png
 cover_image_alt: 'class LetMeOut
     {

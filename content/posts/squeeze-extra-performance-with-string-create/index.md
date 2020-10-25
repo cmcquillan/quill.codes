@@ -175,12 +175,12 @@ For our baseline comparison, we will use a naive implementation that uses `Strin
 * [StringBuilder](https://www.google.com/)
 * [StringBuilderNoCapacity](https://www.google.com/)
 
-| Method | Mean | Error | StdDev | Gen 0 | Allocated |
-|:-------|:-----|:------|:-------|:------|:----------|
-|          *StringCreate* |  20.10 ns | 0.485 ns | 1.303 ns | 0.0115 |  48 B |
-|           StringBuilder |  59.55 ns | 1.355 ns | 3.953 ns | 0.0362 | 152 B |
-|     StringConcatenation | 324.14 ns | 6.208 ns | 6.901 ns | 0.2217 | 928 B |
-| StringBuilderNoCapacity |  56.88 ns | 1.220 ns | 2.491 ns | 0.0362 | 152 B |
+|                  Method |      Mean |    Error |    StdDev |   StdErr | Ratio | RatioSD | Rank |
+|------------------------ |----------:|---------:|----------:|---------:|------:|--------:|-----:|
+|            StringCreate |  16.58 ns | 0.366 ns |  0.342 ns | 0.088 ns |  0.26 |    0.02 |    1 |
+|           StringBuilder |  59.81 ns | 1.555 ns |  4.511 ns | 0.458 ns |  1.00 |    0.00 |    2 |
+| StringBuilderNoCapacity |  64.04 ns | 2.426 ns |  7.077 ns | 0.715 ns |  1.08 |    0.15 |    3 |
+|     StringConcatenation | 342.23 ns | 6.872 ns | 18.579 ns | 2.015 ns |  5.76 |    0.52 |    4 |
 
 The `String.Create()` method shows the best performance in both speed (20 nanoseconds) and allocations (only 48 bytes!). Interestingly, the `StringBuilder` with no capacity specified also shows a small edge over the regular `StringBuilder` (it still loses to `String.Create()`, but that is interesting to note for future `StringBuilder` use). 
 
@@ -355,13 +355,13 @@ Overall, it is easy to see that `StringFormat` and `Concatenation` are far short
 
 The benchmarks methods I chose show another reason to carefully consider this use case for the `String.Create` method. You can see that simple concatenation performs slightly better when we have very few operations to perform, but quickly becomes a worse option the more we have to concatenate. `String.Format()` is consistently the slowest option, though is arguably the fastest method to write initially. 
 
-It is also worth noting that these results almost runs counter to our separate concatenation benchmark above. We showed above that just concatenating two strings in marginally faster, so why doesn't the simplest cast for the `Dog` class run faster? Likely, it is because of the overhead of detecting that we are running the simplest case. Checks for null can add up, 
+It is also worth noting that these results almost runs counter to our separate concatenation benchmark above. We showed above that just concatenating two strings in marginally faster, so why doesn't the simplest cast for the `Dog` class run faster? In this case, the additional overhead of the string formatting method is adding up and overtaking the gains we made using by using **Create**. Checks for null can add up, especially because they are done twice (once when calculating length and once when building the full string). This overhead could be further optimized (potentially to the point that **Create** is always better for this `Dog` object), but that further emphasizes the point that this level of optimization is hard to do correctly.
 
 ### When NOT To Use String.Create()
 
-`String.Create()` shows great promise in performance-critical code, but there are many legitimate reasons to avoid it.
+**Create** shows great promise in performance-critical code, but there are many legitimate reasons to avoid it. As software engineers, we often become more tied to the metrics of our systems at the expense of the big picture. Generally, I think good maintenance should prevail over fantastic performance. That leads me to prescribe three general cases when you should avoid using **Create**, even if it sacrifices performance.
 
-#### Do Not Use When Readability is Important
+#### 1) Do Not Use When Readability is Important
 
 Ultimately, this API is not maintenance-friendly. Your scenario should demand *very* high performance and your code should be well-factored with unit tests. There are many reasonable alternatives that are more readable:
 
@@ -369,9 +369,13 @@ Ultimately, this API is not maintenance-friendly. Your scenario should demand *v
 * `StringBuilder` when creating strings in a loop.
 * `String.Concat()` or a simple `+` when you just need to combine two strings.
 
-#### Do Not Use When Culture is Important
+#### 2) Do Not Use When Culture is Important
 
 `String.Format()`, **String Interpolation**, and most `ToString()` methods respect cultural formatting options. This gives your code the crucial ability to adapt to culture-specific date, numeral, and other formats. `String.Create()` does not offfer any support for these APIs on its own, and attempting to mimic the behavior in your own code would often require allocating additional strings, thus defeating the purpose of using `String.Create()`. Your 
+
+#### 3) (Probably) Do Not Use When the Output is for Humans
+
+OK. This situation is a bit subjective. The reason I would not recommend using this for human-readable formatting is because humans **tend to want things to change**. Since formatting using the **Create** method is extremely verbose, any changes are likely to cause increases in complexity and verbosity, thereby creating additional technical debt. In my opinion, the best usage of **Create** is on machine-readable strings or more generalized string-writing APIs (such as **String.Format**) that are unlikely to change in the future. As is often the case in software development, the specifics of your situation are the most important, but I think is a good general rule to avoid this for any code you anticipate having to re-write in the future.
 
 ### Conclusion
 
