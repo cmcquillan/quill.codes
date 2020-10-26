@@ -13,7 +13,7 @@ cover_image_alt: "A CSharp class named App with a Main() method and a single com
 
 ### Visual Studio tracks your "// TODO" comments so you can find them later.
 
-From within Visual Studio Go to View -> Task List. This will display the **Task List** window and show you any area of your open Solution. You can even filter down to your Current Project, Current Document, or Open Documents.
+From within Visual Studio Go to **View** -> **Task List**. This will display the **Task List** window and show you any area of your open Solution that has existing comments that start with `// TODO`. You can filter down to your Current Project, Current Document, or Open Documents. It even will allow you to search the list.
 
 ![Visual Studio Task View showing two TODO comments](visual_studio_task_view.png)
 
@@ -24,13 +24,21 @@ It doesn't just recognize `// TODO`, but will also recognize `// HACK`
 
 You can customize the words that trigger a Task View entry in your Visual Studio options. 
 
-1. Go to *Tools*
-2. Go to *Options*
-3. Expand the *Environment options*
-4. Go to *Task List*
+1. Go to **Tools**
+2. Go to **Options**
+3. Expand the **Environment options**
+4. Go to **Task List**
 5. Enter any words you would like to highlight from your code comments.
 
 ![Visual Studio Options dialog showing the Task List menu](visual_studio_task_list_options.png)
+
+### How Should I Use It?
+
+Properly leveraging the **Task List** window can be fantastic for your productivity. Here are a few of the ways I have personally used this window to improve my workflow.
+
+* Leaving occasional `// TODO` comments while prototyping when the unwritten code will not change functionality. It serves as a reminder to complete the code before delivering a milestone or making a final commit.
+* When writing a Web API, create the first round of CRUD endpoints using fake data and add `// TODO` to the top of every method. When all of the base endpoints are in there is now an easy checklist to complete.
+* Adding `// CONSIDER` to the list of words tracked by Visual Studio and using it to keep a list of places I want to make long-term improvements to a codebase. This can be set to a lower priority so that other tracked words stand out within the list.
 
 ## Additional Links
 
