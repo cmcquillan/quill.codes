@@ -38,7 +38,7 @@ Properly leveraging the **Task List** window can be fantastic for your productiv
 
 * Leaving occasional `// TODO` comments while prototyping when the unwritten code will not change functionality. It serves as a reminder to complete the code before delivering a milestone or making a final commit.
 * When writing a Web API, create the first round of CRUD endpoints using fake data and add `// TODO` to the top of every method. When all of the base endpoints are in there is now an easy checklist to complete.
-* Adding `// CONSIDER` to the list of words tracked by Visual Studio and using it to keep a list of places I want to make long-term improvements to a codebase. This can be set to a lower priority so that other tracked words stand out within the list.
+* Adding `// CONSIDER` to the list of words tracked by Visual Studio and using it to keep a list of places where long-term improvements can be made to a codebase. This can be set to a lower priority so that other tracked words stand out within the list.
 
 ## Additional Links
 
