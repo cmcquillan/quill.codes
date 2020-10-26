@@ -5,7 +5,9 @@ date: 2020-09-16T13:58:39-07:00
 draft: false
 author: "Casey McQuillan"
 tags: ["Visual Studio", "Productivity"]
-cover_image: visual_studio_task_main.png
+images:
+  - tips/dont-fear-the-todo/todo_cover.png
+cover_image: todo_cover.png
 cover_image_alt: "A CSharp class named App with a Main() method and a single comment that says 'TODO: Don't be afraid' with a sunglasses emoji."
 ---
 
