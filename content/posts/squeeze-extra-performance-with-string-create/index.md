@@ -14,29 +14,28 @@ How can I speed up my .NET application
 How can I make my C# code run faster
 ===
 
-When was the last time that a seemingly insignificant detail sparked a movement in your brain? As a programmer, I have a habit of seeing new code and hyper-focusing on the one tiny detail I have never seen before. At that point, the gears in my brain begin turning, and the machinery spins up in a way I might not have experienced in weeks. I love these moments. The ones where the tiniest piece of trivia sends me down a rabbit-hole of discovery.
+When was the last time that an insignificant detail sparked a movement in your brain? As a software engineer, I have a habit of focusing on the one tiny detail I have never seen before in a new block of code. At that point, the gears in my brain begin turning. **I love these moments**. The ones where the tiniest piece of trivia sends me down a rabbit-hole of discovery.
 
 What did that look like the last time it came to you?
 
-It recently happened to me as I was browsing Twitter. I came upon this exchange between David Fowler and Damian Edwards, discussing .NET 
+It recently happened to me as I was browsing Twitter. I came upon this exchange between David Fowler and Damian Edwards, discussing the .NET `Span<T>` API. I have used the `Span<T>` API before, but I found something new and different in the tweets.
 
 {{< tweet 1318638349544873985 >}}
 
-It's a small thing, the **String.Create** method used in the screenshot was something I had not seen before. I had learned about **Span** as an API, but had not noticed the **Create** gem before. The machinery in my brain asked the question:
+It's a small thing, the **String.Create** method used above was the piece I had never seen before. The item that began my dive down the rabbit-hole. **String.Create** was a hidden gem, and I was determined to uncover its mysteries. I found myself asking the question:
 
-> "Why use this method for creating string over others?"
+> "Why use this method for creating strings over others?"
 
-This was my latest rabbit-hole, and it took me to a few interesting places that I would like to share with you. In this article we will delve into...
+I began the journey, and it took me to a few interesting places that I would like to share with you. In this article we will delve into a few topics...
 
-* What is **String.Create**?
-* How is it different from normally constructing a string?
-* What does it do better?
-* How much faster is it **really**?
-* What pitfalls should be avoided?
+* What is **String.Create** and how is it different from other APIs?
+* What does **String.Create** do better and how can it make my C# code faster?
+* How much more performance can it **really** achieve?
+* What pitfalls can and should be avoided?
 
 ### Definitions
 
-To make the article a little easier, I am going to refer to the various ways of creating strings in the following ways:
+To make the article a little easier, I am going to refer to a few .NET Core APIs in the following ways:
 
 * **Create** - Refers to using `String.Create()`.
 * **Concat** - Refers to using `String.Concat()` or the plus (`+`) operator.
@@ -45,9 +44,9 @@ To make the article a little easier, I am going to refer to the various ways of 
 
 ### How Does It Work?
 
-Let's take a deep dive into the `String` object in C#. Since the .NET Runtime is now open source and developed in the open, the code is [available on GitHub](https://github.com/dotnet/runtime/blob/master/src/libraries/System.Private.CoreLib/src/System/String.cs). `String` also has many partial classes spread across other files, but the code we need is in the primary **String.cs** location. 
+The .NET Core codebase open source and [developed on GitHub](https://github.com/dotnet/runtime/blob/master/src/libraries/System.Private.CoreLib/src/System/String.cs. This provides a great opportunity to dive in and analyze Microsoft's own practices. They provided the **Create** API, so seeing how they use it should provide valuable insight. Let's start with a deep dive into the `String` object and its relevant APIs.
 
-To naively build a string out of bytes, you need to use the constructor that requires a [pointer to a character array](https://github.com/dotnet/runtime/blob/master/src/libraries/System.Private.CoreLib/src/System/String.cs#L57). Using this API directly would require placing bytes into specific indexed (`[]`) locations. Below is the code that runs when you allocate a string using this constructor. There are many other ways to create strings, but this is what I consider the most comparable to the **Create** method. 
+To generically build a string out of raw character data, you need to use the constructor that requires a [pointer to a `char` array](https://github.com/dotnet/runtime/blob/master/src/libraries/System.Private.CoreLib/src/System/String.cs#L57). Using this API directly would require placing individual characters into specific array locations. Below is the code that runs when you allocate a string using this constructor. There are many other ways to create strings, but this is what I consider the most comparable to the **Create** method. 
 
 ```csharp {hl_lines=["6-11"],linenostart=57}
 string Ctor(char[]? value)
@@ -67,14 +66,19 @@ string Ctor(char[]? value)
 ```
 
 To summarize the important steps:
-1) Inputs are validated. The invalid-array case returns `String.Empty`.
-2) We allocate memory using `FastAllocateString` based on the array `Length`.
-3) We call `Buffer.Memmove`, which copies all bytes from the original array into the new allocation.
-4) Return the resulting `string`.
+1) Inputs are validated. An empty or null array returns `String.Empty`.
+2) We allocate memory using `FastAllocateString` based on the array `Length`. `FastAllocateString` is implemented within the .NET Runtime itself and underpins nearly all string allocations.
+3) We call `Buffer.Memmove`, which copies all bytes from the original array into the newly allocated string.
+4) Return the resulting string.
 
-In order to use this constructor, we need to supply it with a `char` array. After its job is complete, we end up with a `char` array and a `string`, each with identical data. If we were to modify the original `char` array, then the `string` would remain unmodified, because it is a distinct copy of the memory. In a high-performance .NET environment, saving object and array allocations can be extremely valuable because it reduces the total amount of work that the .NET Garbage Collector needs to do whenever it runs.
+In order to use this constructor, we need to supply it with a `char` array. After its job is complete, we end up with both a (now unnecessary) `char` array and a `string`, each with identical data. If we were to modify the original array, then the `string` would remain unmodified, because it is a separate and distinct copy of the data. In a high-performance .NET environment, saving object and array allocations can be extremely valuable because it reduces the total amount of work that the .NET Garbage Collector needs to do whenever it runs. Every **extra** object that is left in memory increases the frequency of collections and hurts total performance. 
 
-To contrast, this is the code that runs Constructing a string using the **Create** method:
+If you would like to learn more about .NET Garbage Collection and how it can impact performance, there are many fantastic resources online:
+* [ASP.NET Core Kestrel: Adventures in building a fast web server - Damian Edwards & David Fowler](https://youtu.be/kej3YJDMAW4?t=505)
+* [8 Techniques to Avoid GC Pressure and Improve Performance in C# .NET](https://michaelscodingspot.com/avoid-gc-pressure/)
+* [https://www.red-gate.com/simple-talk/dotnet/asp-net/how-the-garbage-collector-can-cause-random-slowness/](https://www.red-gate.com/simple-talk/dotnet/asp-net/how-the-garbage-collector-can-cause-random-slowness/)
+
+To contrast with the constructor and to eliminate this unnecessary array allocation, we take a look at the code that runs for the **Create** method:
 
 ```csharp {hl_lines=["13-14"],linenostart=363}
 public static string Create<TState>(int length, TState state, SpanAction<char, TState> action)
@@ -103,35 +107,41 @@ The steps are similar but contain a critical difference:
 4) Invoke the provided `action` and pass in the new `Span<char>` along with the provided `state`.
 5) Return the resulting `string`.
 
+This methodology avoids the extra allocation by allowing us to pass in a `SpanAction`, which functions as a set of **instructions** for how our string should be created instead of requiring a second copy of all the bytes we need put into the string.
+
 ***Make a graphic: Constructor version should show that it's taking an input, making a copy, and then giving back both the original and the copy. String.Create() version should show it it's creating something and delivering it.***
 
-A good example would be in graphic design. Perhaps you designed your own logo in photoshop as a bitmap, but you decided that what you *really* needed was a vector image, so that you could scale it without degrading quality. You delivered your original logo to a graphic designer and they send back a logo in SVG format. At the end of the day, you still have your original bitmap, but you are unlikely to use it since you now have your logo in a more usable format. 
+A good analogy might be drawn from graphic design. You might want to get a professional logo created for your business, and you probably decided that you wanted it created in a vector format like SVG or EPS. You create a document that has details on the theme, colors, and general look of your logo. You now have a couple options:
+1) Draw a first draft yourself as close to the professional version as possible, send it to a graphic designer, and have them create a finalized version.
+2) Send your original detailed document to the graphic designer, who creates a finalized logo from the information you provided. 
 
-The process for `String.Create()` is closer to if you had started by reaching out to the designer, telling them *exactly* what you wanted from the beginning, and taking delivery of a usable SVG. You end up with only one artifact, and it happens to be in the form you need.
+In the first situation, you end up with two images, but only one that you plan to use. Your original can probably be thrown away without any ceremony, as you now have your professionally designed version. In the second case, you have not produced any extra product, and therefore have produced less waste.
 
-### Why is this useful
+The process for `String.Create()` is closer the situation where you sent your documentation to a designer. By telling them **exactly** what you wanted from the beginning, you only generate one final artifact in the form that you need. 
 
-There are a few reasons why the 
+### How is **String.Create** Better?
 
-1) It pre-allocates a bucket and gives you an interface to fill that bucket *safely*. Performing similar work at the same performance level would require writing your own `unsafe` code. Luckily, the .NET Core team has written that code for you.
-2) It avoids extra copy-operations of your data. In some situations it may also avoid the extra string allocation.
-3) It allows you to focus on the task at hand (building your desired string) rather than managing buffer pools in order to avoid the extra allocations. 
+At this point, you might be curious about the **Create** method, but you don't necessarily know why it's **better** than the methods you have used before. The **Create** APIs usefulness is definitely situation, but in the proper context it can be extremely powerful.
+
+* It pre-allocated a bucket, and then gives you an interface to fill that bucket **safely**. Other methods that produce similar results could require writing unsafe code or managing your own buffer pools.
+* It avoids extra copy-operations of your data which often results in fewer allocations. This reduces pressure from your Garbage Collector which can speed up your overall program.
+* It allows you to focus your high-performance code on the business requirements of your application rather than interleaving your string-building code with complex memory management.
 
 ### Use Cases for String.Create()
 
-You can only use the `String.Create()` method by providing a positive integer length. This piece of the method signature shows that it is only useful when you already know the length of your final string. However, by working within this constraint, we can discover a number of ways to leverage `String.Create()`. I also did a search through the codebases for dotnet/aspnetcore and dotnet/runtime to see where the Microsoft team decided to utilize the method. The rest of this article will dive deep on three trends that I found:
-1) Generating IDs
-2) Performance-Sensitive Concatenations
-3) Formatting Complex Strings
+You can only use the **Create** method when you already know your final string's length. However, you can work creatively with this constraint discover a number of ways to leverage **Create**. I performed did a search through the codebases for [dotnet/aspnetcore](https://github.com/dotnet/aspnetcore) and [dotnet/runtime](https://github.com/dotnet/runtime) to see where the Microsoft team decided to utilize this API. The rest of this article will dive deep on three trends that I found:
+* Generating IDs
+* Performance-Sensitive Concatenations
+* Formatting Complex Strings
 
 #### Generating IDs
 
 Consider this class from the ASP.NET Core repository used for generating correlation IDs on each web request. The format is 13 characters chosen from the numbers (0-9) and most upper-case letters (A-V). The algorithm is brief: 
 1) Start your correlation ID at the latest tick count for UTC time. The tick count is a 64-bit integer.
-2) Increment by one on each ID request.
+2) Increment by one on each request for a new ID.
 3) For each of 13 characters:
-    1) Shift the value by 5 additional bits.
-    2) Grab the rightmost 5 bits (`& 31`) and choose a character based upon a predetermined table.
+    1) Shift the value by 5 additional (`character_index * 5`) bits.
+    2) Grab the rightmost 5 bits (`shifted_value & 31`) and choose a character based upon a predetermined table.
 
 ```csharp {hl_lines=["23-40"]}
 // Copyright (c) .NET Foundation. All rights reserved.
@@ -179,12 +189,7 @@ namespace Microsoft.AspNetCore.Connections
 }
 ```
 
-For our baseline comparison, we will use a naive implementation that uses `StringBuilder`. I chose this option because `StringBuilder` is [often recommended](https://docs.microsoft.com/en-us/troubleshoot/dotnet/csharp/string-concatenation) as a best practice for performance over regular string concatenation. In the github repo for this post, there are also implementations using `StringBuilder` with a specified capacity and using `String.Concat()`. The GitHub code for each method is linked below.
-
-* [StringCreate](https://www.google.com/)
-* [StringConcatenation](https://www.google.com/)
-* [StringBuilder](https://www.google.com/)
-* [StringBuilderNoCapacity](https://www.google.com/)
+For our baseline comparison, we will use a naive implementation that uses `StringBuilder`. I chose this option because `StringBuilder` is [often recommended](https://docs.microsoft.com/en-us/troubleshoot/dotnet/csharp/string-concatenation) as a good API for performance over regular string concatenation. I wrote additional implementations that attempted to use `StringBuilder` (with capacity), `StringBuilder` (without capacity), and simple concatenation. 
 
 |                  Method |      Mean |    Error |    StdDev |   StdErr | Ratio | RatioSD | Rank |
 |------------------------ |----------:|---------:|----------:|---------:|------:|--------:|-----:|
@@ -197,9 +202,9 @@ The `String.Create()` method shows the best performance in both speed (20 nanose
 
 #### Performance-Sensitive Concatenation
 
-The C# Roslyn compiler is very intelligent about optimizing poor concatenations. The compiler will tend to convert multiple uses of the plus `+` operator into singular calls to **Concat** and likely has many additional tricks. For these reasons, concatenation is generally a fast operation, but it still can be edged out by **Create** for simple scenarios.
+The C# Roslyn compiler is very intelligent about optimizing poor concatenations. The compiler will tend to convert multiple uses of the plus `+` operator into singular calls to **Concat** and likely has many additional tricks of which I am not aware. For these reasons, concatenation is generally a fast operation, but it still can be edged out by **Create** for simple scenarios.
 
-The sample code to demonstrate concatenation with the **Create** method is relatively straightforward.
+The sample code to demonstrate concatenation with the **Create** method is straightforward.
 
 ```csharp
 public static class ConcatenationStringCreate
@@ -207,14 +212,17 @@ public static class ConcatenationStringCreate
     public static string Concat(string first, string second)
     {
         first ??= string.Empty;
-        int length = second != null ? first.Length + 1 + second.Length : first.Length;
-        return string.Create(length, (first, second),
+        second ??= String.Empty;
+        bool addSpace = second.Length > 0;
+
+        int length = first.Length + (addSpace ? 1 : 0) + second.Length;
+        return string.Create(length, (first, second, addSpace),
         (dst, v) =>
         {
             ReadOnlySpan<char> prefix = v.first;
             prefix.CopyTo(dst);
 
-            if (v.second != null)
+            if (v.addSpace)
             {
                 dst[prefix.Length] = ' ';
 
@@ -242,13 +250,13 @@ I crafted this particular case after finding only [one real example](https://git
 |       Create | Lorem Ipsum | Sedf(...)ctus [307] | 50.26 ns | 0.794 ns | 1.188 ns | 0.217 ns | 50.18 ns |  0.86 |    0.06 |    1 |
 |       Normal | Lorem Ipsum | Sedf(...)ctus [307] | 59.04 ns | 3.779 ns | 5.656 ns | 1.033 ns | 57.72 ns |  1.00 |    0.00 |    2 |
 
-These results are particularly interesting. Even for generalized **Concat** usage, the **Create** method is marginally faster by a few percentage points. Since it is possible to generalize a string concatenation, the tradeoff of maintenance vs performance becomes much cleaner. You could wrap all of your concatenation methods in a static class, add your unit tests, and never touch them again. From a maintenance perspective, **String.Concat** is still cleaner, and more recognizeable to other developers. However, if you are concatenating strings at the pace of millions per second, these few percentage points may be worth it.
+I find these results interesting. Even for generalized **Concat** usage, the **Create** method is marginally faster by a few percentage points. However, since it would be possible to generalize a library of fast string concatenation methods, the tradeoff of maintenance vs performance would becomes much cleaner. You could wrap all of your concatenation methods in a static class, add your unit tests, and never touch them again. From a maintenance perspective, **Concat** is still cleaner due to being very recognizeable to other developers on your team. However, if you are concatenating strings at the pace of millions per second (such as a high traffic ASP.NET application), these few percentage points may be worth it. Overall, I would still advise profiling your specific case to prove that your specialized method is faster.
 
 #### Formatting of Complex Strings
 
-Complex formats can also be built using **Create** when you know the length of all the string segments involved. Usually this will be when you have these strings encapsulated as properties of a single class or within the parameters of a single method. It may also be advantageous to use **Create** when dealing with rows of fixed-width or delimited data, such as a CSV file. 
+Complex formats can also be built using **Create** when you know the length of all of the smaller segments involved. Usually this will be when you have these strings encapsulated as properties of a single class or within the parameters of a single method. It may also be advantageous to use **Create** when dealing with rows of fixed-width or delimited data, such as a CSV file. 
 
-I found a [great example](https://github.com/dotnet/aspnetcore/blob/8a81194f372fa6fe63ded2d932d379955854d080/src/Http/Headers/src/SetCookieHeaderValue.cs) in the ASP.NET Core repository in the form of the `SetCookieHeaderValue` class. This class contains all of the properties necessary to write out a cookie HTTP header. Conveniently, this class also included a method that used **StringBuilder** to accomplish the same formatting task. This gave me a great opportunity to develop a quick benchmark. 
+I found a [great example](https://github.com/dotnet/aspnetcore/blob/8a81194f372fa6fe63ded2d932d379955854d080/src/Http/Headers/src/SetCookieHeaderValue.cs) in the ASP.NET Core repository in the form of the `SetCookieHeaderValue` class. This class contains all of the properties necessary to write out a cookie HTTP header. Conveniently, this class also included a method that used **StringBuilder** to accomplish the same formatting task. This gave me a great opportunity to write a fast benchmark.
 
 Here is the table that shows the two methods up against one another:
 
@@ -257,7 +265,9 @@ Here is the table that shows the two methods up against one another:
 |        Create | 538.5 ns | 10.80 ns | 30.99 ns | 3.18 ns | 528.7 ns |  0.67 |    0.05 |    1 |
 | StringBuilder | 810.9 ns | 15.75 ns | 24.52 ns | 4.33 ns | 809.0 ns |  1.00 |    0.00 |    2 |
 
-While the `SetCookieHeaderValue` class provides a very great data point, its logic is rather long and complex, so I have constructed a simpler class to demonstrate the same principles below.
+For a complex string like a cookie header, **Create** improves performance by nearly 33%! Complex formats like this show that there is a lot to gain when using the **Create** method. 
+
+While the `SetCookieHeaderValue` class provides a very great data point, its logic is rather long and complex. I wrote a simple class to demonstrate the same formatting principles. 
 
 ```csharp
 public class Dog
@@ -375,7 +385,7 @@ The `Dog` class above contains three methods that should produce identical outpu
 2) Invoke `String.Create` using the current class (`this`) as the `state` parameter along with the pre-calculated length.
 3) Use the `Span<T>` APIs to fill the newly instantiated `buffer` variable and return the final string.
 
-Overall, it is easy to see that `StringFormat` and `Concatenation` are far shorter and less complex. This well exemplifies the difficulties one might have when properly formatting complex strings using `String.Create()` and why it is best to use only on hot paths in your own code. However, utilizing this method appropriately can pay dividends in overall performance.
+Overall, the `StringFormat` and `Concatenation` methods are far shorter and less complex. This exemplifies the difficulties you might encounter when properly formatting complex strings using the **Create** method and why should only be used on performance-critical paths in your own code. However, utilizing this method appropriately can pay significant dividends in overall performance.
 
 |        Method |                  Dog |      Mean |    Error |    StdDev | Ratio | Rank |
 |-------------- |--------------------- |----------:|---------:|----------:|------:|-----:|
@@ -391,30 +401,34 @@ Overall, it is easy to see that `StringFormat` and `Concatenation` are far short
 | Concatenation | [DOG] Pluto [Yellow] |  51.16 ns | 1.437 ns |  4.213 ns |  0.16 |    2 |
 |  StringFormat | [DOG] Pluto [Yellow] | 318.94 ns | 6.312 ns | 17.595 ns |  1.00 |    3 |
 
-The benchmarks methods I chose show another reason to carefully consider this use case for the **Create** method. You can see that simple concatenation performs slightly better when we have very few operations to perform, but quickly becomes a worse option the more we have to concatenate. **Format** is consistently the slowest option, though is arguably the fastest method to write initially. 
 
-It is also worth noting that these results almost runs counter to our separate concatenation benchmark above. We showed above that just concatenating two strings in marginally faster, so why doesn't the simplest cast for the `Dog` class run faster? In this case, the additional overhead of the string formatting method is adding up and overtaking the gains we made using by using **Create**. Checks for null can add up, especially because they are done twice (once when calculating length and once when building the full string). This overhead could be further optimized (potentially to the point that **Create** is always better for this `Dog` object), but that further emphasizes the point that this level of optimization is hard to do correctly.
+For the more complex cases, formatting using the **Create** method is between 25% and 35% faster. The benchmark methods I chose show another reason to carefully consider this use case for the **Create** method. You can see that simple concatenation performs slightly better when there are fewer elements to format. In the case where the `Dog` has no `Age` or `Color` value, the work needed to calculate and format the string eclipses the performance gain from using **Create**. However, once we populate these properties, **Concat** quickly becomes the poorer option. This shows why it is important to understand your data before using this method as well. If 99% of your cases are simple, you simply will not need this much help. **Format** is consistently the slowest option, though is arguably the fastest method to write initially and likely the most maintainable in the future. 
 
 ### When NOT To Use String.Create()
 
-**Create** shows great promise in performance-critical code, but there are many legitimate reasons to avoid it. As software engineers, we often become more tied to the metrics of our systems at the expense of the big picture. Generally, I think good maintenance should prevail over fantastic performance. That leads me to prescribe three general cases when you should avoid using **Create**, even if it sacrifices performance.
+**Create** shows great promise in performance-critical code, but there are many legitimate reasons to avoid it. As software engineers, we often become more tied to the metrics of our systems at the expense of the bigger picture. Generally, I think decent but maintainable code should prevail over fantastic performance. That leads me to prescribe three general cases when you should avoid using **Create**, even if it sacrifices performance.
 
 #### 1) Do Not Use When Readability is Important
 
-Ultimately, this API is not maintenance-friendly. Your scenario should demand *very* high performance and your code should be well-factored with unit tests. There are many alternatives that are more readable:
+Ultimately, this API is not maintenance-friendly. Your scenario should demand **very** high performance and your code should be well-factored and contain unit tests. When wrting code that requires occassional maintenance, you can easily stick with one of these simpler formatting methods:
 
 * **Format** or **String Interpolation** when generating simple strings with dynamic values.
-* **StringBuilder** when creating strings that require a loop.
+* **StringBuilder** when creating strings that require a loop or many conditional elements.
 * **Concat** or a simple `+` when you just need to combine a small number of strings.
 
 #### 2) Do Not Use When Culture is Important
 
-**Format**, **String Interpolation**, and most `ToString()` methods respect cultural formatting options. This gives your code the crucial ability to adapt to culture-specific date, numeral, and other formats without having to provide that complex logic yourself. **Create** does not offer any support for these APIs on its own, and attempting to mimic the behavior in your own code would often require allocating additional strings anyway, thus defeating the purpose of using **Create**.
+**Format**, **String Interpolation**, and most `ToString()` methods respect cultural formatting options. This gives your code the crucial ability to adapt to culture-specific date, numeral, and currency formats without having to code that logic yourself. **Create** does not offer any support for these APIs on its own, and attempting to mimic the behavior in your own code would likely require allocating additional strings, thus removing the advantages of using the **Create** method.
 
 #### 3) (Probably) Do Not Use When the Output is for Humans
 
-This situation is a bit subjective. The reason I would not recommend using **Create** for human-readable formatting is because humans **tend to want things to change**. Since formatting using the **Create** method is extremely verbose, any changes are likely to cause increases in complexity, and thereby generate technical debt. In my opinion, the best usage of **Create** is on machine-readable strings or more generalized string-writing APIs (such as **String.Format**) that are unlikely to change in the future. As is often the case in software development, the specifics of your situation are the most important, but I think is a good general rule to avoid this for any code you anticipate modifying frequently in the future.
+This situation is a bit subjective. The reason I would not recommend using **Create** for formatting for humans is because humans **often want things to change**. Since formatting using the **Create** method is extremely verbose, any changes are likely to cause increased complexity over time, and thereby generate an accumulating amount of technical debt. In my opinion, the best usage of **Create** is on machine-readable strings or more generalized string-writing APIs that are unlikely to change in the future. As is often the case in software development, the specifics of your situation are the most important, but I think is a good general rule to avoid this for any code you anticipate modifying frequently in the future.
 
-### Conclusion
+### Is String.Create() Right for You?
 
+The answer to this question is definitely **it depends**. I began this investigation by focusing on something new to me: the **String.Create** method. I dove down a bit of a rabbit-hole looking for new an interesting ways to use this API. During this journey I found three primary ways of using the method: (1) generating IDs, (2) fast concatenation, and (3) complex string formatting. Our benchmarks showed that we could, **with reasonable consistency**, produce a faster method using **String.Create** at the expense of simpler, more readable code. When answering the question above, you should always consider:
+* How important is this code's readability?
+* How likely is it to change?
+* How much will my program use this code and how much performance will it gain?
 
+These all depend on your own code and your own team's strengths, but my hope today is that I have given you some tools help you determine your own path. 
