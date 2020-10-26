@@ -5,14 +5,19 @@
     
 
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-TRTKF60805"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag() { dataLayer.push(arguments); }
-  gtag('js', new Date());
+  
 
-  gtag('config', 'G-TRTKF60805');
-</script>
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRTKF60805"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'G-TRTKF60805');
+    </script>
+
+  
 
 
     
@@ -119,20 +124,27 @@
 
     <div class="blogPost--content"><h2 id="did-you-know">Did You Know?</h2>
 <h3 id="visual-studio-tracks-your--todo-comments-so-you-can-find-them-later">Visual Studio tracks your &ldquo;// TODO&rdquo; comments so you can find them later.</h3>
-<p>From within Visual Studio Go to View -&gt; Task List. This will display the <strong>Task List</strong> window and show you any area of your open Solution. You can even filter down to your Current Project, Current Document, or Open Documents.</p>
+<p>From within Visual Studio Go to <strong>View</strong> -&gt; <strong>Task List</strong>. This will display the <strong>Task List</strong> window and show you any area of your open Solution that has existing comments that start with <code>// TODO</code>. You can filter down to your Current Project, Current Document, or Open Documents. It even will allow you to search the list.</p>
 <p><img src="visual_studio_task_view.png" alt="Visual Studio Task View showing two TODO comments"></p>
 <p>It doesn&rsquo;t just recognize <code>// TODO</code>, but will also recognize <code>// HACK</code>
 <img src="visual_studio_task_view_hack.png" alt="Visual Studio Task View showing single HACK comment"></p>
 <h3 id="what-if-i-dont-use-english">What if I Don&rsquo;t Use English?</h3>
 <p>You can customize the words that trigger a Task View entry in your Visual Studio options.</p>
 <ol>
-<li>Go to <em>Tools</em></li>
-<li>Go to <em>Options</em></li>
-<li>Expand the <em>Environment options</em></li>
-<li>Go to <em>Task List</em></li>
+<li>Go to <strong>Tools</strong></li>
+<li>Go to <strong>Options</strong></li>
+<li>Expand the <strong>Environment options</strong></li>
+<li>Go to <strong>Task List</strong></li>
 <li>Enter any words you would like to highlight from your code comments.</li>
 </ol>
 <p><img src="visual_studio_task_list_options.png" alt="Visual Studio Options dialog showing the Task List menu"></p>
+<h3 id="how-should-i-use-it">How Should I Use It?</h3>
+<p>Properly leveraging the <strong>Task List</strong> window can be fantastic for your productivity. Here are a few of the ways I have personally used this window to improve my workflow.</p>
+<ul>
+<li>Leaving occasional <code>// TODO</code> comments while prototyping when the unwritten code will not change functionality. It serves as a reminder to complete the code before delivering a milestone or making a final commit.</li>
+<li>When writing a Web API, create the first round of CRUD endpoints using fake data and add <code>// TODO</code> to the top of every method. When all of the base endpoints are in there is now an easy checklist to complete.</li>
+<li>Adding <code>// CONSIDER</code> to the list of words tracked by Visual Studio and using it to keep a list of places I want to make long-term improvements to a codebase. This can be set to a lower priority so that other tracked words stand out within the list.</li>
+</ul>
 <h2 id="additional-links">Additional Links</h2>
 <ul>
 <li><a href="https://docs.microsoft.com/en-us/visualstudio/ide/using-the-task-list?view=vs-2019">Microsoft Task View Documentation</a></li>

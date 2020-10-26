@@ -36,8 +36,7 @@
       <pubDate>Wed, 16 Sep 2020 13:58:39 -0700</pubDate>
       
       <guid>https://quill.codes/tips/dont-fear-the-todo/</guid>
-      <description>Did You Know? Visual Studio tracks your &amp;ldquo;// TODO&amp;rdquo; comments so you can find them later. From within Visual Studio Go to View -&amp;gt; Task List. This will display the Task List window and show you any area of your open Solution. You can even filter down to your Current Project, Current Document, or Open Documents.
-It doesn&amp;rsquo;t just recognize // TODO, but will also recognize // HACK What if I Don&amp;rsquo;t Use English?</description>
+      <description>Did You Know? Visual Studio tracks your &amp;ldquo;// TODO&amp;rdquo; comments so you can find them later. From within Visual Studio Go to View -&amp;gt; Task List. This will display the Task List window and show you any area of your open Solution that has existing comments that start with // TODO. You can filter down to your Current Project, Current Document, or Open Documents. It even will allow you to search the list.</description>
     </item>
     
   </channel>
