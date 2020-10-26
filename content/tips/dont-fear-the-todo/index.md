@@ -1,5 +1,5 @@
 ---
-title: "Dont Fear the // Todo"
+title: "Don't Fear the // Todo"
 description: "Ever write a TODO and fear that it will be forgotten later? Use the Visual Studio Task List to keep track of work in progress."
 date: 2020-09-16T13:58:39-07:00
 draft: false
