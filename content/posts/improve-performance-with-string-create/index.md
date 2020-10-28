@@ -1,6 +1,6 @@
 ---
 title: "Deep Dive on .NET Core String.Create() Performance"
-date: 2020-10-29
+date: 2020-10-28
 draft: true
 author: "Casey McQuillan"
 tags: [ "dotnet", "csharp", "performance" ]
