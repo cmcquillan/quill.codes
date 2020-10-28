@@ -1,10 +1,10 @@
 ---
-title: "Squeeze Extra Performance out of .NET Core with String.Create()"
-date: 2020-10-21
+title: "Deep Dive on .NET Core String.Create() Performance"
+date: 2020-10-29
 draft: true
 author: "Casey McQuillan"
 tags: [ "dotnet", "csharp", "performance" ]
-description: ""
+description: "Casey McQuillan investigates strategies for improving string performance in .NET and ASP.NET Core when using String.Create()."
 ---
 
 When was the last time that an insignificant detail sparked a movement in your brain? As a software engineer, I have a habit of focusing on the one tiny detail I have never seen before in a new block of code. At that point, the gears in my brain begin turning. **I love these moments**. The ones where the tiniest piece of trivia sends me down a rabbit-hole of discovery.
@@ -106,9 +106,7 @@ This methodology avoids the extra allocation by allowing us to pass in a `SpanAc
 
 ![A diagram showing the creation of a string using the String.Create() method. Shows that an allocation only happens during the Create() method and does not require a char[] array.](string_create.png)
 
-***Make a graphic: Constructor version should show that it's taking input, making a copy, and then giving back both the original and the copy. String.Create() version should show it it's creating something and delivering it.***
-
-A good analogy might be drawn from graphic design. You might want to get a professional logo created for your business, and you probably decided that you wanted it created in a vector format like SVG or EPS. You create a document that has details on the theme, colors, and general look of your logo. You now have a couple of options:
+An analogy could be drawn from graphic design. You might want to get a professional logo created for your business, and you probably decided that you wanted it created in a vector format like SVG or EPS. You create a document that has details on the theme, colors, and general look of your logo. You now have a couple of options:
 1) Draw the first draft yourself as close to the professional version as possible, send it to a graphic designer, and have them create a finalized version.
 2) Send your original detailed document to the graphic designer, who creates a finalized logo from the information you provided. 
 
@@ -419,9 +417,9 @@ Overall, the `StringFormat` and `Concatenation` methods are far shorter and less
 
 |        Method |                  Dog |  Gen 0 | Allocated |
 |-------------- |--------------------- |-------:|----------:|
-|  StringCreate | [DOG](...) (20) [23] | 0.0172 |      72 B |
-| Concatenation | [DOG](...) (20) [23] | 0.0516 |     216 B |
-|  StringFormat | [DOG](...) (20) [23] | 0.0420 |     176 B |
+|  StringCreate | [DOG] Fido (20) [23] | 0.0172 |      72 B |
+| Concatenation | [DOG] Fido (20) [23] | 0.0516 |     216 B |
+|  StringFormat | [DOG] Fido (20) [23] | 0.0420 |     176 B |
 |               |                      |        |           |
 | Concatenation |         [DOG] Fluffy | 0.0115 |      48 B |
 |  StringCreate |         [DOG] Fluffy | 0.0114 |      48 B |
