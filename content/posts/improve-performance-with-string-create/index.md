@@ -183,8 +183,8 @@ The algorithm is brief:
 1) Start your correlation ID at the latest tick count for UTC. The tick count is a 64-bit integer.
 2) Increment by one on each request for a new ID.
 3) For each of 13 characters:
-    1) Shift the value by 5 additional (`character_index * 5`) bits.
-    2) Grab the rightmost 5 bits (`shifted_value & 31`) and choose a character based upon a predetermined table.
+    * Shift the value by 5 additional (`character_index * 5`) bits.
+    * Grab the rightmost 5 bits (`shifted_value & 31`) and choose a character based upon a predetermined table.
 
 For our baseline comparison, I used a naive implementation that utilizes `StringBuilder`. I chose this option because `StringBuilder` is [often recommended](https://docs.microsoft.com/en-us/troubleshoot/dotnet/csharp/string-concatenation) as a good API for performance over regular string concatenation. I wrote additional implementations that attempted to use `StringBuilder` (with capacity), `StringBuilder` (without capacity), and simple concatenation. 
 
