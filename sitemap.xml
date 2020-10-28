@@ -66,14 +66,14 @@
   </url>
   
   <url>
-    <loc>https://quill.codes/posts/</loc>
+    <loc>https://quill.codes/tags/prototyping/</loc>
     <lastmod>2020-09-22T09:22:48-07:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://quill.codes/tags/prototyping/</loc>
+    <loc>https://quill.codes/posts/</loc>
     <lastmod>2020-09-22T09:22:48-07:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
