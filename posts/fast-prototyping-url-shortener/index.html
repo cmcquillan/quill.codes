@@ -140,14 +140,17 @@
 <h2 id="getting-your-environment-ready">Getting your Environment Ready</h2>
 <p>For this tutorial we have a couple tools that will be necessary.</p>
 <ul>
-<li><a href="https://dotnet.microsoft.com/download/dotnet-core">.NET SDK</a>
+<li>
+<a href="https://dotnet.microsoft.com/download/dotnet-core" target="_blank" rel="noopener">.NET SDK</a>
 <ul>
 <li><em>Note: This tutorial uses some features from .NET 5, which is a Release Candidate as of this writing.</em>
 <img src="dotnet_versions.png" alt="List of Supported Versions of .NET. The entry for version 5.0.0-rc.1 has a box highlighting it."></li>
 </ul>
 </li>
-<li><a href="https://code.visualstudio.com/">VS Code</a></li>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp">C# Extension for VS Code</a></li>
+<li>
+<a href="https://code.visualstudio.com/" target="_blank" rel="noopener">VS Code</a></li>
+<li>
+<a href="https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp" target="_blank" rel="noopener">C# Extension for VS Code</a></li>
 </ul>
 <h2 id="building-a-url-shortener">Building a URL Shortener</h2>
 <p>The plan today is to build a prototype URL shortener. While doing this we are going to explore and learn about a few concepts of .NET 5:</p>
@@ -157,7 +160,8 @@
 <li>Serving some data using endpoint routing</li>
 <li>Persisting our data in a simple no-frills database</li>
 </ul>
-<p><em>Note: At this point I should emphasize that this is tutorial code and probably not ready for your full-scale production app. If you really just need a URL shortener there are many <a href="https://github.com/awesome-selfhosted/awesome-selfhosted#url-shorteners">self-hosted options</a> from which you can choose.</em></p>
+<p><em>Note: At this point I should emphasize that this is tutorial code and probably not ready for your full-scale production app. If you really just need a URL shortener there are many 
+<a href="https://github.com/awesome-selfhosted/awesome-selfhosted#url-shorteners" target="_blank" rel="noopener">self-hosted options</a> from which you can choose.</em></p>
 <h2 id="setting-up-the-project">Setting up the Project</h2>
 <p>Our first step is to get our basic project files in place. Let&rsquo;s make a directory for our project and create a few files.</p>
 <div class="highlight"><div class="chroma">
@@ -402,7 +406,9 @@
 </code></pre></td></tr></table>
 </div>
 </div><p>You will notice that we are just building a very basic form that will send a POST request to the <code>&quot;/shorten&quot;</code> route with a single field named <code>url</code>. We will have to add a little JavaScript later when we actually want to display our shortened link but for now this will suffice.</p>
-<p><em>Note: You may notice a this stylesheet reference <code>&lt;link rel=&quot;stylesheet&quot; href=&quot;https://unpkg.com/mvp.css&quot;&gt;</code> at the top. This is a package called <a href="https://andybrewer.github.io/mvp/">mvp.css</a> by <a href="https://www.andybrewer.com/">Andy Brewer</a> and we are going to use it to give us some basic styling so we can focus on our code.</em></p>
+<p><em>Note: You may notice a this stylesheet reference <code>&lt;link rel=&quot;stylesheet&quot; href=&quot;https://unpkg.com/mvp.css&quot;&gt;</code> at the top. This is a package called 
+<a href="https://andybrewer.github.io/mvp/" target="_blank" rel="noopener">mvp.css</a> by 
+<a href="https://www.andybrewer.com/" target="_blank" rel="noopener">Andy Brewer</a> and we are going to use it to give us some basic styling so we can focus on our code.</em></p>
 <p>Then in our application we can instruct our endpoint to serve this file.</p>
 <h3 id="programcs-2">Program.cs</h3>
 <div class="highlight"><div class="chroma">
@@ -613,7 +619,8 @@
 <p><img src="url_shortener_test_url_response.png" alt="A chrome browser window shorting the URL of https://localhost:5001/shorten with the text &ldquo;https://localhost:5001/Fc1bBw&rdquo; in the content window."></p>
 <p><em>Congrats! You are successfully processing requests and returning data to your user. Next we will persist our generated short links to a database.</em></p>
 <h2 id="persisting-your-short-links">Persisting Your Short Links</h2>
-<p>Up to this point we have avoided adding dependencies to our project. For this section we have to change that by adding a database. We are going to use <a href="https://www.litedb.org/">LiteDB</a>, a simple, lightweight NoSQL database that will let us easily persist our short links to a file so they can be reitreved later.</p>
+<p>Up to this point we have avoided adding dependencies to our project. For this section we have to change that by adding a database. We are going to use 
+<a href="https://www.litedb.org/" target="_blank" rel="noopener">LiteDB</a>, a simple, lightweight NoSQL database that will let us easily persist our short links to a file so they can be reitreved later.</p>
 <h3 id="adding-litedb-to-your-project">Adding LiteDB to Your Project</h3>
 <p>When just using a text editor and not a full IDE, generally the easiest way to add a package is via the command line. Run the following command when in your project directory:</p>
 <div class="highlight"><div class="chroma">
@@ -930,8 +937,10 @@
 <li>Refactor the app to use a remote database like MongoDB or SQL Server.</li>
 <li>Right now putting the same URL twice will result in two separate short links. Maybe enhance the link creation logic to avoid duplicate URLs?</li>
 </ul>
-<p>If you would be interested in a post that goes through any of these ideas, please <a href="https://twitter.com/QuillCodes/">Let me know</a>!</p>
-<p>You can also check out the full code for this solution <a href="https://github.com/cmcquillan/fast-aspnet-samples/tree/main/url-shortener-tutorial">on github</a>.</p>
+<p>If you would be interested in a post that goes through any of these ideas, please 
+<a href="https://twitter.com/QuillCodes/" target="_blank" rel="noopener">Let me know</a>!</p>
+<p>You can also check out the full code for this solution 
+<a href="https://github.com/cmcquillan/fast-aspnet-samples/tree/main/url-shortener-tutorial" target="_blank" rel="noopener">on github</a>.</p>
 </div>
   </article>
 </div>
@@ -977,13 +986,13 @@
     
       <li class="tagGroupListItem">
         <a href="/tags/csharp">
-          csharp(4)
+          csharp(5)
         </a>
       </li>
     
       <li class="tagGroupListItem">
         <a href="/tags/dotnet">
-          dotnet(4)
+          dotnet(5)
         </a>
       </li>
     
@@ -996,6 +1005,12 @@
       <li class="tagGroupListItem">
         <a href="/tags/oop">
           oop(1)
+        </a>
+      </li>
+    
+      <li class="tagGroupListItem">
+        <a href="/tags/performance">
+          performance(1)
         </a>
       </li>
     

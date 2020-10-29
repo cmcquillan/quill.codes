@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    
+
+
+  
+
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRTKF60805"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'G-TRTKF60805');
+    </script>
+
+  
+
+
+    
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+<meta name="description" content="Casey McQuillan investigates strategies for improving string performance in .NET and ASP.NET Core when using String.Create()." />
+<title>Deep Dive on .NET Core String.Create() Performance | Quill.Codes</title>
+<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@500&family=Montserrat&display=swap"
+    rel="stylesheet">
+<link href="/css/site.css" rel="stylesheet" />
+<link href="/css/syntax.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://quill.codes/posts/improve-performance-with-string-create/string_create_cover.png"/>
+
+<meta name="twitter:title" content="Deep Dive on .NET Core String.Create() Performance"/>
+<meta name="twitter:description" content="Casey McQuillan investigates strategies for improving string performance in .NET and ASP.NET Core when using String.Create()."/>
+
+
+<meta property="og:title" content="Deep Dive on .NET Core String.Create() Performance" />
+<meta property="og:description" content="Casey McQuillan investigates strategies for improving string performance in .NET and ASP.NET Core when using String.Create()." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://quill.codes/posts/improve-performance-with-string-create/" />
+<meta property="og:image" content="https://quill.codes/posts/improve-performance-with-string-create/string_create_cover.png" />
+<meta property="article:published_time" content="2020-10-29T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-10-29T00:00:00+00:00" />
+
+
+<script async defer data-domain="quill.codes" src="https://plausible.io/js/plausible.js"></script>
+
+<script>
+    function shareFacebook(uri) {
+        let newWindow = window.open(
+            'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(uri),
+            'facebook-share-dialog',
+            'width=626,height=436');
+    }
+
+    function shareLinkedin(uri) {
+        let newWindow = window.open(
+            'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(uri),
+            'linkedin-share-dialog',
+            'width=626,height=640');
+    }
+</script>
+    
+    
+
+    
+</head>
+
+<body>
+    <div class="pageContainer"><header class="header">
+    <div class="header--siteTitle">
+        <a title="Back to Site Home" class="title header-titleLogo" href="/">
+            <object viewBox="0 0 100 100" height="60" data="/images/blog_icon.svg" alt="The Quill.Codes Site Logo. Logo is an inkwell with a Quill superimposed in front."
+                type="image/svg+xml">
+                The Quill.Codes Site Logo. Logo is an inkwell with a Quill superimposed in front.
+            </object>
+        </a>
+        <a title="Back to Site Home" class="title header--titleLink" href="/">
+            Quill.Codes
+        </a>
+    </div>
+
+    <div class="header--img">
+        <img class="header--img-logo" src="/images/profile.png" alt="Picture of Casey (Quill)" />
+    </div>
+
+    <div class="header--menu">
+        <div class="socialIcons">
+            <a title="Casey's Twitter Account" rel="nofollow noopener" target="_blank" href="https://twitter.com/QuillCodes" class="fa fa-twitter socialIcons--icon"></a>
+            <a title="Casey's Github Account" rel="nofollow noopener" target="_blank" href="https://github.com/cmcquillan" class="fa fa-github socialIcons--icon"></a>
+            <a title="Casey's LinkedIn Account" rel="nofollow noopener" target="_blank" href="https://www.linkedin.com/in/caseymcquillan/"
+                class="fa fa-linkedin socialIcons--icon"></a>
+            <a title="Quill.Codes RSS Feed" rel="nofollow noopener" target="_blank" href="https://quill.codes/index.xml"
+                class="fa fa-rss socialIcons--icon"></a>
+        </div>
+    </div>
+
+</header><main id="content" class="content">
+
+
+<div class="blogPostContainer">
+  
+  <img class="blogPostTitle" src="string_create_cover.png" alt="" />
+  
+  <h1 class="postTitle"> Deep Dive on .NET Core String.Create() Performance</h1>
+  <aside class="shareIcons">
+    <a class="fa fa-facebook" rel="nofollow noopener" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fquill.codes%2fposts%2fimprove-performance-with-string-create%2f" target="_blank"
+      onclick="shareFacebook('https:\/\/quill.codes\/posts\/improve-performance-with-string-create\/'); return false;" title="Share on Facebook"></a>
+    <a class="fa fa-twitter" rel="nofollow noopener" href="http://twitter.com/share?text=Deep%20Dive%20on%20.NET%20Core%20String.Create%28%29%20Performance&url=https%3a%2f%2fquill.codes%2fposts%2fimprove-performance-with-string-create%2f&&via=QuillCodes" target="_blank" title="Share on Twitter"></a>
+    <a class="fa fa-linkedin" rel="nofollow noopener" href="https://www.linkedin.com/sharing/share-offsite/?url=https://quill.codes/posts/fast-prototyping-url-shortener/" onclick="shareLinkedin('https:\/\/quill.codes\/posts\/improve-performance-with-string-create\/'); return false;" title="Share on LinkedIn"></a>
+  </aside>
+  <article class="blogPost">
+    <div class="blogPost--details">
+      <div class="blogPostDetails--postAuthor">
+        <span class="blogPostDetails--postAuthor-formattedAuthor">
+          Casey McQuillan
+        </span>
+      </div>
+      <div class="blogPostDetails--postDate">
+        <span class="blogPostDetails--postDate-formattedDate">October 29, 2020</span>
+      </div>
+    </div>
+
+    <div class="blogPost--content"><p>When was the last time that an insignificant detail sparked a movement in your brain? As a software engineer, I have a habit of focusing on the one tiny detail I have never seen before in a new block of code. At that point, the gears in my brain begin turning. <strong>I love these moments</strong>. The ones where the tiniest piece of trivia sends me down a rabbit-hole of discovery.</p>
+<p>What did that look like the last time it came to you?</p>
+<p>It recently happened to me as I was browsing Twitter. I came upon this exchange between David Fowler and Damian Edwards, discussing the .NET <code>Span&lt;T&gt;</code> API. I have used the <code>Span&lt;T&gt;</code> API before, but I found something new and different in the tweets.</p>
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">The result <a href="https://t.co/74tz33vfz7">pic.twitter.com/74tz33vfz7</a></p>&mdash; Damian Edwards 😷🌈#BlackLivesMatter (@DamianEdwards) <a href="https://twitter.com/DamianEdwards/status/1318638349544873985?ref_src=twsrc%5Etfw">October 20, 2020</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>It&rsquo;s a small thing, The item that began my dive down the rabbit-hole. The <strong>String.Create</strong> method used above was the piece I had never seen before. <strong>String.Create</strong> was a hidden gem, and I was determined to uncover its mysteries. I found myself asking the question:</p>
+<blockquote>
+<p>&ldquo;Why use this method for creating strings over others?&rdquo;</p>
+</blockquote>
+<p>I began the journey, and it took me to a few interesting places that I would like to share with you. In this article, we will delve into a few topics&hellip;</p>
+<ul>
+<li>What is <strong>String.Create</strong> and how is it different from other APIs?</li>
+<li>What does <strong>String.Create</strong> do better and how can it make my C# code faster?</li>
+<li>How much more performance can it achieve?</li>
+<li>What pitfalls can and should be avoided?</li>
+</ul>
+<h3 id="definitions">Definitions</h3>
+<p>To make the article a little easier, I am going to refer to a few .NET Core APIs in the following ways:</p>
+<ul>
+<li><strong>Create</strong> - Refers to using <code>String.Create()</code>.</li>
+<li><strong>Concat</strong> - Refers to using <code>String.Concat()</code> or the plus (<code>+</code>) operator.</li>
+<li><strong>Format</strong> - Refers to using <code>String.Format()</code>, one of its many overloads, or string interpolation with the <code>$&quot;&quot;</code> syntax.</li>
+<li><strong>StringBuilder</strong> - Refers to constructing a string with the fluent <code>StringBuilder</code> class and API.</li>
+</ul>
+<h3 id="how-does-it-work">How Does It Work?</h3>
+<p>The .NET Core codebase is open source and 
+<a href="https://github.com/dotnet/runtime/blob/master/src/libraries/System.Private.CoreLib/src/System/String.cs" target="_blank" rel="noopener">developed on GitHub</a>. This provides a great opportunity to dive in and analyze Microsoft&rsquo;s own practices. They provided the <strong>Create</strong> API, so seeing how they use it should provide valuable insight. Let&rsquo;s start with a deep dive into the <code>String</code> object and its relevant APIs.</p>
+<p>To generically build a string out of raw character data, you need to use the constructor that requires a 
+<a href="https://github.com/dotnet/runtime/blob/master/src/libraries/System.Private.CoreLib/src/System/String.cs#L57" target="_blank" rel="noopener">pointer to a <code>char</code> array</a>. Using this API directly would require placing individual characters into specific array locations. Below is the code that runs when you allocate a string using this constructor. There are many other ways to create strings, but this is what I consider the most comparable to the <strong>Create</strong> method.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="hl"><span class="lnt">62
+</span></span><span class="hl"><span class="lnt">63
+</span></span><span class="hl"><span class="lnt">64
+</span></span><span class="hl"><span class="lnt">65
+</span></span><span class="hl"><span class="lnt">66
+</span></span><span class="hl"><span class="lnt">67
+</span></span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="kt">string</span> <span class="n">Ctor</span><span class="p">(</span><span class="kt">char</span><span class="p">[]?</span> <span class="k">value</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">value</span> <span class="p">==</span> <span class="k">null</span> <span class="p">||</span> <span class="k">value</span><span class="p">.</span><span class="n">Length</span> <span class="p">==</span> <span class="m">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Empty</span><span class="p">;</span>
+
+<span class="hl">    <span class="kt">string</span> <span class="n">result</span> <span class="p">=</span> <span class="n">FastAllocateString</span><span class="p">(</span><span class="k">value</span><span class="p">.</span><span class="n">Length</span><span class="p">);</span>
+</span><span class="hl">
+</span><span class="hl">    <span class="n">Buffer</span><span class="p">.</span><span class="n">Memmove</span><span class="p">(</span>
+</span><span class="hl">        <span class="n">elementCount</span><span class="p">:</span> <span class="p">(</span><span class="kt">uint</span><span class="p">)</span><span class="n">result</span><span class="p">.</span><span class="n">Length</span><span class="p">,</span> <span class="c1">// derefing Length now allows JIT to prove &#39;result&#39; not null below
+</span></span><span class="hl"><span class="c1"></span>        <span class="n">destination</span><span class="p">:</span> <span class="k">ref</span> <span class="n">result</span><span class="p">.</span><span class="n">_firstChar</span><span class="p">,</span>
+</span><span class="hl">        <span class="n">source</span><span class="p">:</span> <span class="k">ref</span> <span class="n">MemoryMarshal</span><span class="p">.</span><span class="n">GetArrayDataReference</span><span class="p">(</span><span class="k">value</span><span class="p">));</span>
+</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>To summarize the important steps:</p>
+<ol>
+<li>Inputs are validated. An empty or null array returns <code>String.Empty</code>.</li>
+<li>We allocate memory using <code>FastAllocateString</code> based on the array <code>Length</code>. <code>FastAllocateString</code> is implemented within the .NET Runtime itself and underpins nearly all string allocations.</li>
+<li>We call <code>Buffer.Memmove</code>, which copies all bytes from the original array into the newly allocated string.</li>
+<li>Return the resulting string.</li>
+</ol>
+<p>To use this constructor, we need to supply it with a <code>char</code> array. After its job is complete, we end up with both a (now unnecessary) <code>char</code> array and a <code>string</code>, each with identical data. If we were to modify the original array, then the <code>string</code> would remain unmodified, because it is a separate and distinct copy of the data. In a high-performance .NET environment, saving object and array allocations can be extremely valuable because it reduces the total amount of work that the .NET Garbage Collector needs to do whenever it runs. Every <strong>extra</strong> object that is left in memory increases the frequency of collections and hurts total performance.</p>
+<p>If you would like to learn more about .NET Garbage Collection and how it can impact performance, there are many fantastic resources online:</p>
+<ul>
+<li>
+<a href="https://youtu.be/kej3YJDMAW4?t=505" target="_blank" rel="noopener">ASP.NET Core Kestrel: Adventures in building a fast web server - Damian Edwards &amp; David Fowler</a></li>
+<li>
+<a href="https://michaelscodingspot.com/avoid-gc-pressure/" target="_blank" rel="noopener">8 Techniques to Avoid GC Pressure and Improve Performance in C# .NET</a></li>
+<li>
+<a href="https://www.red-gate.com/simple-talk/dotnet/asp-net/how-the-garbage-collector-can-cause-random-slowness/" target="_blank" rel="noopener">How The Garbage Collector Can Cause Random Slowness</a></li>
+</ul>
+<p>To contrast with the constructor and to eliminate this unnecessary array allocation, we take a look at the code that runs for the <strong>Create</strong> method:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">363
+</span><span class="lnt">364
+</span><span class="lnt">365
+</span><span class="lnt">366
+</span><span class="lnt">367
+</span><span class="lnt">368
+</span><span class="lnt">369
+</span><span class="lnt">370
+</span><span class="lnt">371
+</span><span class="lnt">372
+</span><span class="lnt">373
+</span><span class="lnt">374
+</span><span class="hl"><span class="lnt">375
+</span></span><span class="hl"><span class="lnt">376
+</span></span><span class="lnt">377
+</span><span class="lnt">378
+</span><span class="lnt">379
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">static</span> <span class="kt">string</span> <span class="n">Create</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;(</span><span class="kt">int</span> <span class="n">length</span><span class="p">,</span> <span class="n">TState</span> <span class="n">state</span><span class="p">,</span> <span class="n">SpanAction</span><span class="p">&lt;</span><span class="kt">char</span><span class="p">,</span> <span class="n">TState</span><span class="p">&gt;</span> <span class="n">action</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">action</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="n">ArgumentNullException</span><span class="p">(</span><span class="n">nameof</span><span class="p">(</span><span class="n">action</span><span class="p">));</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">length</span> <span class="p">&lt;=</span> <span class="m">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">length</span> <span class="p">==</span> <span class="m">0</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">Empty</span><span class="p">;</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="n">ArgumentOutOfRangeException</span><span class="p">(</span><span class="n">nameof</span><span class="p">(</span><span class="n">length</span><span class="p">));</span>
+    <span class="p">}</span>
+
+<span class="hl">    <span class="kt">string</span> <span class="n">result</span> <span class="p">=</span> <span class="n">FastAllocateString</span><span class="p">(</span><span class="n">length</span><span class="p">);</span>
+</span><span class="hl">    <span class="n">action</span><span class="p">(</span><span class="k">new</span> <span class="n">Span</span><span class="p">&lt;</span><span class="kt">char</span><span class="p">&gt;(</span><span class="k">ref</span> <span class="n">result</span><span class="p">.</span><span class="n">GetRawStringData</span><span class="p">(),</span> <span class="n">length</span><span class="p">),</span> <span class="n">state</span><span class="p">);</span>
+</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>The steps are similar but contain a critical difference:</p>
+<ol>
+<li>Inputs are validated. Invalid <code>action</code> or negative <code>Length</code> will throw an exception and <code>Length</code> of 0 returns Empty;</li>
+<li>We allocate memory using <code>FastAllocateString</code> based on the <code>length</code> parameter.</li>
+<li>Convert the newly-allocated <code>string</code> to a <code>Span&lt;char&gt;</code>.</li>
+<li>Invoke the provided <code>action</code> and pass in the new <code>Span&lt;char&gt;</code> along with the provided <code>state</code>.</li>
+<li>Return the resulting <code>string</code>.</li>
+</ol>
+<p>This methodology avoids the extra allocation by allowing us to pass in a <code>SpanAction</code>, which functions as a set of instructions for how our string should be created instead of requiring a second copy of all the bytes we need put into the string.</p>
+<p><img src="string_constructor.png" alt="A diagram showing the creation of a string using the constructor. Shows that an allocations happens when generating a char[] array and within the string constuctor itself."></p>
+<p><img src="string_create.png" alt="A diagram showing the creation of a string using the String.Create() method. Shows that an allocation only happens during the Create() method and does not require a char[] array."></p>
+<p>An analogy could be drawn from graphic design. You might want to get a professional logo created for your business, and you probably decided that you wanted it created in a vector format like SVG or EPS. You create a document that has details on the theme, colors, and general look of your logo. You now have a couple of options:</p>
+<ol>
+<li>Draw the first draft yourself as close to the professional version as possible, send it to a graphic designer, and have them create a finalized version.</li>
+<li>Send your original detailed document to the graphic designer, who creates a finalized logo from the information you provided.</li>
+</ol>
+<p>In the first situation, you end up with two images, but only one that you plan to use. Your original can probably be thrown away without any ceremony, as you now have your professionally designed version. In the second case, you have not produced any extra product and therefore have produced less waste.</p>
+<p>The process for the <strong>Create</strong> method is closer to the situation where you sent your documentation to a designer. By telling them exactly what you wanted from the beginning, you only generate one final artifact in the form that you need.</p>
+<h3 id="how-is-stringcreate-better">How is String.Create() Better?</h3>
+<p>At this point, you might be curious about the <strong>Create</strong> method, but you don&rsquo;t necessarily know why it&rsquo;s better than the methods you have used before. The <strong>Create</strong> APIs usefulness is situational, but it can be extremely powerful in the proper context.</p>
+<ul>
+<li>It pre-allocates a bucket, and then gives you an interface to fill that bucket safely. Other methods that produce similar results could require writing unsafe code or managing buffer pools.</li>
+<li>It avoids extra copy-operations of your data which often results in fewer allocations. This reduces pressure from your Garbage Collector which can speed up your overall program.</li>
+<li>It allows you to focus your high-performance code on the business requirements of your application rather than interleaving your string-building code with complex memory management.</li>
+</ul>
+<h3 id="use-cases-for-stringcreate">Use Cases for String.Create()</h3>
+<p>You can only use the <strong>Create</strong> method when you already know your final string&rsquo;s length. However, you can work creatively with this constraint and discover several ways to leverage <strong>Create</strong>. I performed a search through the codebases for 
+<a href="https://github.com/dotnet/aspnetcore" target="_blank" rel="noopener">dotnet/aspnetcore</a> and 
+<a href="https://github.com/dotnet/runtime" target="_blank" rel="noopener">dotnet/runtime</a> to see where the Microsoft team decided to utilize this API. The rest of this article will dive deep into three trends that I found:</p>
+<ul>
+<li>Generating IDs</li>
+<li>Performance-Sensitive Concatenations</li>
+<li>Formatting Complex Strings</li>
+</ul>
+<h4 id="generating-ids">Generating IDs</h4>
+<p>Consider this class from the ASP.NET Core repository used for generating correlation IDs on each web request. It generates a correlation ID in the format of 13 characters chosen from the numbers (0-9) and most upper-case letters (A-V).</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="hl"><span class="lnt">23
+</span></span><span class="hl"><span class="lnt">24
+</span></span><span class="hl"><span class="lnt">25
+</span></span><span class="hl"><span class="lnt">26
+</span></span><span class="hl"><span class="lnt">27
+</span></span><span class="hl"><span class="lnt">28
+</span></span><span class="hl"><span class="lnt">29
+</span></span><span class="hl"><span class="lnt">30
+</span></span><span class="hl"><span class="lnt">31
+</span></span><span class="hl"><span class="lnt">32
+</span></span><span class="hl"><span class="lnt">33
+</span></span><span class="hl"><span class="lnt">34
+</span></span><span class="hl"><span class="lnt">35
+</span></span><span class="hl"><span class="lnt">36
+</span></span><span class="hl"><span class="lnt">37
+</span></span><span class="hl"><span class="lnt">38
+</span></span><span class="hl"><span class="lnt">39
+</span></span><span class="hl"><span class="lnt">40
+</span></span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="c1">// Copyright (c) .NET Foundation. All rights reserved.
+</span><span class="c1">// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+</span><span class="c1"></span>
+<span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Threading</span><span class="p">;</span>
+
+<span class="k">namespace</span> <span class="nn">Microsoft.AspNetCore.Connections</span>
+<span class="p">{</span>
+    <span class="k">internal</span> <span class="k">static</span> <span class="k">class</span> <span class="nc">CorrelationIdGenerator</span>
+    <span class="p">{</span>
+        <span class="c1">// Base32 encoding - in ascii sort order for easy text based sorting
+</span><span class="c1"></span>        <span class="k">private</span> <span class="k">static</span> <span class="k">readonly</span> <span class="kt">char</span><span class="p">[]</span> <span class="n">s_encode32Chars</span> <span class="p">=</span> <span class="s">&#34;0123456789ABCDEFGHIJKLMNOPQRSTUV&#34;</span><span class="p">.</span><span class="n">ToCharArray</span><span class="p">();</span>
+
+        <span class="c1">// Seed the _lastConnectionId for this application instance with
+</span><span class="c1"></span>        <span class="c1">// the number of 100-nanosecond intervals that have elapsed since 12:00:00 midnight, January 1, 0001
+</span><span class="c1"></span>        <span class="c1">// for a roughly increasing _lastId over restarts
+</span><span class="c1"></span>        <span class="k">private</span> <span class="k">static</span> <span class="kt">long</span> <span class="n">_lastId</span> <span class="p">=</span> <span class="n">DateTime</span><span class="p">.</span><span class="n">UtcNow</span><span class="p">.</span><span class="n">Ticks</span><span class="p">;</span>
+
+        <span class="k">public</span> <span class="k">static</span> <span class="kt">string</span> <span class="n">GetNextId</span><span class="p">()</span> <span class="p">=&gt;</span> <span class="n">GenerateId</span><span class="p">(</span><span class="n">Interlocked</span><span class="p">.</span><span class="n">Increment</span><span class="p">(</span><span class="k">ref</span> <span class="n">_lastId</span><span class="p">));</span>
+
+        <span class="k">private</span> <span class="k">static</span> <span class="kt">string</span> <span class="n">GenerateId</span><span class="p">(</span><span class="kt">long</span> <span class="n">id</span><span class="p">)</span>
+        <span class="p">{</span>
+<span class="hl">            <span class="k">return</span> <span class="kt">string</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span><span class="m">13</span><span class="p">,</span> <span class="n">id</span><span class="p">,</span> <span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="k">value</span><span class="p">)</span> <span class="p">=&gt;</span>
+</span><span class="hl">            <span class="p">{</span>
+</span><span class="hl">                <span class="kt">char</span><span class="p">[]</span> <span class="n">encode32Chars</span> <span class="p">=</span> <span class="n">s_encode32Chars</span><span class="p">;</span>
+</span><span class="hl">
+</span><span class="hl">                <span class="n">buffer</span><span class="p">[</span><span class="m">12</span><span class="p">]</span> <span class="p">=</span> <span class="n">encode32Chars</span><span class="p">[</span><span class="k">value</span> <span class="p">&amp;</span> <span class="m">31</span><span class="p">];</span>
+</span><span class="hl">                <span class="n">buffer</span><span class="p">[</span><span class="m">11</span><span class="p">]</span> <span class="p">=</span> <span class="n">encode32Chars</span><span class="p">[(</span><span class="k">value</span> <span class="p">&gt;&gt;</span> <span class="m">5</span><span class="p">)</span> <span class="p">&amp;</span> <span class="m">31</span><span class="p">];</span>
+</span><span class="hl">                <span class="n">buffer</span><span class="p">[</span><span class="m">10</span><span class="p">]</span> <span class="p">=</span> <span class="n">encode32Chars</span><span class="p">[(</span><span class="k">value</span> <span class="p">&gt;&gt;</span> <span class="m">10</span><span class="p">)</span> <span class="p">&amp;</span> <span class="m">31</span><span class="p">];</span>
+</span><span class="hl">                <span class="n">buffer</span><span class="p">[</span><span class="m">9</span><span class="p">]</span> <span class="p">=</span> <span class="n">encode32Chars</span><span class="p">[(</span><span class="k">value</span> <span class="p">&gt;&gt;</span> <span class="m">15</span><span class="p">)</span> <span class="p">&amp;</span> <span class="m">31</span><span class="p">];</span>
+</span><span class="hl">                <span class="n">buffer</span><span class="p">[</span><span class="m">8</span><span class="p">]</span> <span class="p">=</span> <span class="n">encode32Chars</span><span class="p">[(</span><span class="k">value</span> <span class="p">&gt;&gt;</span> <span class="m">20</span><span class="p">)</span> <span class="p">&amp;</span> <span class="m">31</span><span class="p">];</span>
+</span><span class="hl">                <span class="n">buffer</span><span class="p">[</span><span class="m">7</span><span class="p">]</span> <span class="p">=</span> <span class="n">encode32Chars</span><span class="p">[(</span><span class="k">value</span> <span class="p">&gt;&gt;</span> <span class="m">25</span><span class="p">)</span> <span class="p">&amp;</span> <span class="m">31</span><span class="p">];</span>
+</span><span class="hl">                <span class="n">buffer</span><span class="p">[</span><span class="m">6</span><span class="p">]</span> <span class="p">=</span> <span class="n">encode32Chars</span><span class="p">[(</span><span class="k">value</span> <span class="p">&gt;&gt;</span> <span class="m">30</span><span class="p">)</span> <span class="p">&amp;</span> <span class="m">31</span><span class="p">];</span>
+</span><span class="hl">                <span class="n">buffer</span><span class="p">[</span><span class="m">5</span><span class="p">]</span> <span class="p">=</span> <span class="n">encode32Chars</span><span class="p">[(</span><span class="k">value</span> <span class="p">&gt;&gt;</span> <span class="m">35</span><span class="p">)</span> <span class="p">&amp;</span> <span class="m">31</span><span class="p">];</span>
+</span><span class="hl">                <span class="n">buffer</span><span class="p">[</span><span class="m">4</span><span class="p">]</span> <span class="p">=</span> <span class="n">encode32Chars</span><span class="p">[(</span><span class="k">value</span> <span class="p">&gt;&gt;</span> <span class="m">40</span><span class="p">)</span> <span class="p">&amp;</span> <span class="m">31</span><span class="p">];</span>
+</span><span class="hl">                <span class="n">buffer</span><span class="p">[</span><span class="m">3</span><span class="p">]</span> <span class="p">=</span> <span class="n">encode32Chars</span><span class="p">[(</span><span class="k">value</span> <span class="p">&gt;&gt;</span> <span class="m">45</span><span class="p">)</span> <span class="p">&amp;</span> <span class="m">31</span><span class="p">];</span>
+</span><span class="hl">                <span class="n">buffer</span><span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="p">=</span> <span class="n">encode32Chars</span><span class="p">[(</span><span class="k">value</span> <span class="p">&gt;&gt;</span> <span class="m">50</span><span class="p">)</span> <span class="p">&amp;</span> <span class="m">31</span><span class="p">];</span>
+</span><span class="hl">                <span class="n">buffer</span><span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="p">=</span> <span class="n">encode32Chars</span><span class="p">[(</span><span class="k">value</span> <span class="p">&gt;&gt;</span> <span class="m">55</span><span class="p">)</span> <span class="p">&amp;</span> <span class="m">31</span><span class="p">];</span>
+</span><span class="hl">                <span class="n">buffer</span><span class="p">[</span><span class="m">0</span><span class="p">]</span> <span class="p">=</span> <span class="n">encode32Chars</span><span class="p">[(</span><span class="k">value</span> <span class="p">&gt;&gt;</span> <span class="m">60</span><span class="p">)</span> <span class="p">&amp;</span> <span class="m">31</span><span class="p">];</span>
+</span><span class="hl">            <span class="p">});</span>
+</span>        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>The algorithm is brief:</p>
+<ol>
+<li>Start your correlation ID at the latest tick count for UTC. The tick count is a 64-bit integer.</li>
+<li>Increment by one on each request for a new ID.</li>
+<li>For each of 13 characters:
+<ul>
+<li>Shift the value by 5 additional (<code>character_index * 5</code>) bits.</li>
+<li>Grab the rightmost 5 bits (<code>shifted_value &amp; 31</code>) and choose a character based upon a predetermined table.</li>
+</ul>
+</li>
+</ol>
+<p>For our baseline comparison, I used a naive implementation that utilizes <code>StringBuilder</code>. I chose this option because <code>StringBuilder</code> is 
+<a href="https://docs.microsoft.com/en-us/troubleshoot/dotnet/csharp/string-concatenation" target="_blank" rel="noopener">often recommended</a> as a good API for performance over regular string concatenation. I wrote additional implementations that attempted to use <code>StringBuilder</code> (with capacity), <code>StringBuilder</code> (without capacity), and simple concatenation.</p>
+<h5 id="execution-benchmarks">Execution Benchmarks</h5>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="right">Mean</th>
+<th align="right">Error</th>
+<th align="right">StdDev</th>
+<th align="right">StdErr</th>
+<th align="right">Ratio</th>
+<th align="right">RatioSD</th>
+<th align="right">Rank</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>StringCreate</td>
+<td align="right">16.58 ns</td>
+<td align="right">0.366 ns</td>
+<td align="right">0.342 ns</td>
+<td align="right">0.088 ns</td>
+<td align="right">0.26</td>
+<td align="right">0.02</td>
+<td align="right">1</td>
+</tr>
+<tr>
+<td>StringBuilder</td>
+<td align="right">59.81 ns</td>
+<td align="right">1.555 ns</td>
+<td align="right">4.511 ns</td>
+<td align="right">0.458 ns</td>
+<td align="right">1.00</td>
+<td align="right">0.00</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td>StringBuilderNoCapacity</td>
+<td align="right">64.04 ns</td>
+<td align="right">2.426 ns</td>
+<td align="right">7.077 ns</td>
+<td align="right">0.715 ns</td>
+<td align="right">1.08</td>
+<td align="right">0.15</td>
+<td align="right">3</td>
+</tr>
+<tr>
+<td>StringConcatenation</td>
+<td align="right">342.23 ns</td>
+<td align="right">6.872 ns</td>
+<td align="right">18.579 ns</td>
+<td align="right">2.015 ns</td>
+<td align="right">5.76</td>
+<td align="right">0.52</td>
+<td align="right">4</td>
+</tr>
+</tbody>
+</table>
+<h5 id="memory-benchmarks">Memory Benchmarks</h5>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="right">Gen 0</th>
+<th align="right">Allocated</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>StringCreate</td>
+<td align="right">0.0115</td>
+<td align="right">48 B</td>
+</tr>
+<tr>
+<td>StringBuilder</td>
+<td align="right">0.0362</td>
+<td align="right">152 B</td>
+</tr>
+<tr>
+<td>StringBuilderNoCapacity</td>
+<td align="right">0.0362</td>
+<td align="right">152 B</td>
+</tr>
+<tr>
+<td>StringConcatenation</td>
+<td align="right">0.2217</td>
+<td align="right">928 B</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>String.Create()</code> method shows the best performance in performance (16.58 nanoseconds) and allocations (only 48 bytes!). Interestingly, the <code>StringBuilder</code> with no capacity specified also shows a small edge over the regular <code>StringBuilder</code> (it still loses to <code>String.Create()</code>, but that is interesting to note for future <code>StringBuilder</code> use).</p>
+<h4 id="performance-sensitive-concatenation">Performance-Sensitive Concatenation</h4>
+<p>The C# Roslyn compiler is very intelligent about optimizing poor concatenations. The compiler will tend to convert multiple uses of the plus <code>+</code> operator into singular calls to <strong>Concat</strong> and likely has many additional tricks of which I am not aware. For these reasons, concatenation is generally a fast operation, but it still can be edged out by <strong>Create</strong> for simple scenarios.</p>
+<p>The sample code to demonstrate concatenation with the <strong>Create</strong> method is straightforward.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">static</span> <span class="k">class</span> <span class="nc">ConcatenationStringCreate</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">static</span> <span class="kt">string</span> <span class="n">Concat</span><span class="p">(</span><span class="kt">string</span> <span class="n">first</span><span class="p">,</span> <span class="kt">string</span> <span class="n">second</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">first</span> <span class="p">??=</span> <span class="kt">string</span><span class="p">.</span><span class="n">Empty</span><span class="p">;</span>
+        <span class="n">second</span> <span class="p">??=</span> <span class="n">String</span><span class="p">.</span><span class="n">Empty</span><span class="p">;</span>
+        <span class="kt">bool</span> <span class="n">addSpace</span> <span class="p">=</span> <span class="n">second</span><span class="p">.</span><span class="n">Length</span> <span class="p">&gt;</span> <span class="m">0</span><span class="p">;</span>
+
+        <span class="kt">int</span> <span class="n">length</span> <span class="p">=</span> <span class="n">first</span><span class="p">.</span><span class="n">Length</span> <span class="p">+</span> <span class="p">(</span><span class="n">addSpace</span> <span class="p">?</span> <span class="m">1</span> <span class="p">:</span> <span class="m">0</span><span class="p">)</span> <span class="p">+</span> <span class="n">second</span><span class="p">.</span><span class="n">Length</span><span class="p">;</span>
+        <span class="k">return</span> <span class="kt">string</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">addSpace</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="p">=&gt;</span>
+        <span class="p">{</span>
+            <span class="n">ReadOnlySpan</span><span class="p">&lt;</span><span class="kt">char</span><span class="p">&gt;</span> <span class="n">prefix</span> <span class="p">=</span> <span class="n">v</span><span class="p">.</span><span class="n">first</span><span class="p">;</span>
+            <span class="n">prefix</span><span class="p">.</span><span class="n">CopyTo</span><span class="p">(</span><span class="n">dst</span><span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">addSpace</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">dst</span><span class="p">[</span><span class="n">prefix</span><span class="p">.</span><span class="n">Length</span><span class="p">]</span> <span class="p">=</span> <span class="sc">&#39; &#39;</span><span class="p">;</span>
+
+                <span class="n">ReadOnlySpan</span><span class="p">&lt;</span><span class="kt">char</span><span class="p">&gt;</span> <span class="n">detail</span> <span class="p">=</span> <span class="n">v</span><span class="p">.</span><span class="n">second</span><span class="p">;</span>
+                <span class="n">detail</span><span class="p">.</span><span class="n">CopyTo</span><span class="p">(</span><span class="n">dst</span><span class="p">.</span><span class="n">Slice</span><span class="p">(</span><span class="n">prefix</span><span class="p">.</span><span class="n">Length</span> <span class="p">+</span> <span class="m">1</span><span class="p">,</span> <span class="n">detail</span><span class="p">.</span><span class="n">Length</span><span class="p">));</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>I crafted this particular case after finding only 
+<a href="https://github.com/dotnet/runtime/blob/a9b1173e64f628c7233850be6b762a58897bc6be/src/libraries/System.Diagnostics.TextWriterTraceListener/src/System/Diagnostics/XmlWriterTraceListener.cs" target="_blank" rel="noopener">one real example</a> in the .NET Core source code. This feels like a case that could be reasonably abstracted and sprinkled throughout a codebase that is making excessive use of the plus <code>+</code> operator or <code>String.Concat</code> very frequently. The likely reason that I did not find more cases is that the benchmarks bear this out as being a marginal gain.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>FirstPart</th>
+<th>SecondPart</th>
+<th align="right">Mean</th>
+<th align="right">Error</th>
+<th align="right">StdDev</th>
+<th align="right">StdErr</th>
+<th align="right">Median</th>
+<th align="right">Ratio</th>
+<th align="right">RatioSD</th>
+<th align="right">Rank</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Create</td>
+<td>?</td>
+<td>?</td>
+<td align="right">54.84 ns</td>
+<td align="right">2.361 ns</td>
+<td align="right">3.534 ns</td>
+<td align="right">0.645 ns</td>
+<td align="right">53.77 ns</td>
+<td align="right">0.87</td>
+<td align="right">0.08</td>
+<td align="right">1</td>
+</tr>
+<tr>
+<td>Normal</td>
+<td>?</td>
+<td>?</td>
+<td align="right">63.69 ns</td>
+<td align="right">3.825 ns</td>
+<td align="right">5.726 ns</td>
+<td align="right">1.045 ns</td>
+<td align="right">63.50 ns</td>
+<td align="right">1.00</td>
+<td align="right">0.00</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+<tr>
+<td>Create</td>
+<td>?</td>
+<td>Sedf(&hellip;)ctus [307]</td>
+<td align="right">51.11 ns</td>
+<td align="right">1.570 ns</td>
+<td align="right">2.349 ns</td>
+<td align="right">0.429 ns</td>
+<td align="right">50.43 ns</td>
+<td align="right">0.84</td>
+<td align="right">0.05</td>
+<td align="right">1</td>
+</tr>
+<tr>
+<td>Normal</td>
+<td>?</td>
+<td>Sedf(&hellip;)ctus [307]</td>
+<td align="right">61.08 ns</td>
+<td align="right">2.601 ns</td>
+<td align="right">3.893 ns</td>
+<td align="right">0.711 ns</td>
+<td align="right">60.38 ns</td>
+<td align="right">1.00</td>
+<td align="right">0.00</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+<tr>
+<td>Create</td>
+<td>Lorem Ipsum</td>
+<td>?</td>
+<td align="right">55.88 ns</td>
+<td align="right">4.070 ns</td>
+<td align="right">6.092 ns</td>
+<td align="right">1.112 ns</td>
+<td align="right">52.59 ns</td>
+<td align="right">0.95</td>
+<td align="right">0.09</td>
+<td align="right">1</td>
+</tr>
+<tr>
+<td>Normal</td>
+<td>Lorem Ipsum</td>
+<td>?</td>
+<td align="right">58.66 ns</td>
+<td align="right">1.005 ns</td>
+<td align="right">1.505 ns</td>
+<td align="right">0.275 ns</td>
+<td align="right">58.44 ns</td>
+<td align="right">1.00</td>
+<td align="right">0.00</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+<tr>
+<td>Create</td>
+<td>Lorem Ipsum</td>
+<td>Sedf(&hellip;)ctus [307]</td>
+<td align="right">50.26 ns</td>
+<td align="right">0.794 ns</td>
+<td align="right">1.188 ns</td>
+<td align="right">0.217 ns</td>
+<td align="right">50.18 ns</td>
+<td align="right">0.86</td>
+<td align="right">0.06</td>
+<td align="right">1</td>
+</tr>
+<tr>
+<td>Normal</td>
+<td>Lorem Ipsum</td>
+<td>Sedf(&hellip;)ctus [307]</td>
+<td align="right">59.04 ns</td>
+<td align="right">3.779 ns</td>
+<td align="right">5.656 ns</td>
+<td align="right">1.033 ns</td>
+<td align="right">57.72 ns</td>
+<td align="right">1.00</td>
+<td align="right">0.00</td>
+<td align="right">2</td>
+</tr>
+</tbody>
+</table>
+<p><em>Note: There was nothing to report for memory benchmarks as both methods generated the same amount of allocated memory.</em></p>
+<p>I find these results interesting. Even for generalized <strong>Concat</strong> usage, the <strong>Create</strong> method is marginally faster by a few percentage points. However, since it would be possible to generalize a library of fast string concatenation methods, the tradeoff of maintenance vs performance would become much cleaner. You could wrap all of your concatenation methods in a static class, add your unit tests, and never touch them again. From a maintenance perspective, <strong>Concat</strong> is still cleaner due to being very recognizable to other developers on your team. However, if you are concatenating strings at the pace of millions per second (such as a high traffic ASP.NET application), these few percentage points may be worth it. Overall, I would still advise profiling your specific case to prove that your specialized method is faster.</p>
+<h4 id="formatting-of-complex-strings">Formatting of Complex Strings</h4>
+<p>Complex formats can also be built using <strong>Create</strong> when you know the length of all of the smaller segments involved. Usually, this will be when you have these strings encapsulated as properties of a single class or within the parameters of a single method. It may also be advantageous to use <strong>Create</strong> when dealing with rows of fixed-width or delimited data, such as a CSV file.</p>
+<p>I found a 
+<a href="https://github.com/dotnet/aspnetcore/blob/8a81194f372fa6fe63ded2d932d379955854d080/src/Http/Headers/src/SetCookieHeaderValue.cs" target="_blank" rel="noopener">great example</a> in the ASP.NET Core repository in the form of the <code>SetCookieHeaderValue</code> class. This class contains all of the properties necessary to write out a cookie HTTP header. Conveniently, this class also included a method that used <strong>StringBuilder</strong> to accomplish the same formatting task. This gave me a great opportunity to write a fast benchmark.</p>
+<p>Here is the table that shows the two methods up against one another:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="right">Mean</th>
+<th align="right">Error</th>
+<th align="right">StdDev</th>
+<th align="right">StdErr</th>
+<th align="right">Median</th>
+<th align="right">Ratio</th>
+<th align="right">RatioSD</th>
+<th align="right">Rank</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Create</td>
+<td align="right">538.5 ns</td>
+<td align="right">10.80 ns</td>
+<td align="right">30.99 ns</td>
+<td align="right">3.18 ns</td>
+<td align="right">528.7 ns</td>
+<td align="right">0.67</td>
+<td align="right">0.05</td>
+<td align="right">1</td>
+</tr>
+<tr>
+<td>StringBuilder</td>
+<td align="right">810.9 ns</td>
+<td align="right">15.75 ns</td>
+<td align="right">24.52 ns</td>
+<td align="right">4.33 ns</td>
+<td align="right">809.0 ns</td>
+<td align="right">1.00</td>
+<td align="right">0.00</td>
+<td align="right">2</td>
+</tr>
+</tbody>
+</table>
+<p>For a complex string like a cookie header, <strong>Create</strong> improves performance by nearly 33%! Complex formats like this show that there is a lot to gain when using the <strong>Create</strong> method.</p>
+<p>While the <code>SetCookieHeaderValue</code> class provides an ideal data point, its logic is rather long and complex. I wrote a simple class to demonstrate the same formatting principles.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">Dog</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="kt">string</span> <span class="n">Name</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="k">public</span> <span class="kt">int?</span> <span class="n">Age</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="k">public</span> <span class="kt">string</span> <span class="n">Color</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">override</span> <span class="kt">string</span> <span class="n">ToString</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">StringCreate</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;
+</span><span class="c1"></span>    <span class="c1">/// Format the description string of the Dog class using String.Create()
+</span><span class="c1"></span>    <span class="c1">/// &lt;/summary&gt;
+</span><span class="c1"></span>    <span class="k">public</span> <span class="kt">string</span> <span class="n">StringCreate</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="kt">var</span> <span class="n">length</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+        <span class="c1">// Constants
+</span><span class="c1"></span>        <span class="k">const</span> <span class="kt">string</span> <span class="n">dogPrefix</span> <span class="p">=</span> <span class="s">&#34;[DOG] &#34;</span><span class="p">;</span>
+        <span class="k">const</span> <span class="kt">string</span> <span class="n">unknownName</span> <span class="p">=</span> <span class="s">&#34;Unknown&#34;</span><span class="p">;</span>
+        <span class="k">const</span> <span class="kt">string</span> <span class="n">leftAgeChunk</span> <span class="p">=</span> <span class="s">&#34; (&#34;</span><span class="p">;</span>
+        <span class="k">const</span> <span class="kt">char</span> <span class="n">rightAgeChunk</span> <span class="p">=</span> <span class="sc">&#39;)&#39;</span><span class="p">;</span>
+        <span class="k">const</span> <span class="kt">string</span> <span class="n">leftColorChunk</span> <span class="p">=</span> <span class="s">&#34; [&#34;</span><span class="p">;</span>
+        <span class="k">const</span> <span class="kt">char</span> <span class="n">rightColorChunk</span> <span class="p">=</span> <span class="sc">&#39;]&#39;</span><span class="p">;</span>
+        <span class="k">static</span> <span class="kt">int</span> <span class="n">integerLength</span><span class="p">(</span><span class="kt">int</span> <span class="n">val</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">Math</span><span class="p">.</span><span class="n">Floor</span><span class="p">(</span><span class="n">Math</span><span class="p">.</span><span class="n">Log10</span><span class="p">((</span><span class="kt">double</span><span class="p">)</span><span class="n">val</span><span class="p">)</span> <span class="p">+</span> <span class="m">1</span><span class="p">);</span>
+
+        <span class="cm">/* Compute Lengths */</span>
+        <span class="n">length</span> <span class="p">+=</span> <span class="n">dogPrefix</span><span class="p">.</span><span class="n">Length</span> <span class="p">+</span> <span class="p">(</span><span class="n">Name</span> <span class="p">??</span> <span class="n">unknownName</span><span class="p">).</span><span class="n">Length</span><span class="p">;</span> <span class="c1">// Prefix + Name
+</span><span class="c1"></span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">Color</span> <span class="k">is</span> <span class="kt">string</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">length</span> <span class="p">+=</span> <span class="m">3</span> <span class="cm">/* left + right chunk length */</span> <span class="p">+</span> <span class="n">Color</span><span class="p">.</span><span class="n">Length</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">Age</span><span class="p">.</span><span class="n">HasValue</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">length</span> <span class="p">+=</span> <span class="m">3</span> <span class="cm">/* left + right chunk length */</span> <span class="p">+</span> <span class="n">integerLength</span><span class="p">(</span><span class="n">Age</span><span class="p">.</span><span class="n">Value</span><span class="p">);</span> <span class="cm">/* Digits in age */</span>
+        <span class="p">}</span>
+        <span class="cm">/* Use State + Computed Length to Build String */</span>
+        <span class="k">return</span> <span class="n">String</span><span class="p">.</span><span class="n">Create</span><span class="p">&lt;</span><span class="n">Dog</span><span class="p">&gt;(</span><span class="n">length</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="n">dog</span><span class="p">)</span> <span class="p">=&gt;</span>
+        <span class="p">{</span>
+            <span class="kt">var</span> <span class="n">prefixSpan</span> <span class="p">=</span> <span class="n">dogPrefix</span><span class="p">.</span><span class="n">AsSpan</span><span class="p">();</span>
+            <span class="n">prefixSpan</span><span class="p">.</span><span class="n">CopyTo</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span>
+            <span class="kt">var</span> <span class="n">span</span> <span class="p">=</span> <span class="n">buffer</span><span class="p">.</span><span class="n">Slice</span><span class="p">(</span><span class="n">prefixSpan</span><span class="p">.</span><span class="n">Length</span><span class="p">);</span>
+
+            <span class="kt">var</span> <span class="n">nameSpan</span> <span class="p">=</span> <span class="p">(</span><span class="n">dog</span><span class="p">.</span><span class="n">Name</span> <span class="p">??</span> <span class="n">unknownName</span><span class="p">).</span><span class="n">AsSpan</span><span class="p">();</span>
+            <span class="n">nameSpan</span><span class="p">.</span><span class="n">CopyTo</span><span class="p">(</span><span class="n">span</span><span class="p">);</span>
+            <span class="n">span</span> <span class="p">=</span> <span class="n">span</span><span class="p">.</span><span class="n">Slice</span><span class="p">(</span><span class="n">nameSpan</span><span class="p">.</span><span class="n">Length</span><span class="p">);</span>
+
+            <span class="k">if</span><span class="p">(</span><span class="n">dog</span><span class="p">.</span><span class="n">Color</span> <span class="k">is</span> <span class="kt">string</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">leftColorChunk</span><span class="p">.</span><span class="n">AsSpan</span><span class="p">().</span><span class="n">CopyTo</span><span class="p">(</span><span class="n">span</span><span class="p">);</span>
+                <span class="n">span</span> <span class="p">=</span> <span class="n">span</span><span class="p">.</span><span class="n">Slice</span><span class="p">(</span><span class="m">2</span><span class="p">);</span>
+                <span class="kt">var</span> <span class="n">colorSpan</span> <span class="p">=</span> <span class="n">dog</span><span class="p">.</span><span class="n">Color</span><span class="p">.</span><span class="n">AsSpan</span><span class="p">();</span>
+                <span class="n">colorSpan</span><span class="p">.</span><span class="n">CopyTo</span><span class="p">(</span><span class="n">span</span><span class="p">);</span>
+                <span class="n">span</span> <span class="p">=</span> <span class="n">span</span><span class="p">.</span><span class="n">Slice</span><span class="p">(</span><span class="n">colorSpan</span><span class="p">.</span><span class="n">Length</span><span class="p">);</span>
+                <span class="n">span</span><span class="p">[</span><span class="m">0</span><span class="p">]</span> <span class="p">=</span> <span class="n">rightColorChunk</span><span class="p">;</span>
+                <span class="n">span</span> <span class="p">=</span> <span class="n">span</span><span class="p">.</span><span class="n">Slice</span><span class="p">(</span><span class="m">1</span><span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span><span class="p">(</span><span class="n">dog</span><span class="p">.</span><span class="n">Age</span><span class="p">.</span><span class="n">HasValue</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">leftAgeChunk</span><span class="p">.</span><span class="n">AsSpan</span><span class="p">().</span><span class="n">CopyTo</span><span class="p">(</span><span class="n">span</span><span class="p">);</span>
+                <span class="n">span</span> <span class="p">=</span> <span class="n">span</span><span class="p">.</span><span class="n">Slice</span><span class="p">(</span><span class="m">2</span><span class="p">);</span>
+                <span class="n">dog</span><span class="p">.</span><span class="n">Age</span><span class="p">.</span><span class="n">Value</span><span class="p">.</span><span class="n">TryFormat</span><span class="p">(</span><span class="n">span</span><span class="p">,</span> <span class="k">out</span> <span class="kt">int</span> <span class="n">written</span><span class="p">,</span> <span class="n">provider</span><span class="p">:</span> <span class="n">CultureInfo</span><span class="p">.</span><span class="n">InvariantCulture</span><span class="p">);</span>
+                <span class="n">span</span> <span class="p">=</span> <span class="n">span</span><span class="p">.</span><span class="n">Slice</span><span class="p">(</span><span class="n">written</span><span class="p">);</span>
+                <span class="n">span</span><span class="p">[</span><span class="m">0</span><span class="p">]</span> <span class="p">=</span> <span class="n">rightAgeChunk</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;
+</span><span class="c1"></span>    <span class="c1">/// Format the description string of the Dog class using basic concatenation.
+</span><span class="c1"></span>    <span class="c1">/// &lt;/summary&gt;
+</span><span class="c1"></span>    <span class="k">public</span> <span class="kt">string</span> <span class="n">Concatenation</span><span class="p">()</span> 
+    <span class="p">{</span>
+        <span class="kt">var</span> <span class="n">val</span> <span class="p">=</span> <span class="s">&#34;[DOG] &#34;</span> <span class="p">+</span> <span class="p">(</span><span class="n">Name</span> <span class="p">??</span> <span class="s">&#34;Unknown&#34;</span><span class="p">);</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">Color</span> <span class="k">is</span> <span class="kt">string</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">val</span> <span class="p">+=</span> <span class="s">&#34; [&#34;</span> <span class="p">+</span> <span class="n">Color</span> <span class="p">+</span> <span class="s">&#34;]&#34;</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">Age</span><span class="p">.</span><span class="n">HasValue</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">val</span> <span class="p">+=</span> <span class="s">&#34; (&#34;</span> <span class="p">+</span> <span class="n">Age</span><span class="p">.</span><span class="n">Value</span> <span class="p">+</span> <span class="s">&#34;)&#34;</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">val</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;
+</span><span class="c1"></span>    <span class="c1">/// Format the description string of the Dog class using String.Format()
+</span><span class="c1"></span>    <span class="c1">/// &lt;/summary&gt;
+</span><span class="c1"></span>    <span class="k">public</span> <span class="kt">string</span> <span class="n">StringFormat</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">String</span><span class="p">.</span><span class="n">Format</span><span class="p">(</span><span class="s">&#34;[DOG] {0}{5}{4}{6}{2}{1}{3}&#34;</span><span class="p">,</span>
+            <span class="n">Name</span> <span class="p">??</span> <span class="s">&#34;Unknown&#34;</span><span class="p">,</span>
+            <span class="n">Age</span><span class="p">,</span>
+            <span class="n">Age</span><span class="p">.</span><span class="n">HasValue</span> <span class="p">?</span> <span class="s">&#34; (&#34;</span> <span class="p">:</span> <span class="n">String</span><span class="p">.</span><span class="n">Empty</span><span class="p">,</span>
+            <span class="n">Age</span><span class="p">.</span><span class="n">HasValue</span> <span class="p">?</span> <span class="s">&#34;)&#34;</span> <span class="p">:</span> <span class="n">String</span><span class="p">.</span><span class="n">Empty</span><span class="p">,</span>
+            <span class="n">Color</span><span class="p">,</span>
+            <span class="n">Color</span> <span class="k">is</span> <span class="kt">string</span> <span class="p">?</span> <span class="s">&#34; [&#34;</span> <span class="p">:</span> <span class="n">String</span><span class="p">.</span><span class="n">Empty</span><span class="p">,</span>
+            <span class="n">Color</span> <span class="k">is</span> <span class="kt">string</span> <span class="p">?</span> <span class="s">&#34;]&#34;</span> <span class="p">:</span> <span class="n">String</span><span class="p">.</span><span class="n">Empty</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>The <code>Dog</code> class above contains three methods that should produce the identical output: <code>StringCreate</code>, <code>Concatenation</code>, and <code>StringFormat</code>. Each method uses a formatting strategy that matches its name. Despite being much more complex, the actual strategy of <code>StringCreate</code> is relatively simple:</p>
+<ol>
+<li>Preemptively calculate the length of each property of the <code>Dog</code> class. Some properties may require some creative logic to calculate length without materializing the full string (<code>Int32</code> is a good example).</li>
+<li>Invoke <code>String.Create</code> using the current class (<code>this</code>) as the <code>state</code> parameter along with the pre-calculated length.</li>
+<li>Use the <code>Span&lt;T&gt;</code> APIs to fill the newly instantiated <code>buffer</code> variable and return the final string.</li>
+</ol>
+<p>Overall, the <code>StringFormat</code> and <code>Concatenation</code> methods are far shorter and less complex. This exemplifies the difficulties you might encounter when properly formatting complex strings using the <strong>Create</strong> method and why it should only be used on performance-critical paths in your code. However, utilizing this method appropriately can pay significant dividends in overall performance.</p>
+<h5 id="execution-time-benchmarks">Execution Time Benchmarks</h5>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Dog</th>
+<th align="right">Mean</th>
+<th align="right">Error</th>
+<th align="right">StdDev</th>
+<th align="right">Ratio</th>
+<th align="right">Rank</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>StringCreate</td>
+<td>[DOG] Fido (20) [23]</td>
+<td align="right">68.73 ns</td>
+<td align="right">1.218 ns</td>
+<td align="right">1.017 ns</td>
+<td align="right">0.18</td>
+<td align="right">1</td>
+</tr>
+<tr>
+<td>Concatenation</td>
+<td>[DOG] Fido (20) [23]</td>
+<td align="right">105.18 ns</td>
+<td align="right">2.118 ns</td>
+<td align="right">2.828 ns</td>
+<td align="right">0.27</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td>StringFormat</td>
+<td>[DOG] Fido (20) [23]</td>
+<td align="right">377.44 ns</td>
+<td align="right">7.363 ns</td>
+<td align="right">19.653 ns</td>
+<td align="right">1.00</td>
+<td align="right">3</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+<tr>
+<td>Concatenation</td>
+<td>[DOG] Fluffy</td>
+<td align="right">18.60 ns</td>
+<td align="right">0.451 ns</td>
+<td align="right">0.901 ns</td>
+<td align="right">0.06</td>
+<td align="right">1</td>
+</tr>
+<tr>
+<td>StringCreate</td>
+<td>[DOG] Fluffy</td>
+<td align="right">27.85 ns</td>
+<td align="right">0.630 ns</td>
+<td align="right">1.213 ns</td>
+<td align="right">0.09</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td>StringFormat</td>
+<td>[DOG] Fluffy</td>
+<td align="right">295.93 ns</td>
+<td align="right">5.952 ns</td>
+<td align="right">9.440 ns</td>
+<td align="right">1.00</td>
+<td align="right">3</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+<tr>
+<td>StringCreate</td>
+<td>[DOG] Pluto [Yellow]</td>
+<td align="right">37.60 ns</td>
+<td align="right">0.835 ns</td>
+<td align="right">1.325 ns</td>
+<td align="right">0.12</td>
+<td align="right">1</td>
+</tr>
+<tr>
+<td>Concatenation</td>
+<td>[DOG] Pluto [Yellow]</td>
+<td align="right">51.16 ns</td>
+<td align="right">1.437 ns</td>
+<td align="right">4.213 ns</td>
+<td align="right">0.16</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td>StringFormat</td>
+<td>[DOG] Pluto [Yellow]</td>
+<td align="right">318.94 ns</td>
+<td align="right">6.312 ns</td>
+<td align="right">17.595 ns</td>
+<td align="right">1.00</td>
+<td align="right">3</td>
+</tr>
+</tbody>
+</table>
+<h5 id="memory-benchmarks-1">Memory Benchmarks</h5>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Dog</th>
+<th align="right">Gen 0</th>
+<th align="right">Allocated</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>StringCreate</td>
+<td>[DOG] Fido (20) [23]</td>
+<td align="right">0.0172</td>
+<td align="right">72 B</td>
+</tr>
+<tr>
+<td>Concatenation</td>
+<td>[DOG] Fido (20) [23]</td>
+<td align="right">0.0516</td>
+<td align="right">216 B</td>
+</tr>
+<tr>
+<td>StringFormat</td>
+<td>[DOG] Fido (20) [23]</td>
+<td align="right">0.0420</td>
+<td align="right">176 B</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+<tr>
+<td>Concatenation</td>
+<td>[DOG] Fluffy</td>
+<td align="right">0.0115</td>
+<td align="right">48 B</td>
+</tr>
+<tr>
+<td>StringCreate</td>
+<td>[DOG] Fluffy</td>
+<td align="right">0.0114</td>
+<td align="right">48 B</td>
+</tr>
+<tr>
+<td>StringFormat</td>
+<td>[DOG] Fluffy</td>
+<td align="right">0.0305</td>
+<td align="right">128 B</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+<tr>
+<td>StringCreate</td>
+<td>[DOG] Pluto [Yellow]</td>
+<td align="right">0.0153</td>
+<td align="right">64 B</td>
+</tr>
+<tr>
+<td>Concatenation</td>
+<td>[DOG] Pluto [Yellow]</td>
+<td align="right">0.0268</td>
+<td align="right">112 B</td>
+</tr>
+<tr>
+<td>StringFormat</td>
+<td>[DOG] Pluto [Yellow]</td>
+<td align="right">0.0343</td>
+<td align="right">144 B</td>
+</tr>
+</tbody>
+</table>
+<p>For the more complex cases, formatting using the <strong>Create</strong> method is between 25% and 35% faster. The benchmark methods I chose show another reason to carefully consider this use case for the <strong>Create</strong> method. You can see that simple concatenation performs slightly better when there are fewer elements to format. In the case where the <code>Dog</code> has no <code>Age</code> or <code>Color</code> value, the work needed to calculate and format the string eclipses the performance gain from using <strong>Create</strong>. However, once we populate these properties, <strong>Concat</strong> quickly becomes the poorer option. This shows why it is important to understand your data before using this method as well. If 99% of your cases are simple, you simply will not need this much help. <strong>Format</strong> is consistently the slowest option, though is arguably the fastest method to write initially and likely the most maintainable in the future.</p>
+<h3 id="when-not-to-use-stringcreate">When NOT To Use String.Create()</h3>
+<p><strong>Create</strong> shows great promise in performance-critical code, but there are many legitimate reasons to avoid it. As software engineers, we often become more tied to the metrics of our systems at the expense of the bigger picture. Generally, I think decent but maintainable code should prevail over fantastic performance. That leads me to prescribe three general cases when you should avoid using <strong>Create</strong>, even if it sacrifices performance.</p>
+<h4 id="1-do-not-use-when-readability-is-important">1) Do Not Use When Readability is Important</h4>
+<p>Ultimately, this API is not maintenance-friendly. Your scenario should demand <strong>very</strong> high performance and your code should be well-factored and contain unit tests. When writing code that requires occasional maintenance, you can easily stick with one of these simpler formatting methods:</p>
+<ul>
+<li><strong>Format</strong> or <strong>String Interpolation</strong> when generating simple strings with dynamic values.</li>
+<li><strong>StringBuilder</strong> when creating strings that require a loop or many conditional elements.</li>
+<li><strong>Concat</strong> or a simple <code>+</code> when you just need to combine a small number of strings.</li>
+</ul>
+<h4 id="2-do-not-use-when-culture-is-important">2) Do Not Use When Culture is Important</h4>
+<p><strong>Format</strong>, <strong>String Interpolation</strong>, and most <code>ToString()</code> methods respect cultural formatting options. This gives your code the crucial ability to adapt to culture-specific date, numeral, and currency formats without having to code that logic yourself. <strong>Create</strong> does not offer any support for these APIs on its own, and attempting to mimic the behavior in your code would likely require allocating additional strings, thus removing the advantages of using the <strong>Create</strong> method.</p>
+<h4 id="3-probably-do-not-use-when-the-output-is-for-humans">3) (Probably) Do Not Use When the Output is for Humans</h4>
+<p>This situation is a bit subjective. The reason I would not recommend using <strong>Create</strong> for formatting for humans is that humans <strong>often want things to change</strong>. Since formatting using the <strong>Create</strong> method is extremely verbose, any changes are likely to cause increased complexity over time and thereby generate an accumulating amount of technical debt. In my opinion, the best usage of <strong>Create</strong> is on machine-readable strings or more generalized string-writing APIs that are unlikely to change in the future. As is often the case in software development, the specifics of your situation are the most important, but I think this is a good general rule to avoid this for any code you anticipate modifying frequently in the future.</p>
+<h3 id="is-stringcreate-right-for-you">Is String.Create() Right for You?</h3>
+<p>The answer to this question is definitely <strong>it depends</strong>. I began this investigation by focusing on something new to me: the <strong>String.Create</strong> method. I dove down a bit of a rabbit-hole looking for new and interesting ways to use this API. During this journey, I found three primary ways of using the method: (1) generating IDs, (2) fast concatenation, and (3) complex string formatting. Our benchmarks showed that we could, <strong>with reasonable consistency</strong>, produce a faster method using <strong>String.Create</strong> at the expense of simpler, more readable code. When answering the question above, you should always consider:</p>
+<ul>
+<li>How important is this code&rsquo;s readability?</li>
+<li>How likely is it to change?</li>
+<li>How much will my program use this code and how much performance will it gain?</li>
+</ul>
+<p>These all depend on your code and your team&rsquo;s strengths, but my hope today is that I have given you some tools to help you determine your path.</p>
+<p>The code for this article&rsquo;s benchmarks are available 
+<a href="https://github.com/cmcquillan/StringCreateBenchmarks" target="_blank" rel="noopener">on GitHub</a>.</p>
+</div>
+  </article>
+</div>
+<div class="blogCommentContainer">
+  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "quill-codes" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+        </main>  
+<aside class="tagGroup">
+  <header>
+    <h2 class="tagGroup--header">Utilities</h2>
+    <ul class="tagGroup--list">
+      <li class="tagGroupListItem">
+        <a href="/apps/fiddle">Web Tools</a>
+      </li>
+    </ul>
+  </header>
+
+  <header>
+    <h2 class="tagGroup--header">Tags</h2>
+  </header>
+  <ul class="tagGroup--list">
+    
+      <li class="tagGroupListItem">
+        <a href="/tags/csharp">
+          csharp(5)
+        </a>
+      </li>
+    
+      <li class="tagGroupListItem">
+        <a href="/tags/dotnet">
+          dotnet(5)
+        </a>
+      </li>
+    
+      <li class="tagGroupListItem">
+        <a href="/tags/syntax-tips">
+          syntax-tips(2)
+        </a>
+      </li>
+    
+      <li class="tagGroupListItem">
+        <a href="/tags/oop">
+          oop(1)
+        </a>
+      </li>
+    
+      <li class="tagGroupListItem">
+        <a href="/tags/performance">
+          performance(1)
+        </a>
+      </li>
+    
+      <li class="tagGroupListItem">
+        <a href="/tags/productivity">
+          productivity(1)
+        </a>
+      </li>
+    
+      <li class="tagGroupListItem">
+        <a href="/tags/prototyping">
+          prototyping(1)
+        </a>
+      </li>
+    
+      <li class="tagGroupListItem">
+        <a href="/tags/visual-studio">
+          visual-studio(1)
+        </a>
+      </li>
+    
+  </ul>
+</aside></div></body>
+
+</html>

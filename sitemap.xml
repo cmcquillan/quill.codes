@@ -4,21 +4,49 @@
   
   <url>
     <loc>https://quill.codes/tags/csharp/</loc>
-    <lastmod>2020-10-15T14:39:57-07:00</lastmod>
+    <lastmod>2020-10-29T00:00:00+00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://quill.codes/posts/improve-performance-with-string-create/</loc>
+    <lastmod>2020-10-29T00:00:00+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://quill.codes/tags/dotnet/</loc>
-    <lastmod>2020-10-15T14:39:57-07:00</lastmod>
+    <lastmod>2020-10-29T00:00:00+00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://quill.codes/tags/performance/</loc>
+    <lastmod>2020-10-29T00:00:00+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://quill.codes/</loc>
-    <lastmod>2020-10-15T14:39:57-07:00</lastmod>
+    <lastmod>2020-10-29T00:00:00+00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://quill.codes/posts/</loc>
+    <lastmod>2020-10-29T00:00:00+00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://quill.codes/tags/</loc>
+    <lastmod>2020-10-29T00:00:00+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
@@ -45,13 +73,6 @@
   </url>
   
   <url>
-    <loc>https://quill.codes/tags/</loc>
-    <lastmod>2020-10-15T14:39:57-07:00</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://quill.codes/series/fast-builds/</loc>
     <lastmod>2020-09-22T09:22:48-07:00</lastmod>
     <changefreq>daily</changefreq>
@@ -67,13 +88,6 @@
   
   <url>
     <loc>https://quill.codes/tags/prototyping/</loc>
-    <lastmod>2020-09-22T09:22:48-07:00</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://quill.codes/posts/</loc>
     <lastmod>2020-09-22T09:22:48-07:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>

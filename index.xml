@@ -6,10 +6,19 @@
     <description>Recent content on Quill.Codes</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 15 Oct 2020 14:39:57 -0700</lastBuildDate>
+    <lastBuildDate>Thu, 29 Oct 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://quill.codes/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Deep Dive on .NET Core String.Create() Performance</title>
+      <link>https://quill.codes/posts/improve-performance-with-string-create/</link>
+      <pubDate>Thu, 29 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://quill.codes/posts/improve-performance-with-string-create/</guid>
+      <description>When was the last time that an insignificant detail sparked a movement in your brain? As a software engineer, I have a habit of focusing on the one tiny detail I have never seen before in a new block of code. At that point, the gears in my brain begin turning. I love these moments. The ones where the tiniest piece of trivia sends me down a rabbit-hole of discovery.</description>
+    </item>
     
     <item>
       <title>Simplify C# with Expression-Bodied Members</title>
