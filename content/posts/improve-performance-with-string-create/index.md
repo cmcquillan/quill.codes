@@ -1,7 +1,7 @@
 ---
 title: "Deep Dive on .NET Core String.Create() Performance"
-date: 2020-10-28
-draft: true
+date: 2020-10-29
+draft: false
 author: "Casey McQuillan"
 tags: [ "dotnet", "csharp", "performance" ]
 description: "Casey McQuillan investigates strategies for improving string performance in .NET and ASP.NET Core when using String.Create()."
@@ -462,3 +462,5 @@ The answer to this question is definitely **it depends**. I began this investiga
 * How much will my program use this code and how much performance will it gain?
 
 These all depend on your code and your team's strengths, but my hope today is that I have given you some tools to help you determine your path. 
+
+The code for this article's benchmarks are available [on GitHub](https://github.com/cmcquillan/StringCreateBenchmarks).
