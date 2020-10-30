@@ -4,7 +4,11 @@
 <title>{{ block "title" . }}{{ with .Params.Title }}{{ . }} | {{ end }}{{ .Site.Title }}{{ end }}</title>
 <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@500&family=Montserrat&display=swap"
     rel="stylesheet">
-<link href="/css/site.css" rel="stylesheet" />
+
+{{ $css := resources.Get "css/theme.css" }}
+{{ $style := $css | resources.PostCSS (dict "config" "./assets/css/postcss.config.js") }}
+<link rel="stylesheet" href="{{ $style.Permalink }}">
+
 <link href="/css/syntax.css" rel="stylesheet" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
