@@ -12,9 +12,9 @@
 </head>
 
 <body>
-    <div class="pageContainer">
+    <div class="none">
         {{- partial "header.html" . -}}
-        <main id="content" class="content">
+        <main class="container mx-auto">
             {{- block "main" . }}{{- end }}
         </main>
         {{- partial "tagmenu.html" . -}}

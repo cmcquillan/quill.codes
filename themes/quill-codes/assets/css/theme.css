@@ -7,6 +7,26 @@
 /* Tailwind's utility classes - generated based on config file */
 @import "node_modules/tailwindcss/utilities";
 
-* {
-  text-transform: uppercase;
+@layer components {
+  /* Header menu components */
+
+  .menu-section {
+    @apply flex flex-row text-2xl justify-start;
+  }
+
+  @screen sm {
+    .menu-section {
+      @apply items-center;
+    } 
+  }
+
+  .menu-avatar {
+    @apply p-4;
+  }
+
+  @screen sm {
+    .menu-avatar {
+      @apply mx-auto transform translate-y-1/2;
+    }
+  }
 }
