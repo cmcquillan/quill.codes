@@ -1,10 +1,9 @@
 ---
-title: "Tips"
+title: "quill.codes.tips"
 menu:
   main:
     weight: 6
-    title: "cake"
-    linkText: "moose"
+    name: "Tips"
 description: "Useful quick tips that have made my life easier."
 descriptor: "tips"
 ---

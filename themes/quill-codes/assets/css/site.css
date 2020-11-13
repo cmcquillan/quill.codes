@@ -56,7 +56,7 @@ body {
 /* EXCERPT LAYOUT */
 .excerpt {
   display: grid;
-  grid-template: auto auto auto auto / auto auto;
+  grid-template: auto auto auto auto / 50% 50%;
   row-gap: 0.25rem;
 }
 
