@@ -29,6 +29,7 @@ theme = "quill-codes"
     tabWidth = 4
 
 [params]
+  header_image = "/images/quill_hero.png"
   owner = "Casey"
   description = "Worthwhile articles, tips, and freelance advice from Casey McQuillan, a freelance cloud software engineer."
   email = "Casey@quilltechnologies.com"
@@ -42,3 +43,4 @@ theme = "quill-codes"
   recent_posts_number = 6
   main_sections = [ "posts" ]
   sub_sections = [ "tips" ]
+

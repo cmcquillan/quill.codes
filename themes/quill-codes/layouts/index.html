@@ -10,12 +10,13 @@
   {{ if ge $section_count 1 }}
   <section class="recentGroup">
     {{ $itemList := index $section 0 }}
-    <header class="recentGroup--header">
-      <h2>Recent {{ $itemList.Params.descriptor }} from {{ $itemList.Params.title }}</h2>
+    <header class="recentGroup--header post-list-header bg-gray-800">
+      <h2 class="text-3xl text-gray-100">Recent {{ $itemList.Params.descriptor }} from {{ $itemList.Params.title }}</h2>
     </header>
-    <div class="recentGroup--blogPosts">
+    <div class="recentGroup--blogPosts mt-6 post-list">
       {{ range (first $topCount $itemList.Pages) }}
         {{ partial "excerpt.html" . }}
+        <hr class="post-list-divider" />
       {{ end }}
     </div>
 
@@ -27,12 +28,13 @@
   {{ if ge $section_count 1 }}
   <section class="recentGroup">
     {{ $itemList := index $section 0 }}
-    <header class="recentGroup--header">
-      <h2>Recent {{ $itemList.Params.descriptor }} from {{ $itemList.Params.title }}</h2>
+    <header class="recentGroup--header post-list-header bg-gray-800">
+      <h2 class="text-3xl text-gray-100">Recent {{ $itemList.Params.descriptor }} from {{ $itemList.Params.title }}</h2>
     </header>
-    <div class="recentGroup--tipPosts">
+    <div class="recentGroup--tipPosts mt-6 post-list">
       {{ range (first $topCount $itemList.Pages) }}
         {{ partial "excerpt.html" . }}
+        <hr class="post-list-divider" />
       {{ end }}
     </div>
 

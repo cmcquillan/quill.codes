@@ -1,29 +1,38 @@
-<header class="header">
-    <div class="header--siteTitle">
-        <a title="Back to Site Home" class="title header-titleLogo" href="/">
-            <object viewBox="0 0 100 100" height="60" data="{{ .Site.Params.logo_svg }}" alt="The Quill.Codes Site Logo. Logo is an inkwell with a Quill superimposed in front."
-                type="image/svg+xml">
-                The Quill.Codes Site Logo. Logo is an inkwell with a Quill superimposed in front.
-            </object>
-        </a>
-        <a title="Back to Site Home" class="title header--titleLink" href="/">
-            {{ .Site.Title }}
-        </a>
-    </div>
-
-    <div class="header--img">
-        <img class="header--img-logo" src="{{ .Site.Params.profile_photo }}" alt="{{ .Site.Params.profile_alt }}" />
-    </div>
-
-    <div class="header--menu">
-        <div class="socialIcons">
-            <a title="Casey's Twitter Account" rel="nofollow noopener" target="_blank" href="https://twitter.com/{{ .Site.Params.twitter }}" class="fa fa-twitter socialIcons--icon"></a>
-            <a title="Casey's Github Account" rel="nofollow noopener" target="_blank" href="https://github.com/{{ .Site.Params.github }}" class="fa fa-github socialIcons--icon"></a>
-            <a title="Casey's LinkedIn Account" rel="nofollow noopener" target="_blank" href="https://www.linkedin.com/in/{{ .Site.Params.linkedin }}/"
-                class="fa fa-linkedin socialIcons--icon"></a>
-            <a title="Quill.Codes RSS Feed" rel="nofollow noopener" target="_blank" href="{{ .Site.BaseURL }}index.xml"
-                class="fa fa-rss socialIcons--icon"></a>
+{{ $headImage := .Params.cover_image | default .Site.Params.header_image }}
+<header class="header shadow-xl">
+    <nav class="navbar flex flex-row flex-wrap">
+        <div class="title ml-6">
+            <a class="inline float-left" title="Back to Site Home" href="/">
+                <object viewBox="0 0 100 100" height="60" data="{{ .Site.Params.logo_svg }}"
+                    alt="The Quill.Codes Site Logo. Logo is an inkwell with a Quill superimposed in front."
+                    type="image/svg+xml">
+                    The Quill.Codes Site Logo. Logo is an inkwell with a Quill superimposed in front.
+                </object>
+            </a>
+            <a class="title-link uppercase text-4xl underline" title="Back to Site Home" href="/">
+                {{ .Site.Title }}
+            </a>
         </div>
-    </div>
+        <div class="nav-links mr-6">
+            <ul class="nav-links-list">
+                {{ $currentPage := . }}
+                {{ range .Site.Menus.main }}
+                <li class="inline {{ if $currentPage.HasMenuCurrent "main" . }}nav-links-active{{ end }}">
+                    <a class="underline hover:text-gray-400 ml-4" href="{{ .URL }}">{{ .Pre }}{{ .Name }}</a>
+                </li>
+                {{ end }}
+            </ul>
+        </div>
+    </nav>
+    <figure class="hero w-100 mx-auto">
+        <img class="w-100" src="{{ $headImage | relURL }}" />
+    </figure>
 
+    <!-- <style>
+        .header {
+            background-image: url('{{ $headImage | relURL }}');
+            background-repeat: no-repeat;
+            background-size: 100% auto;
+        }
+    </style> -->
 </header>

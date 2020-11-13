@@ -17,6 +17,16 @@ description: "Prototype an RSS reader that uses Blazor with browser APIs."
 
 
 
-```xml
-<PackageReference Include="Microsoft.ReverseProxy" Version="1.0.0-preview.1.*" />
+```powershell
+dotnet new sln
+
+npm i -g azure-functions-core-tools@3 --unsafe-perm true
+
+dotnet new gitignore
+
+
+dotnet new blazorwasm -n BlazorFeedReader -o Client -p
+
+
+dotnet sln . add .\Client\
 ```

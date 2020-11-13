@@ -1,0 +1,19 @@
+{
+  "name": "quill-codes-theme",
+  "version": "1.0.0",
+  "description": "The theme for the Quill.Codes page",
+  "main": "index.js",
+  "scripts": {
+    "start": "hugo --gc"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@fullhuman/postcss-purgecss": "^2.3.0",
+    "autoprefixer": "^9.8.6",
+    "postcss": "^8.1.0",
+    "postcss-cli": "^8.0.0",
+    "postcss-import": "^13.0.0",
+    "tailwindcss": "^1.8.10"
+  }
+}

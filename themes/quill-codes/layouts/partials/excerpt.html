@@ -1,22 +1,32 @@
-<article class="postExcerpt">
-    <h3 class="postExcerpt--title">
-        <a class="postExcerpt--title-link" href="{{.Permalink}}">
-            {{ .Title }}
-        </a>
-    </h3>
-    <div class="postExcerpt--text">
+<article class="postExcerpt excerpt">
+    <div class="postDetails--postDate excerpt-left text-sm">
+        <span class="postDetails--postDate-formattedDate">
+            Published on {{ .Date.Format "January 2, 2006" }}
+        </span>
+    </div>
+    <div class="postDetails--postAuthor excerpt-right text-sm">
+        <span class="postDetails--postAuthor-formattedAuthor">
+            Authored by {{ .Params.author }}
+        </span>
+    </div>
+    <div class="excerpt-full">
+        <h3 class="postExcerpt--title excerpt-full text-2xl text-gray-800">
+            <a class="postExcerpt--title-link underline hover:text-gray-600" href="{{ .Permalink }}">
+                {{ .Title }}
+            </a>
+        </h3>
+    </div>
+    <div class="postExcerpt--text excerpt-full text-lg text-gray-800">
         {{ .Description }}
     </div>
-    <div class="postDetails">
-        <div class="postDetails--postDate">
-            <span class="postDetails--postDate-formattedDate">
-                Published on {{ .Date.Format "January 2, 2006" }}
-            </span>
-        </div>
-        <div class="postDetails--postAuthor">
-            <span class="postDetails--postAuthor-formattedAuthor">
-                Authored by {{ .Params.author }}
-            </span>
-        </div>
+    <div class="tag-list">
+        <ul class="inline">
+            {{ range $index, $tag := .Params.Tags }}
+               <a class="tag italic text-gray-800 underline hover:text-gray-600" href="{{ ( printf "tags/%s/" ( . | urlize ) ) | relLangURL }}">#{{ . }}</a>
+            {{ end }}
+        </ul>
+    </div>
+    <div class="read-more excerpt-left">
+        <a class="underline hover:text-gray-600" href="{{ .Permalink }}">Read more</a>
     </div>
 </article>

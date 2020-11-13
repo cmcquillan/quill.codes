@@ -7,7 +7,7 @@ tags: ["CSharp", "Dotnet", "Syntax Tips"]
 draft: false
 images:
   - tips/expression-bodied-members/expression_bodied_members.png
-cover_image: expression_bodied_members.png
+cover_image: tips/expression-bodied-members/expression_bodied_members.png
 cover_image_alt: "A picture of a C# class with a single string property that uses an expression-bodied member to return a 'thumbs up' emoji."
 ---
 

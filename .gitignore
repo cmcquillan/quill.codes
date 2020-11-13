@@ -3,3 +3,4 @@ offsite_images/
 content/apps/fiddle
 content/**/Sample.cs
 content/**/Sample.md
+resources/_gen/

@@ -1,37 +1,38 @@
 {{ define "main" }}
 {{ $section := .Site.GetPage "section" .Section }}
 
-<div class="blogPostContainer">
-  {{ if isset .Params "cover_image" }}
-  <img class="blogPostTitle" src="{{ .Params.cover_image }}" alt="{{ .Params.cover_image_alt }}" />
-  {{ end }}
-  <h1 class="postTitle"> {{ .Title }}</h1>
-  <aside class="shareIcons">
-    <a class="fa fa-facebook" rel="nofollow noopener" href="https://www.facebook.com/sharer/sharer.php?u={{ .Permalink }}" target="_blank"
-      onclick="shareFacebook('{{ .Permalink }}'); return false;" title="Share on Facebook"></a>
-    <a class="fa fa-twitter" rel="nofollow noopener" href="http://twitter.com/share?text={{ .Title }}&url={{ .Permalink }}&&via={{ .Site.Params.twitter }}" target="_blank" title="Share on Twitter"></a>
-    <a class="fa fa-linkedin" rel="nofollow noopener" href="https://www.linkedin.com/sharing/share-offsite/?url=https://quill.codes/posts/fast-prototyping-url-shortener/" onclick="shareLinkedin('{{ .Permalink }}'); return false;" title="Share on LinkedIn"></a>
-  </aside>
-  <article class="blogPost">
-    <div class="blogPost--details">
-      <div class="blogPostDetails--postAuthor">
-        <span class="blogPostDetails--postAuthor-formattedAuthor">
-          {{ .Params.author }}
-        </span>
-      </div>
-      <div class="blogPostDetails--postDate">
-        <span class="blogPostDetails--postDate-formattedDate">
-          {{- .Date.Format "January 2, 2006" -}}
-        </span>
-      </div>
+<section class="blog-post">
+  <header class="bg-gray-800 blog-post-header">
+    <h1 class="px-6 text-3xl text-gray-100"> {{ .Title }}</h1>
+  </header>
+  <section class="blog-post-details my-4">
+    <div class="text-sm text-gray-800">
+      <span class="">
+        {{ .Params.author }}
+      </span>
     </div>
-
-    <div class="blogPost--content">
-      {{- .Content -}}
+    <aside class="blog-post-share-icons text-gray-800 text-sm">
+      <a class="fa fa-facebook" rel="nofollow noopener"
+        href="https://www.facebook.com/sharer/sharer.php?u={{ .Permalink }}" target="_blank"
+        onclick="shareFacebook('{{ .Permalink }}'); return false;" title="Share on Facebook"></a>
+      <a class="fa fa-twitter" rel="nofollow noopener"
+        href="http://twitter.com/share?text={{ .Title }}&url={{ .Permalink }}&&via={{ .Site.Params.twitter }}"
+        target="_blank" title="Share on Twitter"></a>
+      <a class="fa fa-linkedin" rel="nofollow noopener"
+        href="https://www.linkedin.com/sharing/share-offsite/?url=https://quill.codes/posts/fast-prototyping-url-shortener/"
+        onclick="shareLinkedin('{{ .Permalink }}'); return false;" title="Share on LinkedIn"></a>
+    </aside>
+    <div class="text-sm text-gray-800">
+      <span class="">
+        {{- .Date.Format "January 2, 2006" -}}
+      </span>
     </div>
+  </section>
+  <article class="blog-post-content text-gray-800">
+    {{- .Content -}}
   </article>
-</div>
-<div class="blogCommentContainer">
+</section>
+<div class="blog-post-comments">
   {{ template "_internal/disqus.html" . }}
 </div>
 
