@@ -1,3 +1,28 @@
+<div class="title ml-3 mt-3">
+    <!-- <a class="" title="Back to Site Home" href="/">
+        <object viewBox="0 0 100 100" height="60" data="{{ .Site.Params.logo_svg }}"
+            alt="The Quill.Codes Site Logo. Logo is an inkwell with a Quill superimposed in front."
+            type="image/svg+xml">
+            The Quill.Codes Site Logo. Logo is an inkwell with a Quill superimposed in front.
+        </object>
+    </a> -->
+    <a class="title-link" title="Back to Site Home" href="/">
+        {{ .Site.Title }}
+    </a>
+</div>
+<nav class="navbar mr-3 mt-3">
+    <a href="#">About</a>
+    <a href="#">Blog</a>
+    <a href="#">Tips</a>
+    <a href="#">Contact</a>
+</nav>
+<div class="page-header">
+    <h1>
+        {{ .Title | default .Site.Title }}
+    </h1>
+</div>
+
+<!-- 
 <header class="flex border-b border-blue-400 shadow-lg mb-12">
     <div class="menu-section">
         <a class="mx-3" title="Back to Site Home" href="/">
@@ -28,4 +53,4 @@
             class="social-icon fa fa-rss mx-1 mr-4"></a>
     </div>
 
-</header>
+</header> -->

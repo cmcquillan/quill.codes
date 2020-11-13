@@ -1,0 +1,83 @@
+/* HEADER LAYOUT */
+
+.header {
+  background-color: rgb(37, 37, 37);
+
+  display: grid;
+  grid-template-areas:  
+    'title navbar'
+    'header header';
+  grid-template-rows: 66px 330px;
+}
+
+.header * {
+  color: rgb(247, 247, 247);
+}
+
+.title {
+  grid-area: title;
+}
+
+.navbar {
+  grid-area: navbar;
+  text-align: right;
+}
+
+.page-header {
+  grid-area: header;
+
+  display: grid;
+  place-items: center;
+}
+
+/* PAGE LAYOUT */
+body {
+  background-color: rgb(247, 247, 247);
+}
+
+.main {
+  transform: translate(0, -1.5rem);
+  max-width: 860px;
+}
+
+/* EXCERPT LAYOUT */
+.excerpt {
+  display: grid;
+  grid-template: auto auto auto auto / auto auto;
+  row-gap: 0.25rem;
+}
+
+.excerpt > * {
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+}
+
+.excerpt-left {
+  grid-column: 1;
+}
+
+.excerpt-right {
+  grid-column: 2;
+}
+
+@media (max-width: 360px) {
+  .excerpt-right, .excerpt-left {
+    grid-column: 1 / span 2;
+  }
+}
+
+.excerpt-full {
+  grid-column:  1 / span 2;
+}
+
+/* RECENT POSTS LIST */
+.post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.post-list-header {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
