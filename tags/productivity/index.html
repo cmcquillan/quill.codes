@@ -27,7 +27,11 @@
 <title>Productivity | Quill.Codes</title>
 <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@500&family=Montserrat&display=swap"
     rel="stylesheet">
-<link href="/css/site.css" rel="stylesheet" />
+
+
+
+<link rel="stylesheet" href="https://quill.codes/css/theme.css">
+
 <link href="/css/syntax.css" rel="stylesheet" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
@@ -67,135 +71,107 @@
     
 </head>
 
-<body>
-    <div class="pageContainer"><header class="header">
-    <div class="header--siteTitle">
-        <a title="Back to Site Home" class="title header-titleLogo" href="/">
-            <object viewBox="0 0 100 100" height="60" data="/images/blog_icon.svg" alt="The Quill.Codes Site Logo. Logo is an inkwell with a Quill superimposed in front."
-                type="image/svg+xml">
-                The Quill.Codes Site Logo. Logo is an inkwell with a Quill superimposed in front.
-            </object>
-        </a>
-        <a title="Back to Site Home" class="title header--titleLink" href="/">
-            Quill.Codes
-        </a>
-    </div>
-
-    <div class="header--img">
-        <img class="header--img-logo" src="/images/profile.png" alt="Picture of Casey (Quill)" />
-    </div>
-
-    <div class="header--menu">
-        <div class="socialIcons">
-            <a title="Casey's Twitter Account" rel="nofollow noopener" target="_blank" href="https://twitter.com/QuillCodes" class="fa fa-twitter socialIcons--icon"></a>
-            <a title="Casey's Github Account" rel="nofollow noopener" target="_blank" href="https://github.com/cmcquillan" class="fa fa-github socialIcons--icon"></a>
-            <a title="Casey's LinkedIn Account" rel="nofollow noopener" target="_blank" href="https://www.linkedin.com/in/caseymcquillan/"
-                class="fa fa-linkedin socialIcons--icon"></a>
-            <a title="Quill.Codes RSS Feed" rel="nofollow noopener" target="_blank" href="https://quill.codes/index.xml"
-                class="fa fa-rss socialIcons--icon"></a>
+<body class="bg-gray-200">
+<header class="header shadow-xl">
+    <nav class="navbar flex flex-row flex-wrap">
+        <div class="title ml-6">
+            <a class="inline float-left" title="Back to Site Home" href="/">
+                <object viewBox="0 0 100 100" height="60" data="/images/blog_icon.svg"
+                    alt="The Quill.Codes Site Logo. Logo is an inkwell with a Quill superimposed in front."
+                    type="image/svg+xml">
+                    The Quill.Codes Site Logo. Logo is an inkwell with a Quill superimposed in front.
+                </object>
+            </a>
+            <a class="title-link uppercase text-4xl underline" title="Back to Site Home" href="/">
+                Quill.Codes
+            </a>
         </div>
-    </div>
+        <div class="nav-links mr-6">
+            <ul class="nav-links-list">
+                
+                
+                <li class="inline ">
+                    <a class="underline hover:text-gray-400 ml-4" href="/posts/">Blog</a>
+                </li>
+                
+                <li class="inline ">
+                    <a class="underline hover:text-gray-400 ml-4" href="/tips/">Tips</a>
+                </li>
+                
+                <li class="inline ">
+                    <a class="underline hover:text-gray-400 ml-4" href="/apps/fiddle/">Web Tools</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+    <figure class="hero w-100 mx-auto">
+        <img class="w-100" src="/images/quill_hero.png" />
+    </figure>
 
-</header><main id="content" class="content">
-  <header class="taxonomyList--header">
-    <h2>"Productivity" Posts</h2>
+    
+</header><main class="main mx-auto pt-1 pb-8 rounded-t-2xl bg-gray-100 shadow-lg"><aside class="social-icons mx-auto flex items-center justify-center my-2 text-4xl gap-8 text-gray-800">
+  <a title="Casey's Twitter Account" rel="nofollow noopener" target="_blank"
+    href="https://twitter.com/QuillCodes" class="social-icon fa fa-twitter"></a>
+  <a title="Casey's Github Account" rel="nofollow noopener" target="_blank"
+    href="https://github.com/cmcquillan" class="social-icon fa fa-github"></a>
+  <a title="Casey's LinkedIn Account" rel="nofollow noopener" target="_blank"
+    href="https://www.linkedin.com/in/caseymcquillan/" class="social-icon fa fa-linkedin"></a>
+  <a title="Quill.Codes RSS Feed" rel="nofollow noopener" target="_blank" href="https://quill.codes/index.xml"
+    class="social-icon fa fa-rss"></a>
+</aside><hr />
+<section class="posts-list">
+  <header class="recentGroup--header post-list-header bg-gray-800">
+    <h2 class="text-3xl text-gray-100">
+      Productivity Posts
+    </h2>
   </header>
-  <article class="taxonomyList--paging">
+  <article class="taxonomyList--paging mt-6">
       <p></p>
   </article>
-  <section class="taxonomyList--pages">
+  <section class="taxonomyList--pages post-list mt-6">
     
-        <article class="postExcerpt">
-    <h3 class="postExcerpt--title">
-        <a class="postExcerpt--title-link" href="https://quill.codes/tips/dont-fear-the-todo/">
-            Don&#39;t Fear the // Todo
-        </a>
-    </h3>
-    <div class="postExcerpt--text">
+        <article class="postExcerpt excerpt">
+    <div class="postDetails--postDate excerpt-left text-sm">
+        <span class="postDetails--postDate-formattedDate">
+            Published on September 16, 2020
+        </span>
+    </div>
+    <div class="postDetails--postAuthor excerpt-right text-sm">
+        <span class="postDetails--postAuthor-formattedAuthor">
+            Authored by Casey McQuillan
+        </span>
+    </div>
+    <div class="excerpt-full">
+        <h3 class="postExcerpt--title excerpt-full text-2xl text-gray-800">
+            <a class="postExcerpt--title-link underline hover:text-gray-600" href="https://quill.codes/tips/dont-fear-the-todo/">
+                Don&#39;t Fear the // Todo
+            </a>
+        </h3>
+    </div>
+    <div class="postExcerpt--text excerpt-full text-lg text-gray-800">
         Ever write a TODO and fear that it will be forgotten later? Use the Visual Studio Task List to keep track of work in progress.
     </div>
-    <div class="postDetails">
-        <div class="postDetails--postDate">
-            <span class="postDetails--postDate-formattedDate">
-                Published on September 16, 2020
-            </span>
-        </div>
-        <div class="postDetails--postAuthor">
-            <span class="postDetails--postAuthor-formattedAuthor">
-                Authored by Casey McQuillan
-            </span>
-        </div>
+    <div class="tag-list">
+        <ul class="inline">
+            
+               <a class="tag italic text-gray-800 underline hover:text-gray-600" href="/tags/visual-studio/">#Visual Studio</a>
+            
+               <a class="tag italic text-gray-800 underline hover:text-gray-600" href="/tags/productivity/">#Productivity</a>
+            
+        </ul>
+    </div>
+    <div class="read-more excerpt-left">
+        <a class="underline hover:text-gray-600" href="https://quill.codes/tips/dont-fear-the-todo/">Read more</a>
     </div>
 </article>
     
   </section>
 
-
-        </main>  
-<aside class="tagGroup">
-  <header>
-    <h2 class="tagGroup--header">Utilities</h2>
-    <ul class="tagGroup--list">
-      <li class="tagGroupListItem">
-        <a href="/apps/fiddle">Web Tools</a>
-      </li>
-    </ul>
-  </header>
-
-  <header>
-    <h2 class="tagGroup--header">Tags</h2>
-  </header>
-  <ul class="tagGroup--list">
-    
-      <li class="tagGroupListItem">
-        <a href="/tags/csharp">
-          csharp(5)
-        </a>
-      </li>
-    
-      <li class="tagGroupListItem">
-        <a href="/tags/dotnet">
-          dotnet(5)
-        </a>
-      </li>
-    
-      <li class="tagGroupListItem">
-        <a href="/tags/syntax-tips">
-          syntax-tips(2)
-        </a>
-      </li>
-    
-      <li class="tagGroupListItem">
-        <a href="/tags/oop">
-          oop(1)
-        </a>
-      </li>
-    
-      <li class="tagGroupListItem">
-        <a href="/tags/performance">
-          performance(1)
-        </a>
-      </li>
-    
-      <li class="tagGroupListItem">
-        <a href="/tags/productivity">
-          productivity(1)
-        </a>
-      </li>
-    
-      <li class="tagGroupListItem">
-        <a href="/tags/prototyping">
-          prototyping(1)
-        </a>
-      </li>
-    
-      <li class="tagGroupListItem">
-        <a href="/tags/visual-studio">
-          visual-studio(1)
-        </a>
-      </li>
-    
-  </ul>
-</aside></div></body>
+</main>
+    <footer class="footer"><section class="text-center text-gray-800 text-sm">
+  Copyright &copy; 2020 Quill Technologies, LLC
+</section>
+</footer></body>
 
 </html>

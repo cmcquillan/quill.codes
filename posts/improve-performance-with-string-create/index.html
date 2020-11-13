@@ -27,7 +27,11 @@
 <title>Deep Dive on .NET Core String.Create() Performance | Quill.Codes</title>
 <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@500&family=Montserrat&display=swap"
     rel="stylesheet">
-<link href="/css/site.css" rel="stylesheet" />
+
+
+
+<link rel="stylesheet" href="https://quill.codes/css/theme.css">
+
 <link href="/css/syntax.css" rel="stylesheet" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
@@ -43,6 +47,7 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://quill.codes/posts/improve-performance-with-string-create/" />
 <meta property="og:image" content="https://quill.codes/posts/improve-performance-with-string-create/string_create_cover.png" />
+<meta property="og:image" content="https://quill.codes/posts/improve-performance-with-string-create/string_create_cover_opt.png" />
 <meta property="article:published_time" content="2020-10-29T00:00:00+00:00" />
 <meta property="article:modified_time" content="2020-10-29T00:00:00+00:00" />
 
@@ -70,65 +75,86 @@
     
 </head>
 
-<body>
-    <div class="pageContainer"><header class="header">
-    <div class="header--siteTitle">
-        <a title="Back to Site Home" class="title header-titleLogo" href="/">
-            <object viewBox="0 0 100 100" height="60" data="/images/blog_icon.svg" alt="The Quill.Codes Site Logo. Logo is an inkwell with a Quill superimposed in front."
-                type="image/svg+xml">
-                The Quill.Codes Site Logo. Logo is an inkwell with a Quill superimposed in front.
-            </object>
-        </a>
-        <a title="Back to Site Home" class="title header--titleLink" href="/">
-            Quill.Codes
-        </a>
-    </div>
-
-    <div class="header--img">
-        <img class="header--img-logo" src="/images/profile.png" alt="Picture of Casey (Quill)" />
-    </div>
-
-    <div class="header--menu">
-        <div class="socialIcons">
-            <a title="Casey's Twitter Account" rel="nofollow noopener" target="_blank" href="https://twitter.com/QuillCodes" class="fa fa-twitter socialIcons--icon"></a>
-            <a title="Casey's Github Account" rel="nofollow noopener" target="_blank" href="https://github.com/cmcquillan" class="fa fa-github socialIcons--icon"></a>
-            <a title="Casey's LinkedIn Account" rel="nofollow noopener" target="_blank" href="https://www.linkedin.com/in/caseymcquillan/"
-                class="fa fa-linkedin socialIcons--icon"></a>
-            <a title="Quill.Codes RSS Feed" rel="nofollow noopener" target="_blank" href="https://quill.codes/index.xml"
-                class="fa fa-rss socialIcons--icon"></a>
+<body class="bg-gray-200">
+<header class="header shadow-xl">
+    <nav class="navbar flex flex-row flex-wrap">
+        <div class="title ml-6">
+            <a class="inline float-left" title="Back to Site Home" href="/">
+                <object viewBox="0 0 100 100" height="60" data="/images/blog_icon.svg"
+                    alt="The Quill.Codes Site Logo. Logo is an inkwell with a Quill superimposed in front."
+                    type="image/svg+xml">
+                    The Quill.Codes Site Logo. Logo is an inkwell with a Quill superimposed in front.
+                </object>
+            </a>
+            <a class="title-link uppercase text-4xl underline" title="Back to Site Home" href="/">
+                Quill.Codes
+            </a>
         </div>
+        <div class="nav-links mr-6">
+            <ul class="nav-links-list">
+                
+                
+                <li class="inline ">
+                    <a class="underline hover:text-gray-400 ml-4" href="/posts/">Blog</a>
+                </li>
+                
+                <li class="inline ">
+                    <a class="underline hover:text-gray-400 ml-4" href="/tips/">Tips</a>
+                </li>
+                
+                <li class="inline ">
+                    <a class="underline hover:text-gray-400 ml-4" href="/apps/fiddle/">Web Tools</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+    <figure class="hero w-100 mx-auto">
+        <img class="w-100" src="/posts/improve-performance-with-string-create/string_create_cover_opt.png" />
+    </figure>
+
+    
+</header><main class="main mx-auto pt-1 pb-8 rounded-t-2xl bg-gray-100 shadow-lg"><aside class="social-icons mx-auto flex items-center justify-center my-2 text-4xl gap-8 text-gray-800">
+  <a title="Casey's Twitter Account" rel="nofollow noopener" target="_blank"
+    href="https://twitter.com/QuillCodes" class="social-icon fa fa-twitter"></a>
+  <a title="Casey's Github Account" rel="nofollow noopener" target="_blank"
+    href="https://github.com/cmcquillan" class="social-icon fa fa-github"></a>
+  <a title="Casey's LinkedIn Account" rel="nofollow noopener" target="_blank"
+    href="https://www.linkedin.com/in/caseymcquillan/" class="social-icon fa fa-linkedin"></a>
+  <a title="Quill.Codes RSS Feed" rel="nofollow noopener" target="_blank" href="https://quill.codes/index.xml"
+    class="social-icon fa fa-rss"></a>
+</aside><hr />
+
+
+<section class="blog-post">
+  <header class="bg-gray-800 blog-post-header">
+    <h1 class="px-6 text-3xl text-gray-100"> Deep Dive on .NET Core String.Create() Performance</h1>
+  </header>
+  <section class="blog-post-details my-4">
+    <div class="text-sm text-gray-800">
+      <span class="">
+        Casey McQuillan
+      </span>
     </div>
-
-</header><main id="content" class="content">
-
-
-<div class="blogPostContainer">
-  
-  <img class="blogPostTitle" src="string_create_cover.png" alt="" />
-  
-  <h1 class="postTitle"> Deep Dive on .NET Core String.Create() Performance</h1>
-  <aside class="shareIcons">
-    <a class="fa fa-facebook" rel="nofollow noopener" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fquill.codes%2fposts%2fimprove-performance-with-string-create%2f" target="_blank"
-      onclick="shareFacebook('https:\/\/quill.codes\/posts\/improve-performance-with-string-create\/'); return false;" title="Share on Facebook"></a>
-    <a class="fa fa-twitter" rel="nofollow noopener" href="http://twitter.com/share?text=Deep%20Dive%20on%20.NET%20Core%20String.Create%28%29%20Performance&url=https%3a%2f%2fquill.codes%2fposts%2fimprove-performance-with-string-create%2f&&via=QuillCodes" target="_blank" title="Share on Twitter"></a>
-    <a class="fa fa-linkedin" rel="nofollow noopener" href="https://www.linkedin.com/sharing/share-offsite/?url=https://quill.codes/posts/fast-prototyping-url-shortener/" onclick="shareLinkedin('https:\/\/quill.codes\/posts\/improve-performance-with-string-create\/'); return false;" title="Share on LinkedIn"></a>
-  </aside>
-  <article class="blogPost">
-    <div class="blogPost--details">
-      <div class="blogPostDetails--postAuthor">
-        <span class="blogPostDetails--postAuthor-formattedAuthor">
-          Casey McQuillan
-        </span>
-      </div>
-      <div class="blogPostDetails--postDate">
-        <span class="blogPostDetails--postDate-formattedDate">October 29, 2020</span>
-      </div>
+    <aside class="blog-post-share-icons text-gray-800 text-sm">
+      <a class="fa fa-facebook" rel="nofollow noopener"
+        href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fquill.codes%2fposts%2fimprove-performance-with-string-create%2f" target="_blank"
+        onclick="shareFacebook('https:\/\/quill.codes\/posts\/improve-performance-with-string-create\/'); return false;" title="Share on Facebook"></a>
+      <a class="fa fa-twitter" rel="nofollow noopener"
+        href="http://twitter.com/share?text=Deep%20Dive%20on%20.NET%20Core%20String.Create%28%29%20Performance&url=https%3a%2f%2fquill.codes%2fposts%2fimprove-performance-with-string-create%2f&&via=QuillCodes"
+        target="_blank" title="Share on Twitter"></a>
+      <a class="fa fa-linkedin" rel="nofollow noopener"
+        href="https://www.linkedin.com/sharing/share-offsite/?url=https://quill.codes/posts/fast-prototyping-url-shortener/"
+        onclick="shareLinkedin('https:\/\/quill.codes\/posts\/improve-performance-with-string-create\/'); return false;" title="Share on LinkedIn"></a>
+    </aside>
+    <div class="text-sm text-gray-800">
+      <span class="">October 29, 2020</span>
     </div>
-
-    <div class="blogPost--content"><p>When was the last time that an insignificant detail sparked a movement in your brain? As a software engineer, I have a habit of focusing on the one tiny detail I have never seen before in a new block of code. At that point, the gears in my brain begin turning. <strong>I love these moments</strong>. The ones where the tiniest piece of trivia sends me down a rabbit-hole of discovery.</p>
+  </section>
+  <article class="blog-post-content text-gray-800"><p>When was the last time that an insignificant detail sparked a movement in your brain? As a software engineer, I have a habit of focusing on the one tiny detail I have never seen before in a new block of code. At that point, the gears in my brain begin turning. <strong>I love these moments</strong>. The ones where the tiniest piece of trivia sends me down a rabbit-hole of discovery.</p>
 <p>What did that look like the last time it came to you?</p>
 <p>It recently happened to me as I was browsing Twitter. I came upon this exchange between David Fowler and Damian Edwards, discussing the .NET <code>Span&lt;T&gt;</code> API. I have used the <code>Span&lt;T&gt;</code> API before, but I found something new and different in the tweets.</p>
-<blockquote class="twitter-tweet"><p lang="en" dir="ltr">The result <a href="https://t.co/74tz33vfz7">pic.twitter.com/74tz33vfz7</a></p>&mdash; Damian Edwards 😷🌈#BlackLivesMatter (@DamianEdwards) <a href="https://twitter.com/DamianEdwards/status/1318638349544873985?ref_src=twsrc%5Etfw">October 20, 2020</a></blockquote>
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">The result <a href="https://t.co/74tz33vfz7">pic.twitter.com/74tz33vfz7</a></p>&mdash; Damian Edwards #dotnet5 (@DamianEdwards) <a href="https://twitter.com/DamianEdwards/status/1318638349544873985?ref_src=twsrc%5Etfw">October 20, 2020</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 <p>It&rsquo;s a small thing, The item that began my dive down the rabbit-hole. The <strong>String.Create</strong> method used above was the piece I had never seen before. <strong>String.Create</strong> was a hidden gem, and I was determined to uncover its mysteries. I found myself asking the question:</p>
@@ -142,7 +168,7 @@
 <li>How much more performance can it achieve?</li>
 <li>What pitfalls can and should be avoided?</li>
 </ul>
-<h3 id="definitions">Definitions</h3>
+<h2 id="definitions">Definitions</h2>
 <p>To make the article a little easier, I am going to refer to a few .NET Core APIs in the following ways:</p>
 <ul>
 <li><strong>Create</strong> - Refers to using <code>String.Create()</code>.</li>
@@ -150,7 +176,7 @@
 <li><strong>Format</strong> - Refers to using <code>String.Format()</code>, one of its many overloads, or string interpolation with the <code>$&quot;&quot;</code> syntax.</li>
 <li><strong>StringBuilder</strong> - Refers to constructing a string with the fluent <code>StringBuilder</code> class and API.</li>
 </ul>
-<h3 id="how-does-it-work">How Does It Work?</h3>
+<h2 id="how-does-it-work">How Does It Work?</h2>
 <p>The .NET Core codebase is open source and 
 <a href="https://github.com/dotnet/runtime/blob/master/src/libraries/System.Private.CoreLib/src/System/String.cs" target="_blank" rel="noopener">developed on GitHub</a>. This provides a great opportunity to dive in and analyze Microsoft&rsquo;s own practices. They provided the <strong>Create</strong> API, so seeing how they use it should provide valuable insight. Let&rsquo;s start with a deep dive into the <code>String</code> object and its relevant APIs.</p>
 <p>To generically build a string out of raw character data, you need to use the constructor that requires a 
@@ -265,14 +291,14 @@
 </ol>
 <p>In the first situation, you end up with two images, but only one that you plan to use. Your original can probably be thrown away without any ceremony, as you now have your professionally designed version. In the second case, you have not produced any extra product and therefore have produced less waste.</p>
 <p>The process for the <strong>Create</strong> method is closer to the situation where you sent your documentation to a designer. By telling them exactly what you wanted from the beginning, you only generate one final artifact in the form that you need.</p>
-<h3 id="how-is-stringcreate-better">How is String.Create() Better?</h3>
+<h2 id="how-is-stringcreate-better">How is String.Create() Better?</h2>
 <p>At this point, you might be curious about the <strong>Create</strong> method, but you don&rsquo;t necessarily know why it&rsquo;s better than the methods you have used before. The <strong>Create</strong> APIs usefulness is situational, but it can be extremely powerful in the proper context.</p>
 <ul>
 <li>It pre-allocates a bucket, and then gives you an interface to fill that bucket safely. Other methods that produce similar results could require writing unsafe code or managing buffer pools.</li>
 <li>It avoids extra copy-operations of your data which often results in fewer allocations. This reduces pressure from your Garbage Collector which can speed up your overall program.</li>
 <li>It allows you to focus your high-performance code on the business requirements of your application rather than interleaving your string-building code with complex memory management.</li>
 </ul>
-<h3 id="use-cases-for-stringcreate">Use Cases for String.Create()</h3>
+<h2 id="use-cases-for-stringcreate">Use Cases for String.Create()</h2>
 <p>You can only use the <strong>Create</strong> method when you already know your final string&rsquo;s length. However, you can work creatively with this constraint and discover several ways to leverage <strong>Create</strong>. I performed a search through the codebases for 
 <a href="https://github.com/dotnet/aspnetcore" target="_blank" rel="noopener">dotnet/aspnetcore</a> and 
 <a href="https://github.com/dotnet/runtime" target="_blank" rel="noopener">dotnet/runtime</a> to see where the Microsoft team decided to utilize this API. The rest of this article will dive deep into three trends that I found:</p>
@@ -281,7 +307,7 @@
 <li>Performance-Sensitive Concatenations</li>
 <li>Formatting Complex Strings</li>
 </ul>
-<h4 id="generating-ids">Generating IDs</h4>
+<h3 id="generating-ids">Generating IDs</h3>
 <p>Consider this class from the ASP.NET Core repository used for generating correlation IDs on each web request. It generates a correlation ID in the format of 13 characters chosen from the numbers (0-9) and most upper-case letters (A-V).</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -388,7 +414,7 @@
 </ol>
 <p>For our baseline comparison, I used a naive implementation that utilizes <code>StringBuilder</code>. I chose this option because <code>StringBuilder</code> is 
 <a href="https://docs.microsoft.com/en-us/troubleshoot/dotnet/csharp/string-concatenation" target="_blank" rel="noopener">often recommended</a> as a good API for performance over regular string concatenation. I wrote additional implementations that attempted to use <code>StringBuilder</code> (with capacity), <code>StringBuilder</code> (without capacity), and simple concatenation.</p>
-<h5 id="execution-benchmarks">Execution Benchmarks</h5>
+<h4 id="execution-benchmarks">Execution Benchmarks</h4>
 <table>
 <thead>
 <tr>
@@ -445,7 +471,7 @@
 </tr>
 </tbody>
 </table>
-<h5 id="memory-benchmarks">Memory Benchmarks</h5>
+<h4 id="memory-benchmarks">Memory Benchmarks</h4>
 <table>
 <thead>
 <tr>
@@ -478,7 +504,7 @@
 </tbody>
 </table>
 <p>The <code>String.Create()</code> method shows the best performance in performance (16.58 nanoseconds) and allocations (only 48 bytes!). Interestingly, the <code>StringBuilder</code> with no capacity specified also shows a small edge over the regular <code>StringBuilder</code> (it still loses to <code>String.Create()</code>, but that is interesting to note for future <code>StringBuilder</code> use).</p>
-<h4 id="performance-sensitive-concatenation">Performance-Sensitive Concatenation</h4>
+<h3 id="performance-sensitive-concatenation">Performance-Sensitive Concatenation</h3>
 <p>The C# Roslyn compiler is very intelligent about optimizing poor concatenations. The compiler will tend to convert multiple uses of the plus <code>+</code> operator into singular calls to <strong>Concat</strong> and likely has many additional tricks of which I am not aware. For these reasons, concatenation is generally a fast operation, but it still can be edged out by <strong>Create</strong> for simple scenarios.</p>
 <p>The sample code to demonstrate concatenation with the <strong>Create</strong> method is straightforward.</p>
 <div class="highlight"><div class="chroma">
@@ -703,7 +729,7 @@
 </table>
 <p><em>Note: There was nothing to report for memory benchmarks as both methods generated the same amount of allocated memory.</em></p>
 <p>I find these results interesting. Even for generalized <strong>Concat</strong> usage, the <strong>Create</strong> method is marginally faster by a few percentage points. However, since it would be possible to generalize a library of fast string concatenation methods, the tradeoff of maintenance vs performance would become much cleaner. You could wrap all of your concatenation methods in a static class, add your unit tests, and never touch them again. From a maintenance perspective, <strong>Concat</strong> is still cleaner due to being very recognizable to other developers on your team. However, if you are concatenating strings at the pace of millions per second (such as a high traffic ASP.NET application), these few percentage points may be worth it. Overall, I would still advise profiling your specific case to prove that your specialized method is faster.</p>
-<h4 id="formatting-of-complex-strings">Formatting of Complex Strings</h4>
+<h3 id="formatting-of-complex-strings">Formatting of Complex Strings</h3>
 <p>Complex formats can also be built using <strong>Create</strong> when you know the length of all of the smaller segments involved. Usually, this will be when you have these strings encapsulated as properties of a single class or within the parameters of a single method. It may also be advantageous to use <strong>Create</strong> when dealing with rows of fixed-width or delimited data, such as a CSV file.</p>
 <p>I found a 
 <a href="https://github.com/dotnet/aspnetcore/blob/8a81194f372fa6fe63ded2d932d379955854d080/src/Http/Headers/src/SetCookieHeaderValue.cs" target="_blank" rel="noopener">great example</a> in the ASP.NET Core repository in the form of the <code>SetCookieHeaderValue</code> class. This class contains all of the properties necessary to write out a cookie HTTP header. Conveniently, this class also included a method that used <strong>StringBuilder</strong> to accomplish the same formatting task. This gave me a great opportunity to write a fast benchmark.</p>
@@ -978,7 +1004,7 @@
 <li>Use the <code>Span&lt;T&gt;</code> APIs to fill the newly instantiated <code>buffer</code> variable and return the final string.</li>
 </ol>
 <p>Overall, the <code>StringFormat</code> and <code>Concatenation</code> methods are far shorter and less complex. This exemplifies the difficulties you might encounter when properly formatting complex strings using the <strong>Create</strong> method and why it should only be used on performance-critical paths in your code. However, utilizing this method appropriately can pay significant dividends in overall performance.</p>
-<h5 id="execution-time-benchmarks">Execution Time Benchmarks</h5>
+<h4 id="execution-time-benchmarks">Execution Time Benchmarks</h4>
 <table>
 <thead>
 <tr>
@@ -1093,7 +1119,7 @@
 </tr>
 </tbody>
 </table>
-<h5 id="memory-benchmarks-1">Memory Benchmarks</h5>
+<h4 id="memory-benchmarks-1">Memory Benchmarks</h4>
 <table>
 <thead>
 <tr>
@@ -1173,20 +1199,20 @@
 </tbody>
 </table>
 <p>For the more complex cases, formatting using the <strong>Create</strong> method is between 25% and 35% faster. The benchmark methods I chose show another reason to carefully consider this use case for the <strong>Create</strong> method. You can see that simple concatenation performs slightly better when there are fewer elements to format. In the case where the <code>Dog</code> has no <code>Age</code> or <code>Color</code> value, the work needed to calculate and format the string eclipses the performance gain from using <strong>Create</strong>. However, once we populate these properties, <strong>Concat</strong> quickly becomes the poorer option. This shows why it is important to understand your data before using this method as well. If 99% of your cases are simple, you simply will not need this much help. <strong>Format</strong> is consistently the slowest option, though is arguably the fastest method to write initially and likely the most maintainable in the future.</p>
-<h3 id="when-not-to-use-stringcreate">When NOT To Use String.Create()</h3>
+<h2 id="when-not-to-use-stringcreate">When NOT To Use String.Create()</h2>
 <p><strong>Create</strong> shows great promise in performance-critical code, but there are many legitimate reasons to avoid it. As software engineers, we often become more tied to the metrics of our systems at the expense of the bigger picture. Generally, I think decent but maintainable code should prevail over fantastic performance. That leads me to prescribe three general cases when you should avoid using <strong>Create</strong>, even if it sacrifices performance.</p>
-<h4 id="1-do-not-use-when-readability-is-important">1) Do Not Use When Readability is Important</h4>
+<h3 id="1-do-not-use-when-readability-is-important">1) Do Not Use When Readability is Important</h3>
 <p>Ultimately, this API is not maintenance-friendly. Your scenario should demand <strong>very</strong> high performance and your code should be well-factored and contain unit tests. When writing code that requires occasional maintenance, you can easily stick with one of these simpler formatting methods:</p>
 <ul>
 <li><strong>Format</strong> or <strong>String Interpolation</strong> when generating simple strings with dynamic values.</li>
 <li><strong>StringBuilder</strong> when creating strings that require a loop or many conditional elements.</li>
 <li><strong>Concat</strong> or a simple <code>+</code> when you just need to combine a small number of strings.</li>
 </ul>
-<h4 id="2-do-not-use-when-culture-is-important">2) Do Not Use When Culture is Important</h4>
+<h3 id="2-do-not-use-when-culture-is-important">2) Do Not Use When Culture is Important</h3>
 <p><strong>Format</strong>, <strong>String Interpolation</strong>, and most <code>ToString()</code> methods respect cultural formatting options. This gives your code the crucial ability to adapt to culture-specific date, numeral, and currency formats without having to code that logic yourself. <strong>Create</strong> does not offer any support for these APIs on its own, and attempting to mimic the behavior in your code would likely require allocating additional strings, thus removing the advantages of using the <strong>Create</strong> method.</p>
-<h4 id="3-probably-do-not-use-when-the-output-is-for-humans">3) (Probably) Do Not Use When the Output is for Humans</h4>
+<h3 id="3-probably-do-not-use-when-the-output-is-for-humans">3) (Probably) Do Not Use When the Output is for Humans</h3>
 <p>This situation is a bit subjective. The reason I would not recommend using <strong>Create</strong> for formatting for humans is that humans <strong>often want things to change</strong>. Since formatting using the <strong>Create</strong> method is extremely verbose, any changes are likely to cause increased complexity over time and thereby generate an accumulating amount of technical debt. In my opinion, the best usage of <strong>Create</strong> is on machine-readable strings or more generalized string-writing APIs that are unlikely to change in the future. As is often the case in software development, the specifics of your situation are the most important, but I think this is a good general rule to avoid this for any code you anticipate modifying frequently in the future.</p>
-<h3 id="is-stringcreate-right-for-you">Is String.Create() Right for You?</h3>
+<h2 id="is-stringcreate-right-for-you">Is String.Create() Right for You?</h2>
 <p>The answer to this question is definitely <strong>it depends</strong>. I began this investigation by focusing on something new to me: the <strong>String.Create</strong> method. I dove down a bit of a rabbit-hole looking for new and interesting ways to use this API. During this journey, I found three primary ways of using the method: (1) generating IDs, (2) fast concatenation, and (3) complex string formatting. Our benchmarks showed that we could, <strong>with reasonable consistency</strong>, produce a faster method using <strong>String.Create</strong> at the expense of simpler, more readable code. When answering the question above, you should always consider:</p>
 <ul>
 <li>How important is this code&rsquo;s readability?</li>
@@ -1196,10 +1222,9 @@
 <p>These all depend on your code and your team&rsquo;s strengths, but my hope today is that I have given you some tools to help you determine your path.</p>
 <p>The code for this article&rsquo;s benchmarks are available 
 <a href="https://github.com/cmcquillan/StringCreateBenchmarks" target="_blank" rel="noopener">on GitHub</a>.</p>
-</div>
-  </article>
-</div>
-<div class="blogCommentContainer">
+</article>
+</section>
+<div class="blog-post-comments">
   <div id="disqus_thread"></div>
 <script type="application/javascript">
     var disqus_config = function () {
@@ -1222,72 +1247,10 @@
 <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 </div>
 
-
-        </main>  
-<aside class="tagGroup">
-  <header>
-    <h2 class="tagGroup--header">Utilities</h2>
-    <ul class="tagGroup--list">
-      <li class="tagGroupListItem">
-        <a href="/apps/fiddle">Web Tools</a>
-      </li>
-    </ul>
-  </header>
-
-  <header>
-    <h2 class="tagGroup--header">Tags</h2>
-  </header>
-  <ul class="tagGroup--list">
-    
-      <li class="tagGroupListItem">
-        <a href="/tags/csharp">
-          csharp(5)
-        </a>
-      </li>
-    
-      <li class="tagGroupListItem">
-        <a href="/tags/dotnet">
-          dotnet(5)
-        </a>
-      </li>
-    
-      <li class="tagGroupListItem">
-        <a href="/tags/syntax-tips">
-          syntax-tips(2)
-        </a>
-      </li>
-    
-      <li class="tagGroupListItem">
-        <a href="/tags/oop">
-          oop(1)
-        </a>
-      </li>
-    
-      <li class="tagGroupListItem">
-        <a href="/tags/performance">
-          performance(1)
-        </a>
-      </li>
-    
-      <li class="tagGroupListItem">
-        <a href="/tags/productivity">
-          productivity(1)
-        </a>
-      </li>
-    
-      <li class="tagGroupListItem">
-        <a href="/tags/prototyping">
-          prototyping(1)
-        </a>
-      </li>
-    
-      <li class="tagGroupListItem">
-        <a href="/tags/visual-studio">
-          visual-studio(1)
-        </a>
-      </li>
-    
-  </ul>
-</aside></div></body>
+</main>
+    <footer class="footer"><section class="text-center text-gray-800 text-sm">
+  Copyright &copy; 2020 Quill Technologies, LLC
+</section>
+</footer></body>
 
 </html>

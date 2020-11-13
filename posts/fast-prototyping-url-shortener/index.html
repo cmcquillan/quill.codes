@@ -27,7 +27,11 @@
 <title>Fast Builds: Make a Url Shortener with .NET | Quill.Codes</title>
 <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@500&family=Montserrat&display=swap"
     rel="stylesheet">
-<link href="/css/site.css" rel="stylesheet" />
+
+
+
+<link rel="stylesheet" href="https://quill.codes/css/theme.css">
+
 <link href="/css/syntax.css" rel="stylesheet" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
@@ -43,6 +47,7 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://quill.codes/posts/fast-prototyping-url-shortener/" />
 <meta property="og:image" content="https://quill.codes/posts/fast-prototyping-url-shortener/fast-prototyping-quill-url-shortener.png" />
+<meta property="og:image" content="https://quill.codes/images/fast_builds.png" />
 <meta property="article:published_time" content="2020-09-22T09:22:48-07:00" />
 <meta property="article:modified_time" content="2020-09-22T09:22:48-07:00" />
 
@@ -71,62 +76,83 @@
     
 </head>
 
-<body>
-    <div class="pageContainer"><header class="header">
-    <div class="header--siteTitle">
-        <a title="Back to Site Home" class="title header-titleLogo" href="/">
-            <object viewBox="0 0 100 100" height="60" data="/images/blog_icon.svg" alt="The Quill.Codes Site Logo. Logo is an inkwell with a Quill superimposed in front."
-                type="image/svg+xml">
-                The Quill.Codes Site Logo. Logo is an inkwell with a Quill superimposed in front.
-            </object>
-        </a>
-        <a title="Back to Site Home" class="title header--titleLink" href="/">
-            Quill.Codes
-        </a>
-    </div>
-
-    <div class="header--img">
-        <img class="header--img-logo" src="/images/profile.png" alt="Picture of Casey (Quill)" />
-    </div>
-
-    <div class="header--menu">
-        <div class="socialIcons">
-            <a title="Casey's Twitter Account" rel="nofollow noopener" target="_blank" href="https://twitter.com/QuillCodes" class="fa fa-twitter socialIcons--icon"></a>
-            <a title="Casey's Github Account" rel="nofollow noopener" target="_blank" href="https://github.com/cmcquillan" class="fa fa-github socialIcons--icon"></a>
-            <a title="Casey's LinkedIn Account" rel="nofollow noopener" target="_blank" href="https://www.linkedin.com/in/caseymcquillan/"
-                class="fa fa-linkedin socialIcons--icon"></a>
-            <a title="Quill.Codes RSS Feed" rel="nofollow noopener" target="_blank" href="https://quill.codes/index.xml"
-                class="fa fa-rss socialIcons--icon"></a>
+<body class="bg-gray-200">
+<header class="header shadow-xl">
+    <nav class="navbar flex flex-row flex-wrap">
+        <div class="title ml-6">
+            <a class="inline float-left" title="Back to Site Home" href="/">
+                <object viewBox="0 0 100 100" height="60" data="/images/blog_icon.svg"
+                    alt="The Quill.Codes Site Logo. Logo is an inkwell with a Quill superimposed in front."
+                    type="image/svg+xml">
+                    The Quill.Codes Site Logo. Logo is an inkwell with a Quill superimposed in front.
+                </object>
+            </a>
+            <a class="title-link uppercase text-4xl underline" title="Back to Site Home" href="/">
+                Quill.Codes
+            </a>
         </div>
+        <div class="nav-links mr-6">
+            <ul class="nav-links-list">
+                
+                
+                <li class="inline ">
+                    <a class="underline hover:text-gray-400 ml-4" href="/posts/">Blog</a>
+                </li>
+                
+                <li class="inline ">
+                    <a class="underline hover:text-gray-400 ml-4" href="/tips/">Tips</a>
+                </li>
+                
+                <li class="inline ">
+                    <a class="underline hover:text-gray-400 ml-4" href="/apps/fiddle/">Web Tools</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+    <figure class="hero w-100 mx-auto">
+        <img class="w-100" src="/images/fast_builds.png" />
+    </figure>
+
+    
+</header><main class="main mx-auto pt-1 pb-8 rounded-t-2xl bg-gray-100 shadow-lg"><aside class="social-icons mx-auto flex items-center justify-center my-2 text-4xl gap-8 text-gray-800">
+  <a title="Casey's Twitter Account" rel="nofollow noopener" target="_blank"
+    href="https://twitter.com/QuillCodes" class="social-icon fa fa-twitter"></a>
+  <a title="Casey's Github Account" rel="nofollow noopener" target="_blank"
+    href="https://github.com/cmcquillan" class="social-icon fa fa-github"></a>
+  <a title="Casey's LinkedIn Account" rel="nofollow noopener" target="_blank"
+    href="https://www.linkedin.com/in/caseymcquillan/" class="social-icon fa fa-linkedin"></a>
+  <a title="Quill.Codes RSS Feed" rel="nofollow noopener" target="_blank" href="https://quill.codes/index.xml"
+    class="social-icon fa fa-rss"></a>
+</aside><hr />
+
+
+<section class="blog-post">
+  <header class="bg-gray-800 blog-post-header">
+    <h1 class="px-6 text-3xl text-gray-100"> Fast Builds: Make a Url Shortener with .NET</h1>
+  </header>
+  <section class="blog-post-details my-4">
+    <div class="text-sm text-gray-800">
+      <span class="">
+        Casey McQuillan
+      </span>
     </div>
-
-</header><main id="content" class="content">
-
-
-<div class="blogPostContainer">
-  
-  <img class="blogPostTitle" src="fast-prototyping-quill-url-shortener.png" alt="A logo with the text &#39;Quill.Codes&#39; and a picture of a large letter &#39;Q&#39; with a quill pen superimposed over it. To the right is text stating &#39;Fast Builds with .NET&#39;" />
-  
-  <h1 class="postTitle"> Fast Builds: Make a Url Shortener with .NET</h1>
-  <aside class="shareIcons">
-    <a class="fa fa-facebook" rel="nofollow noopener" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fquill.codes%2fposts%2ffast-prototyping-url-shortener%2f" target="_blank"
-      onclick="shareFacebook('https:\/\/quill.codes\/posts\/fast-prototyping-url-shortener\/'); return false;" title="Share on Facebook"></a>
-    <a class="fa fa-twitter" rel="nofollow noopener" href="http://twitter.com/share?text=Fast%20Builds%3a%20Make%20a%20Url%20Shortener%20with%20.NET&url=https%3a%2f%2fquill.codes%2fposts%2ffast-prototyping-url-shortener%2f&&via=QuillCodes" target="_blank" title="Share on Twitter"></a>
-    <a class="fa fa-linkedin" rel="nofollow noopener" href="https://www.linkedin.com/sharing/share-offsite/?url=https://quill.codes/posts/fast-prototyping-url-shortener/" onclick="shareLinkedin('https:\/\/quill.codes\/posts\/fast-prototyping-url-shortener\/'); return false;" title="Share on LinkedIn"></a>
-  </aside>
-  <article class="blogPost">
-    <div class="blogPost--details">
-      <div class="blogPostDetails--postAuthor">
-        <span class="blogPostDetails--postAuthor-formattedAuthor">
-          Casey McQuillan
-        </span>
-      </div>
-      <div class="blogPostDetails--postDate">
-        <span class="blogPostDetails--postDate-formattedDate">September 22, 2020</span>
-      </div>
+    <aside class="blog-post-share-icons text-gray-800 text-sm">
+      <a class="fa fa-facebook" rel="nofollow noopener"
+        href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fquill.codes%2fposts%2ffast-prototyping-url-shortener%2f" target="_blank"
+        onclick="shareFacebook('https:\/\/quill.codes\/posts\/fast-prototyping-url-shortener\/'); return false;" title="Share on Facebook"></a>
+      <a class="fa fa-twitter" rel="nofollow noopener"
+        href="http://twitter.com/share?text=Fast%20Builds%3a%20Make%20a%20Url%20Shortener%20with%20.NET&url=https%3a%2f%2fquill.codes%2fposts%2ffast-prototyping-url-shortener%2f&&via=QuillCodes"
+        target="_blank" title="Share on Twitter"></a>
+      <a class="fa fa-linkedin" rel="nofollow noopener"
+        href="https://www.linkedin.com/sharing/share-offsite/?url=https://quill.codes/posts/fast-prototyping-url-shortener/"
+        onclick="shareLinkedin('https:\/\/quill.codes\/posts\/fast-prototyping-url-shortener\/'); return false;" title="Share on LinkedIn"></a>
+    </aside>
+    <div class="text-sm text-gray-800">
+      <span class="">September 22, 2020</span>
     </div>
-
-    <div class="blogPost--content"><h2 id="fast-prototyping-and-learning-to-code">Fast Prototyping and Learning to Code</h2>
+  </section>
+  <article class="blog-post-content text-gray-800"><h2 id="fast-prototyping-and-learning-to-code">Fast Prototyping and Learning to Code</h2>
 <p>Take a moment to think of your preferred way to learn a new language, framework, or skill. Most likely, there is a certain amount of value that you only get when learning by <em>doing</em>.</p>
 <p>I had an interesting transition into development. I already knew a bit about how to code, but I had never had a programming job. At the time, I was working for a company where the dev department was willing to give me a chance, so they sent me <em>an assignment</em>. It was essentially a small file upload application, which I knew I could do.</p>
 <p>The problem was that it had to be done in C#, and I had never used C# or .NET before. I had a couple nights to finish, but that had to be juggled around my current job. I tried on my own, failed, looked up docs, tried again, and shortly got to the point where I was writing code and trying to figure out the actual problem. I spent time searching for the right way to structure a class, run a build, and package up a functional project.</p>
@@ -941,10 +967,9 @@
 <a href="https://twitter.com/QuillCodes/" target="_blank" rel="noopener">Let me know</a>!</p>
 <p>You can also check out the full code for this solution 
 <a href="https://github.com/cmcquillan/fast-aspnet-samples/tree/main/url-shortener-tutorial" target="_blank" rel="noopener">on github</a>.</p>
-</div>
-  </article>
-</div>
-<div class="blogCommentContainer">
+</article>
+</section>
+<div class="blog-post-comments">
   <div id="disqus_thread"></div>
 <script type="application/javascript">
     var disqus_config = function () {
@@ -967,72 +992,10 @@
 <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 </div>
 
-
-        </main>  
-<aside class="tagGroup">
-  <header>
-    <h2 class="tagGroup--header">Utilities</h2>
-    <ul class="tagGroup--list">
-      <li class="tagGroupListItem">
-        <a href="/apps/fiddle">Web Tools</a>
-      </li>
-    </ul>
-  </header>
-
-  <header>
-    <h2 class="tagGroup--header">Tags</h2>
-  </header>
-  <ul class="tagGroup--list">
-    
-      <li class="tagGroupListItem">
-        <a href="/tags/csharp">
-          csharp(5)
-        </a>
-      </li>
-    
-      <li class="tagGroupListItem">
-        <a href="/tags/dotnet">
-          dotnet(5)
-        </a>
-      </li>
-    
-      <li class="tagGroupListItem">
-        <a href="/tags/syntax-tips">
-          syntax-tips(2)
-        </a>
-      </li>
-    
-      <li class="tagGroupListItem">
-        <a href="/tags/oop">
-          oop(1)
-        </a>
-      </li>
-    
-      <li class="tagGroupListItem">
-        <a href="/tags/performance">
-          performance(1)
-        </a>
-      </li>
-    
-      <li class="tagGroupListItem">
-        <a href="/tags/productivity">
-          productivity(1)
-        </a>
-      </li>
-    
-      <li class="tagGroupListItem">
-        <a href="/tags/prototyping">
-          prototyping(1)
-        </a>
-      </li>
-    
-      <li class="tagGroupListItem">
-        <a href="/tags/visual-studio">
-          visual-studio(1)
-        </a>
-      </li>
-    
-  </ul>
-</aside></div></body>
+</main>
+    <footer class="footer"><section class="text-center text-gray-800 text-sm">
+  Copyright &copy; 2020 Quill Technologies, LLC
+</section>
+</footer></body>
 
 </html>
