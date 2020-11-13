@@ -1,11 +1,14 @@
 {{ define "main" }}
-  <header class="taxonomyList--header">
-    <h2>"{{ .Params.title }}" Posts</h2>
+<section class="posts-list">
+  <header class="recentGroup--header post-list-header bg-gray-800">
+    <h2 class="text-3xl text-gray-100">
+      {{ .Params.title }} Posts
+    </h2>
   </header>
-  <article class="taxonomyList--paging">
+  <article class="taxonomyList--paging mt-6">
       <p>{{i18n "taxonomyPageList" .}}</p>
   </article>
-  <section class="taxonomyList--pages">
+  <section class="taxonomyList--pages post-list mt-6">
     {{ range  .Pages }}
         {{ partial "excerpt.html" . }}
     {{ end }}
