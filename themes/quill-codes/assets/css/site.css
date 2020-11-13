@@ -6,8 +6,9 @@
   display: grid;
   grid-template-areas:
     "navbar navbar"
-    "header header";
-  grid-template-rows: 66px 330px;
+    "header header"
+    "pad pad";
+  grid-template-rows: auto auto 1.5rem;
 }
 
 .header * {
@@ -15,12 +16,14 @@
 }
 
 .title {
-  grid-area: title;
-
   display: grid;
   grid-template-columns: auto auto;
   place-items: center;
   column-gap: 1rem;
+}
+
+.hero {
+  grid-area: header;
 }
 
 .navbar {
@@ -34,6 +37,18 @@
 
 .navbar {
   background-color: rgba(247, 247, 247, 0.06);
+}
+
+.title,
+.nav-links {
+  text-align: center;
+}
+
+@media (max-width: 360px) {
+  .nav-links,
+  .title {
+    width: 100%;
+  }
 }
 
 .page-header {
