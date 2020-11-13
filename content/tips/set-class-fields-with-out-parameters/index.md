@@ -7,7 +7,8 @@ author: "Casey McQuillan"
 tags: ["CSharp", "Dotnet", "Syntax Tips"]
 images:
   - tips/set-class-fields-with-out-parameters/set_class_fields_with_out_parameters.png
-cover_image: set_class_fields_with_out_parameters.png
+  - tips/set-class-fields-with-out-parameters/set_class_fields_with_out_parameters_opt.png
+cover_image: tips/set-class-fields-with-out-parameters/set_class_fields_with_out_parameters_opt.png
 cover_image_alt: 'class LetMeOut
     {
         // You can assign class fields with ''out'' parameters

@@ -12,8 +12,14 @@
 
 
 {{ define "main" }}
-
-  <app-root></app-root>
+  <section class="blog-post">
+    <header class="bg-gray-800 blog-post-header">
+      <h1 class="px-6 text-3xl text-gray-100"> {{ .Title }}</h1>
+    </header>
+    <section class="my-4">
+      <app-root></app-root>
+    </section>
+  </section>
 
   {{ range (.Resources.Match "*.js") }}
     <script src="{{ .Name }}"></script>

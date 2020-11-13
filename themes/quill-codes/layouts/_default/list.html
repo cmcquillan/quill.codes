@@ -1,13 +1,22 @@
 {{ define "main" }}
-  <article class="postList">
-    <section class="postList--title">
-      {{- .Content -}}
-    </section>
-    <section class="postList--summaries">
-      {{ range .Paginator.Pages }}
-        {{- partial "excerpt.html" . -}}
-      {{ end }}
-    </section>
-    {{- template "_internal/pagination.html" . -}}
+
+<section class="posts-list">
+  <header class="recentGroup--header post-list-header bg-gray-800">
+    <h2 class="text-3xl text-gray-100">
+      {{ .Title }}
+    </h2>
+  </header>
+  {{ if .Content }}
+  <article class="mt-6">
+    {{- .Content -}}
   </article>
+  {{ end }}
+  <section class="post-list mt-6">
+    {{ range .Paginator.Pages }}
+      {{- partial "excerpt.html" . -}}
+    {{ end }}
+  </section>
+  {{- template "_internal/pagination.html" . -}}
+</section>
+
 {{ end }}

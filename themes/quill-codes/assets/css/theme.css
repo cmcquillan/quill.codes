@@ -1,0 +1,67 @@
+/* Tailwind base - put variables under: tailwind.config.js */
+@import "node_modules/tailwindcss/base";
+/* Tailwind component classes registered by plugins*/
+@import "node_modules/tailwindcss/components";
+/* Site Specific */
+@import "assets/css/site";
+/* Tailwind's utility classes - generated based on config file */
+@import "node_modules/tailwindcss/utilities";
+
+@layer components {
+  /* Header menu components */
+  h1 {
+    @apply text-4xl;
+  }
+
+  h2 {
+    @apply text-3xl;
+  }
+
+  h3 {
+    @apply text-xl;
+  }
+
+  h4 {
+    @apply text-lg;
+  }
+
+  h6 {
+    @apply text-sm; 
+  }
+
+  .menu-section {
+    @apply flex flex-row text-2xl justify-start;
+  }
+
+  @screen sm {
+    .menu-section {
+      @apply items-center;
+    } 
+  }
+
+  .menu-avatar {
+    @apply p-4;
+  }
+
+  @screen sm {
+    .menu-avatar {
+      @apply mx-auto transform translate-y-1/2;
+    }
+  }
+
+  .blog-post-content > * {
+    @apply my-4;
+  }
+
+  .blog-post-content ul {
+    @apply ml-4 list-disc list-inside;
+  }
+
+  .blog-post-content ol {
+    @apply ml-4 list-decimal list-inside;
+  }
+
+  .blog-post-content blockquote {
+    @apply mx-8 italic;
+  }
+}

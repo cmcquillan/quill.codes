@@ -11,17 +11,16 @@
     {{ end }}
 </head>
 
-<body>
-    <div class="pageContainer">
-        {{- partial "header.html" . -}}
-        <main id="content" class="content">
-            {{- block "main" . }}{{- end }}
-        </main>
-        {{- partial "tagmenu.html" . -}}
-
+<body class="bg-gray-200">
+    {{- partial "header.html" . -}}
+    <main class="main mx-auto pt-1 pb-8 rounded-t-2xl bg-gray-100 shadow-lg">
+        {{- partial "social.html" . -}}
+        <hr />
+        {{- block "main" . }}{{- end -}}
+    </main>
+    <footer class="footer">
         {{- partial "footer.html" . -}}
-    </div>
-
+    </footer>
     {{- partial "endbody.html" . -}}
 </body>
 
