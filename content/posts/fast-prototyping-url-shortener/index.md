@@ -5,12 +5,13 @@ draft: false
 author: "Casey McQuillan"
 tags: [ "dotnet", "CSharp", "Prototyping" ]
 series:
-- "Fast Builds"
+  - "Fast Builds"
 description: "Quickly prototype your first URL Shortener fast with .NET 5. Learn how to build and generate value incrementally with this tutorial."
 images:
-- posts/fast-prototyping-url-shortener/fast-prototyping-quill-url-shortener.png
-cover_image: fast-prototyping-quill-url-shortener.png
-cover_image_alt: "A logo with the text 'Quill.Codes' and a picture of a large letter 'Q' with a quill pen superimposed over it. To the right is text stating 'Fast Builds with .NET'"
+  - posts/fast-prototyping-url-shortener/fast-prototyping-quill-url-shortener.png
+  - images/fast_builds.png
+cover_image: images/fast_builds.png
+cover_image_alt: "Fuzzy green italicized text which says 'Fast Builds'"
 ---
 
 ## Fast Prototyping and Learning to Code

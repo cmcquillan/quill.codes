@@ -19,6 +19,13 @@
     <div class="postExcerpt--text excerpt-full text-lg text-gray-800">
         {{ .Description }}
     </div>
+    <div class="tag-list">
+        <ul class="inline">
+            {{ range $index, $tag := .Params.Tags }}
+               <a class="tag italic text-gray-800 underline hover:text-gray-600" href="{{ ( printf "tags/%s/" ( . | urlize ) ) | relLangURL }}">#{{ . }}</a>
+            {{ end }}
+        </ul>
+    </div>
     <div class="read-more excerpt-left">
         <a class="underline hover:text-gray-600" href="{{ .Permalink }}">Read more</a>
     </div>

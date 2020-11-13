@@ -24,7 +24,10 @@
             </ul>
         </div>
     </nav>
-    <img class="hero w-100" src="{{ $headImage | relURL }}" />
+    <figure class="hero w-100 mx-auto">
+        <img class="w-100" src="{{ $headImage | relURL }}" />
+    </figure>
+
     <!-- <style>
         .header {
             background-image: url('{{ $headImage | relURL }}');

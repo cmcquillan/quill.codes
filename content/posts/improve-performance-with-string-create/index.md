@@ -5,9 +5,10 @@ draft: false
 author: "Casey McQuillan"
 tags: [ "dotnet", "csharp", "performance" ]
 description: "Casey McQuillan investigates strategies for improving string performance in .NET and ASP.NET Core when using String.Create()."
-cover_image: posts/improve-performance-with-string-create/string_create_cover.png
+cover_image: posts/improve-performance-with-string-create/string_create_cover_opt.png
 images:
   - posts/improve-performance-with-string-create/string_create_cover.png
+  - posts/improve-performance-with-string-create/string_create_cover_opt.png
 ---
 
 When was the last time that an insignificant detail sparked a movement in your brain? As a software engineer, I have a habit of focusing on the one tiny detail I have never seen before in a new block of code. At that point, the gears in my brain begin turning. **I love these moments**. The ones where the tiniest piece of trivia sends me down a rabbit-hole of discovery.

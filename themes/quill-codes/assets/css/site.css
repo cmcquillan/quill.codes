@@ -26,6 +26,10 @@
   grid-area: header;
 }
 
+.hero img {
+
+}
+
 .navbar {
   grid-area: navbar;
 
@@ -71,8 +75,8 @@ body {
 /* EXCERPT LAYOUT */
 .excerpt {
   display: grid;
-  grid-template: auto auto auto auto / 50% 50%;
-  row-gap: 0.25rem;
+  grid-template: auto / 50% 50%;
+  row-gap: 0.5rem;
 }
 
 .excerpt > * {
