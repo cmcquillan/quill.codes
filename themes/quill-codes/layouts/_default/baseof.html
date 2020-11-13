@@ -12,11 +12,10 @@
 </head>
 
 <body class="bg-gray-200">
-    <header class="header shadow-xl">
-        {{- partial "header.html" . -}}
-    </header>
+    {{- partial "header.html" . -}}
     <main class="main mx-auto pt-1 rounded-t-2xl bg-gray-100 shadow-lg">
         {{- partial "social.html" . -}}
+        <hr />
         {{- block "main" . }}{{- end -}}
     </main>
     <footer class="footer">
