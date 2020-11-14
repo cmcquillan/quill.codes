@@ -22,7 +22,7 @@
     <div class="tag-list">
         <ul class="inline">
             {{ range $index, $tag := .Params.Tags }}
-               <a class="tag italic text-gray-800 underline hover:text-gray-600" href="{{ ( printf "tags/%s/" ( . | urlize ) ) | relLangURL }}">#{{ . }}</a>
+               <li class="inline"><a class="tag italic text-gray-800 underline hover:text-gray-600" href="{{ ( printf "tags/%s/" ( . | urlize ) ) | relLangURL }}">#{{ . }}</a></li>
             {{ end }}
         </ul>
     </div>
