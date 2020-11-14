@@ -1,4 +1,5 @@
 {{ $headImage := .Params.cover_image | default .Site.Params.header_image }}
+{{ $headImageAlt := .Params.cover_image_alt | default .Site.Params.header_image_alt }}
 <header class="header shadow-xl">
     <nav class="navbar flex flex-row flex-wrap gap-4 py-2">
         <div class="title ml-6">
@@ -25,7 +26,7 @@
         </div>
     </nav>
     <figure class="hero w-100 mx-auto">
-        <img class="w-100" src="{{ $headImage | relURL }}" />
+        <img class="w-100" src="{{ $headImage | relURL }}" alt="{{ $headImageAlt }}" />
     </figure>
 
     <!-- <style>

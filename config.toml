@@ -30,6 +30,7 @@ theme = "quill-codes"
 
 [params]
   header_image = "/images/quill_hero.png"
+  header_image_alt = "A picture of two line art hedgehogs facing each other."
   owner = "Casey"
   description = "Worthwhile articles, tips, and freelance advice from Casey McQuillan, a freelance cloud software engineer."
   email = "Casey@quilltechnologies.com"
