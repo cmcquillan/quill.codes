@@ -11,22 +11,22 @@
         {{ .Params.author }}
       </span>
     </div>
-    <aside class="blog-post-share-icons text-gray-800 text-sm">
-      <a class="fa fa-facebook" rel="nofollow noopener"
-        href="https://www.facebook.com/sharer/sharer.php?u={{ .Permalink }}" target="_blank"
-        onclick="shareFacebook('{{ .Permalink }}'); return false;" title="Share on Facebook"></a>
-      <a class="fa fa-twitter" rel="nofollow noopener"
-        href="http://twitter.com/share?text={{ .Title }}&url={{ .Permalink }}&&via={{ .Site.Params.twitter }}"
-        target="_blank" title="Share on Twitter"></a>
-      <a class="fa fa-linkedin" rel="nofollow noopener"
-        href="https://www.linkedin.com/sharing/share-offsite/?url=https://quill.codes/posts/fast-prototyping-url-shortener/"
-        onclick="shareLinkedin('{{ .Permalink }}'); return false;" title="Share on LinkedIn"></a>
-    </aside>
     <div class="text-sm text-gray-800">
       <span class="">
         {{- .Date.Format "January 2, 2006" -}}
       </span>
     </div>
+    <aside class="blog-post-share-icons text-gray-800 text-xl">
+      <a class="fa fa-facebook mx-2" rel="nofollow noopener"
+        href="https://www.facebook.com/sharer/sharer.php?u={{ .Permalink }}" target="_blank"
+        onclick="shareFacebook('{{ .Permalink }}'); return false;" title="Share on Facebook"></a>
+      <a class="fa fa-twitter mx-2" rel="nofollow noopener"
+        href="http://twitter.com/share?text={{ .Title }}&url={{ .Permalink }}&&via={{ .Site.Params.twitter }}"
+        target="_blank" title="Share on Twitter"></a>
+      <a class="fa fa-linkedin mx-2" rel="nofollow noopener"
+        href="https://www.linkedin.com/sharing/share-offsite/?url=https://quill.codes/posts/fast-prototyping-url-shortener/"
+        onclick="shareLinkedin('{{ .Permalink }}'); return false;" title="Share on LinkedIn"></a>
+    </aside>
   </section>
   <article class="blog-post-content text-gray-800">
     {{- .Content -}}

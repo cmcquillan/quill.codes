@@ -16,10 +16,7 @@
 }
 
 .title {
-  display: grid;
-  grid-template-columns: auto auto;
-  place-items: center;
-  column-gap: 1rem;
+  display: block;
 }
 
 .hero {
@@ -92,7 +89,7 @@ body {
   grid-column: 2;
 }
 
-@media (max-width: 360px) {
+@media (max-width: 767px) {
   .excerpt-right,
   .excerpt-left {
     grid-column: 1 / span 2;
