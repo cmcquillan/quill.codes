@@ -53,8 +53,6 @@
 
 
 
-<script async defer data-domain="quill.codes" src="https://plausible.io/js/plausible.js"></script>
-
 <script>
     function shareFacebook(uri) {
         let newWindow = window.open(
@@ -78,7 +76,7 @@
 
 <body class="bg-gray-200">
 <header class="header shadow-xl">
-    <nav class="navbar flex flex-row flex-wrap">
+    <nav class="navbar flex flex-row flex-wrap gap-4 py-2">
         <div class="title ml-6">
             <a class="inline float-left" title="Back to Site Home" href="/">
                 <object viewBox="0 0 100 100" height="60" data="/images/blog_icon.svg"
@@ -137,20 +135,20 @@
         Casey McQuillan
       </span>
     </div>
-    <aside class="blog-post-share-icons text-gray-800 text-sm">
-      <a class="fa fa-facebook" rel="nofollow noopener"
-        href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fquill.codes%2fposts%2ffast-prototyping-url-shortener%2f" target="_blank"
-        onclick="shareFacebook('https:\/\/quill.codes\/posts\/fast-prototyping-url-shortener\/'); return false;" title="Share on Facebook"></a>
-      <a class="fa fa-twitter" rel="nofollow noopener"
-        href="http://twitter.com/share?text=Fast%20Builds%3a%20Make%20a%20Url%20Shortener%20with%20.NET&url=https%3a%2f%2fquill.codes%2fposts%2ffast-prototyping-url-shortener%2f&&via=QuillCodes"
-        target="_blank" title="Share on Twitter"></a>
-      <a class="fa fa-linkedin" rel="nofollow noopener"
-        href="https://www.linkedin.com/sharing/share-offsite/?url=https://quill.codes/posts/fast-prototyping-url-shortener/"
-        onclick="shareLinkedin('https:\/\/quill.codes\/posts\/fast-prototyping-url-shortener\/'); return false;" title="Share on LinkedIn"></a>
-    </aside>
     <div class="text-sm text-gray-800">
       <span class="">September 22, 2020</span>
     </div>
+    <aside class="blog-post-share-icons text-gray-800 text-xl">
+      <a class="fa fa-facebook mx-2" rel="nofollow noopener"
+        href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fquill.codes%2fposts%2ffast-prototyping-url-shortener%2f" target="_blank"
+        onclick="shareFacebook('https:\/\/quill.codes\/posts\/fast-prototyping-url-shortener\/'); return false;" title="Share on Facebook"></a>
+      <a class="fa fa-twitter mx-2" rel="nofollow noopener"
+        href="http://twitter.com/share?text=Fast%20Builds%3a%20Make%20a%20Url%20Shortener%20with%20.NET&url=https%3a%2f%2fquill.codes%2fposts%2ffast-prototyping-url-shortener%2f&&via=QuillCodes"
+        target="_blank" title="Share on Twitter"></a>
+      <a class="fa fa-linkedin mx-2" rel="nofollow noopener"
+        href="https://www.linkedin.com/sharing/share-offsite/?url=https://quill.codes/posts/fast-prototyping-url-shortener/"
+        onclick="shareLinkedin('https:\/\/quill.codes\/posts\/fast-prototyping-url-shortener\/'); return false;" title="Share on LinkedIn"></a>
+    </aside>
   </section>
   <article class="blog-post-content text-gray-800"><h2 id="fast-prototyping-and-learning-to-code">Fast Prototyping and Learning to Code</h2>
 <p>Take a moment to think of your preferred way to learn a new language, framework, or skill. Most likely, there is a certain amount of value that you only get when learning by <em>doing</em>.</p>

@@ -51,8 +51,6 @@
 <meta property="article:modified_time" content="2020-10-15T14:39:57-07:00" />
 
 
-<script async defer data-domain="quill.codes" src="https://plausible.io/js/plausible.js"></script>
-
 <script>
     function shareFacebook(uri) {
         let newWindow = window.open(
@@ -76,7 +74,7 @@
 
 <body class="bg-gray-200">
 <header class="header shadow-xl">
-    <nav class="navbar flex flex-row flex-wrap">
+    <nav class="navbar flex flex-row flex-wrap gap-4 py-2">
         <div class="title ml-6">
             <a class="inline float-left" title="Back to Site Home" href="/">
                 <object viewBox="0 0 100 100" height="60" data="/images/blog_icon.svg"
@@ -135,20 +133,20 @@
         Casey McQuillan
       </span>
     </div>
-    <aside class="blog-post-share-icons text-gray-800 text-sm">
-      <a class="fa fa-facebook" rel="nofollow noopener"
-        href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fquill.codes%2ftips%2fexpression-bodied-members%2f" target="_blank"
-        onclick="shareFacebook('https:\/\/quill.codes\/tips\/expression-bodied-members\/'); return false;" title="Share on Facebook"></a>
-      <a class="fa fa-twitter" rel="nofollow noopener"
-        href="http://twitter.com/share?text=Simplify%20C%23%20with%20Expression-Bodied%20Members&url=https%3a%2f%2fquill.codes%2ftips%2fexpression-bodied-members%2f&&via=QuillCodes"
-        target="_blank" title="Share on Twitter"></a>
-      <a class="fa fa-linkedin" rel="nofollow noopener"
-        href="https://www.linkedin.com/sharing/share-offsite/?url=https://quill.codes/posts/fast-prototyping-url-shortener/"
-        onclick="shareLinkedin('https:\/\/quill.codes\/tips\/expression-bodied-members\/'); return false;" title="Share on LinkedIn"></a>
-    </aside>
     <div class="text-sm text-gray-800">
       <span class="">October 15, 2020</span>
     </div>
+    <aside class="blog-post-share-icons text-gray-800 text-xl">
+      <a class="fa fa-facebook mx-2" rel="nofollow noopener"
+        href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fquill.codes%2ftips%2fexpression-bodied-members%2f" target="_blank"
+        onclick="shareFacebook('https:\/\/quill.codes\/tips\/expression-bodied-members\/'); return false;" title="Share on Facebook"></a>
+      <a class="fa fa-twitter mx-2" rel="nofollow noopener"
+        href="http://twitter.com/share?text=Simplify%20C%23%20with%20Expression-Bodied%20Members&url=https%3a%2f%2fquill.codes%2ftips%2fexpression-bodied-members%2f&&via=QuillCodes"
+        target="_blank" title="Share on Twitter"></a>
+      <a class="fa fa-linkedin mx-2" rel="nofollow noopener"
+        href="https://www.linkedin.com/sharing/share-offsite/?url=https://quill.codes/posts/fast-prototyping-url-shortener/"
+        onclick="shareLinkedin('https:\/\/quill.codes\/tips\/expression-bodied-members\/'); return false;" title="Share on LinkedIn"></a>
+    </aside>
   </section>
   <article class="blog-post-content text-gray-800"><h2 id="you-can-simplify-your-syntax-with-effective-application-of-these-techniques">You Can Simplify Your Syntax With Effective Application of These Techniques</h2>
 <p>C# is a fantastic language because it constantly evolves in a way that simplifies syntax and makes the your code more expressive. Expression-bodied members were released in C# 6 and further enhanced in C# 7. At the time I was still a junior developer and had not yet decided that C# and .NET were going to be my long-term focus.</p>

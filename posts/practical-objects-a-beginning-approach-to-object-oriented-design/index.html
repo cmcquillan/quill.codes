@@ -48,8 +48,6 @@
 <meta property="article:modified_time" content="2020-08-09T00:00:00+00:00" />
 
 
-<script async defer data-domain="quill.codes" src="https://plausible.io/js/plausible.js"></script>
-
 <script>
     function shareFacebook(uri) {
         let newWindow = window.open(
@@ -73,7 +71,7 @@
 
 <body class="bg-gray-200">
 <header class="header shadow-xl">
-    <nav class="navbar flex flex-row flex-wrap">
+    <nav class="navbar flex flex-row flex-wrap gap-4 py-2">
         <div class="title ml-6">
             <a class="inline float-left" title="Back to Site Home" href="/">
                 <object viewBox="0 0 100 100" height="60" data="/images/blog_icon.svg"
@@ -132,20 +130,20 @@
         Casey McQuillan
       </span>
     </div>
-    <aside class="blog-post-share-icons text-gray-800 text-sm">
-      <a class="fa fa-facebook" rel="nofollow noopener"
-        href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fquill.codes%2fposts%2fpractical-objects-a-beginning-approach-to-object-oriented-design%2f" target="_blank"
-        onclick="shareFacebook('https:\/\/quill.codes\/posts\/practical-objects-a-beginning-approach-to-object-oriented-design\/'); return false;" title="Share on Facebook"></a>
-      <a class="fa fa-twitter" rel="nofollow noopener"
-        href="http://twitter.com/share?text=Practical%20Objects%3a%20A%20Beginning%20Approach%20to%20Object%20Oriented%20Design&url=https%3a%2f%2fquill.codes%2fposts%2fpractical-objects-a-beginning-approach-to-object-oriented-design%2f&&via=QuillCodes"
-        target="_blank" title="Share on Twitter"></a>
-      <a class="fa fa-linkedin" rel="nofollow noopener"
-        href="https://www.linkedin.com/sharing/share-offsite/?url=https://quill.codes/posts/fast-prototyping-url-shortener/"
-        onclick="shareLinkedin('https:\/\/quill.codes\/posts\/practical-objects-a-beginning-approach-to-object-oriented-design\/'); return false;" title="Share on LinkedIn"></a>
-    </aside>
     <div class="text-sm text-gray-800">
       <span class="">August 9, 2020</span>
     </div>
+    <aside class="blog-post-share-icons text-gray-800 text-xl">
+      <a class="fa fa-facebook mx-2" rel="nofollow noopener"
+        href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fquill.codes%2fposts%2fpractical-objects-a-beginning-approach-to-object-oriented-design%2f" target="_blank"
+        onclick="shareFacebook('https:\/\/quill.codes\/posts\/practical-objects-a-beginning-approach-to-object-oriented-design\/'); return false;" title="Share on Facebook"></a>
+      <a class="fa fa-twitter mx-2" rel="nofollow noopener"
+        href="http://twitter.com/share?text=Practical%20Objects%3a%20A%20Beginning%20Approach%20to%20Object%20Oriented%20Design&url=https%3a%2f%2fquill.codes%2fposts%2fpractical-objects-a-beginning-approach-to-object-oriented-design%2f&&via=QuillCodes"
+        target="_blank" title="Share on Twitter"></a>
+      <a class="fa fa-linkedin mx-2" rel="nofollow noopener"
+        href="https://www.linkedin.com/sharing/share-offsite/?url=https://quill.codes/posts/fast-prototyping-url-shortener/"
+        onclick="shareLinkedin('https:\/\/quill.codes\/posts\/practical-objects-a-beginning-approach-to-object-oriented-design\/'); return false;" title="Share on LinkedIn"></a>
+    </aside>
   </section>
   <article class="blog-post-content text-gray-800"><h2 id="the-goal-of-practical-objects">The Goal of Practical Objects</h2>
 <p><strong>I <em>love</em> programming, but programming is hard and existing paradigms that inflexibly insist upon perfection do not make it easier.</strong> This is not to say that paradigms and patterns produce bad code, but certain statements from peers, thought leaders, and friends permeate the space in my head when attempting to solve problems.</p>
