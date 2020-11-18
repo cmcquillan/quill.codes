@@ -45,7 +45,7 @@
   text-align: center;
 }
 
-@media (max-width: 360px) {
+@media (max-width: 767px) {
   .nav-links,
   .title {
     width: 100%;

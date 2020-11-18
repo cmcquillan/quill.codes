@@ -16,14 +16,14 @@
         {{- .Date.Format "January 2, 2006" -}}
       </span>
     </div>
-    <aside class="blog-post-share-icons text-gray-800 text-xl">
-      <a class="fa fa-facebook mx-2" rel="nofollow noopener"
+    <aside class="blog-post-share-icons text-gray-800 text-3xl">
+      <a class="fa fa-facebook mx-2 px-4" rel="nofollow noopener"
         href="https://www.facebook.com/sharer/sharer.php?u={{ .Permalink }}" target="_blank"
         onclick="shareFacebook('{{ .Permalink }}'); return false;" title="Share on Facebook"></a>
-      <a class="fa fa-twitter mx-2" rel="nofollow noopener"
+      <a class="fa fa-twitter mx-2 px-4" rel="nofollow noopener"
         href="http://twitter.com/share?text={{ .Title }}&url={{ .Permalink }}&&via={{ .Site.Params.twitter }}"
         target="_blank" title="Share on Twitter"></a>
-      <a class="fa fa-linkedin mx-2" rel="nofollow noopener"
+      <a class="fa fa-linkedin mx-2 px-4" rel="nofollow noopener"
         href="https://www.linkedin.com/sharing/share-offsite/?url=https://quill.codes/posts/fast-prototyping-url-shortener/"
         onclick="shareLinkedin('{{ .Permalink }}'); return false;" title="Share on LinkedIn"></a>
     </aside>
