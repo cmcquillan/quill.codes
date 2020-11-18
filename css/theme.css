@@ -504,6 +504,12 @@ body {
 
 /* BLOG POSTS */
 
+.blog-post-content table {
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
 .blog-post > * {
   margin-left: 1.5rem;
   margin-right: 1.5rem;
