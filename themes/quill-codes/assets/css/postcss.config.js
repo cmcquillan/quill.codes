@@ -21,6 +21,11 @@ const purgecss = require('@fullhuman/postcss-purgecss')({
         const innerMatches = content.match(/[^<>"'`\s.()]*[^<>"'`\s.():]/g) || []
 
         return broadMatches.concat(innerMatches)
+    },
+
+    // Safelist
+    safelist: {
+        deep: ['blog-post-content']
     }
 })
 
