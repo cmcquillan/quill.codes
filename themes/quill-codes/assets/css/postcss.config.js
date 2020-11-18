@@ -12,7 +12,7 @@ const purgecss = require('@fullhuman/postcss-purgecss')({
         'exampleSite/content/**/*.html',
     ],
 
-    // This is the function used to extract class names from your templates
+    // This is the function used tto extract class names from your templates
     defaultExtractor: content => {
         // Capture as liberally as possible, including things like `h-(screen-1.5)`
         const broadMatches = content.match(/[^<>"'`\s]*[^<>"'`\s:]/g) || []
@@ -25,7 +25,7 @@ const purgecss = require('@fullhuman/postcss-purgecss')({
 
     // Safelist
     safelist: {
-        deep: ['blog-post-content']
+        standard: [/blog-pos-content/]
     }
 })
 

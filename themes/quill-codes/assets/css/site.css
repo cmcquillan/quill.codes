@@ -110,6 +110,7 @@ body {
 
 /* BLOG POSTS */
 
+/* purgecss ignore */
 .blog-post-content table {
   display: block;
   overflow-x: auto;
