@@ -422,9 +422,6 @@ h3 {
   grid-area: header;
 }
 
-.hero img {
-}
-
 .navbar {
   grid-area: navbar;
   display: flex;
