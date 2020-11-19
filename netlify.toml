@@ -19,4 +19,4 @@
     Referrer-Policy = "no-referrer-when-downgrade"
     X-Content-Type-Options = "nosniff"
     X-Frame-Options = "SAMEORIGIN"
-    Permissions-Policy: geolocation=()
+    Permissions-Policy = "geolocation=()"
