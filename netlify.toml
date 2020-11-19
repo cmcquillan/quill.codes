@@ -1,0 +1,12 @@
+# Netlify config
+
+
+# Special headers
+[[headers]]
+
+  for = "/*"
+  
+  [headers.values]
+    Content-Security-Policy: report-to default;
+    Report-To: {"group":"default","max_age":31536000,"endpoints":[{"url":"https://quilltech.report-uri.com/a/d/g"}],"include_subdomains":true}
+    NEL: {"report_to":"default","max_age":31536000,"include_subdomains":true}
