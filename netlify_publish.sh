@@ -9,6 +9,8 @@ npm install
 ng build --prod --outputPath=../../../../../content/apps/fiddle --baseHref=/apps/fiddle/ --deployUrl=/apps/fiddle/ --deleteOutputPath=false
 cd ../../../../..
 
+ls content/apps/fiddle
+
 cd themes/quill-codes/
 
 npm install
