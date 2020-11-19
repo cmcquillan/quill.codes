@@ -2,6 +2,7 @@
 
 npm install -g postcss postcss-cli
 npm install -g autoprefixer
+npm install -g @angular/cli
 
 cd assets/apps/fiddle/src/Fiddle.Run.Client
 npm install
