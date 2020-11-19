@@ -1,5 +1,11 @@
 # Netlify config
 
+# Redirects
+[[redirects]]
+  from = "/apps/fiddle/*"
+  to = "/apps/fiddle/index.html"
+  status = 200
+  force = true
 
 # Special headers
 [[headers]]
