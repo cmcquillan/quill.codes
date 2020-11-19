@@ -2,7 +2,7 @@
 
 # Redirects
 [[redirects]]
-  from = "/apps/fiddle/*"
+  from = "/apps/fiddle/templates/*"
   to = "/apps/fiddle/index.html"
   status = 200
   force = true
