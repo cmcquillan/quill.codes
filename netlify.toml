@@ -7,6 +7,6 @@
   for = "/*"
   
   [headers.values]
-    Content-Security-Policy = 'report-to csp-endpoint;'
+    Content-Security-Policy = 'default-src self; font-src cdnjs.cloudflare.com; script-src 'unsafe-inline' syndication.twitter.com platform.twitter.com www.googletagmanager.com;report-to csp-endpoint;'
     Report-To = '{ "group": "csp-endpoint", "max_age": 10886400, "endpoints": [ { "url": "https://quilltech.report-uri.com/r/d/csp/wizard" }] }, {"group":"default","max_age":31536000,"endpoints":[{"url":"https://quilltech.report-uri.com/a/d/g"}],"include_subdomains":true}'
     NEL = '{"report_to":"default","max_age":31536000,"include_subdomains":true}'
