@@ -25,7 +25,7 @@ const purgecss = require('@fullhuman/postcss-purgecss')({
 
     // Safelist
     safelist: {
-        standard: [/blog-pos-content/]
+        standard: [/blog-post-content/]
     }
 })
 
