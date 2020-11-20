@@ -2,10 +2,10 @@
 
 # Redirects
 [[redirects]]
-  from = "/apps/fiddle/templates/*"
+  from = "/apps/fiddle/*"
   to = "/apps/fiddle/index.html"
   status = 200
-  force = true
+  force = false
 
 # Special headers
 [[headers]]
