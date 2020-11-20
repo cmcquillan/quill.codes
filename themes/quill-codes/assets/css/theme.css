@@ -61,7 +61,25 @@
     @apply ml-4 list-decimal list-inside;
   }
 
+  .blog-post-content ul li,
+  .blog-post-content ol li {
+    @apply my-4;
+  }
+
+  .blog-post-content ul li a,
+  .blog-post-content ol li a {
+    @apply py-4;
+  }
+
   .blog-post-content blockquote {
     @apply mx-8 italic;
+  }
+
+  .content-link {
+    @apply underline;
+  }
+
+  .content-link:hover {
+    @apply text-gray-600;
   }
 }
