@@ -34,8 +34,13 @@ These are each great resources for different deployment methods. However, since 
 ## Initialize a Blazor App
 
 ```powershell
+mkdir BlazorNetlify
+cd BlazorNetlify
+dotnet new gitignore
 dotnet new blazorwasm
 ```
+
+You should now have a restored project
 
 ```powershell
 The template "Blazor WebAssembly App" was created successfully.
@@ -66,13 +71,21 @@ info: Microsoft.Hosting.Lifetime[0]
       Content root path: C:\Users\casey\source\scratch\BlazorNetlify
 ```
 
+```powershell
+mkdir BlazorNetlify
+dotnet new blazorwasm
+
+```
+
+
 You should now be able to visit `https://localhost:5001` and see your blazor app.
 
 ![A browser window showing the initial project template for a Blazor WASM application.](blazor_netlify_init.png)
 
-Since this post is just about deploying a Blazor app, this initial template on its own should suffice.
+Since this post is just about deploying a Blazor app, this initial template on its own should suffice. Push this to Github or to your other favorite git host for Netlify.
 
-## 
+## Set up Your Netlify Build
+
 
 ## Fourth Heading - Adding Redirects for handling direct links
 
