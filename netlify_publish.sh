@@ -1,13 +1,13 @@
 #!/bin/sh
 
-npm install postcss -D
+npm install -g postcss
 npm install -g postcss-cli
 npm install -g autoprefixer
-npm install -g @angular
+npm install -g @angular/cli
 
 cd assets/apps/fiddle/src/Fiddle.Run.Client
 npm install
-ng build --prod --outputPath=../../../../../content/apps/fiddle --baseHref=/apps/fiddle/ --deployUrl=/apps/fiddle/ --deleteOutputPath=false
+ng build --aot --build-optimizer --output-path=../../../../../content/apps/fiddle --base-href=/apps/fiddle/ --deploy-url=/apps/fiddle/ --delete-output-path=false
 cd ../../../../..
 
 ls content/apps/fiddle
